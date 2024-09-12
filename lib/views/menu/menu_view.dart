@@ -3,17 +3,10 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:musclemate/helpers/color_extension.dart';
-import 'package:musclemate/views/home_view.dart';
-import 'package:musclemate/views/menu/yoga_view.dart';
-import 'package:musclemate/views/settings/setting_view.dart';
-import 'package:musclemate/widgets/menu_cell.dart';
-import 'package:musclemate/widgets/plan_row.dart';
-import '../exercise/exercise_view_2.dart';
-import '../meal_plan/meal_plan_view_2.dart';
-import '../running/running_view.dart';
-import '../schedule/schedule_view.dart';
-import '../tips/tips_view.dart';
-import '../weight/weight_view.dart';
+import 'package:musclemate/helpers/menu_tap_fun.dart';
+import 'package:musclemate/models/menu_cells_model.dart';
+import 'package:musclemate/widgets/custom_drawer.dart';
+import 'package:musclemate/widgets/custom_menu_cell.dart';
 
 class MenuView extends StatefulWidget {
   const MenuView({super.key});
@@ -23,59 +16,30 @@ class MenuView extends StatefulWidget {
 }
 
 class _MenuViewState extends State<MenuView> {
-  List planArr = [
-    {
-      "name": "Running",
-      "icon": "assets/img/menu_running.png",
-      "right_icon": "",
-    },
-    {
-      "name": "Yoga",
-      "icon": "assets/img/yoga.png",
-      "right_icon": "assets/img/information.png",
-    },
-    {
-      "name": "Workout",
-      "icon": "assets/img/workout.png",
-      "right_icon": "",
-    },
-    {
-      "name": "Walking",
-      "icon": "assets/img/walking.png",
-      "right_icon": "",
-    },
-    {
-      "name": "Fitness",
-      "icon": "assets/img/fitness.png",
-      "right_icon": "assets/img/information.png",
-    },
-    {
-      "name": "Strength",
-      "icon": "assets/img/strength.png",
-      "right_icon": "",
-    }
-  ];
-
-  List menuArr = [
-    {"name": "Home", "image": "assets/img/menu_home.png", "tag": "1"},
-    {"name": "Weight", "image": "assets/img/menu_weight.png", "tag": "2"},
-    {
-      "name": "Traning plan",
-      "image": "assets/img/menu_traning_plan.png",
-      "tag": "3"
-    },
-    {
-      "name": "Training Status",
-      "image": "assets/img/menu_traning_status.png",
-      "tag": "4"
-    },
-    {"name": "Meal Plan", "image": "assets/img/menu_meal_plan.png", "tag": "5"},
-    {"name": "Schedule", "image": "assets/img/menu_schedule.png", "tag": "6"},
-    {"name": "Running", "image": "assets/img/menu_running.png", "tag": "7"},
-    {"name": "Exercises", "image": "assets/img/menu_exercises.png", "tag": "8"},
-    {"name": "Tips", "image": "assets/img/menu_tips.png", "tag": "9"},
-    {"name": "Settings", "image": "assets/img/menu_settings.png", "tag": "10"},
-    {"name": "Support", "image": "assets/img/menu_support.png", "tag": "11"},
+  List<MenuCellsModel> menuArr = [
+    MenuCellsModel(name: "Home", image: "assets/img/menu_home.png", tag: "1"),
+    MenuCellsModel(
+        name: "Weight", image: "assets/img/menu_weight.png", tag: "2"),
+    MenuCellsModel(
+        name: "Traning plan",
+        image: "assets/img/menu_traning_plan.png",
+        tag: "3"),
+    // MenuCellsModel(
+    //     name: "Training Status",
+    //     image: "assets/img/menu_traning_status.png",
+    //     tag: "4"),
+    MenuCellsModel(
+        name: "Meal Plan", image: "assets/img/menu_meal_plan.png", tag: "5"),
+    MenuCellsModel(
+        name: "Schedule", image: "assets/img/menu_schedule.png", tag: "6"),
+    MenuCellsModel(
+        name: "Running", image: "assets/img/menu_running.png", tag: "7"),
+    MenuCellsModel(
+        name: "Exercises", image: "assets/img/menu_exercises.png", tag: "8"),
+    MenuCellsModel(
+        name: "Settings", image: "assets/img/menu_settings.png", tag: "9"),
+    MenuCellsModel(
+        name: "Support", image: "assets/img/menu_support.png", tag: "10"),
   ];
 
   @override
@@ -88,135 +52,7 @@ class _MenuViewState extends State<MenuView> {
   Widget build(BuildContext context) {
     var media = MediaQuery.sizeOf(context);
     return Scaffold(
-      drawer: Drawer(
-          width: media.width,
-          backgroundColor: Colors.transparent,
-          child: BackdropFilter(
-            filter: ImageFilter.blur(
-              sigmaX: 5.0,
-              sigmaY: 5,
-            ),
-            child: Stack(
-              children: [
-                Container(
-                  width: media.width * 0.78,
-                  decoration: BoxDecoration(color: TColor.white),
-                  child: SafeArea(
-                      child: Padding(
-                    padding: const EdgeInsets.only(left: 25),
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          height: kTextTabBarHeight,
-                          child: Row(
-                            children: [
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(22.5),
-                                child: Image.asset("assets/img/u1.png",
-                                    width: 45, height: 45, fit: BoxFit.cover),
-                              ),
-                              const SizedBox(
-                                width: 20,
-                              ),
-                              Expanded(
-                                child: Text(
-                                  "Traning Plan",
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      color: TColor.secondaryText,
-                                      fontWeight: FontWeight.w700),
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        const Divider(
-                          color: Colors.black26,
-                          height: 1,
-                        ),
-                        Expanded(
-                            child: ListView.builder(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 50),
-                                itemCount: planArr.length,
-                                itemBuilder: (context, index) {
-                                  var itemObj = planArr[index] as Map? ?? {};
-
-                                  return PlanRow(
-                                    mObj: itemObj,
-                                    onPressed: () {
-                                      // Navigator.pop(context);
-                                      if (index == 1) {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    const YogaView()));
-                                      }
-                                    },
-                                  );
-                                })),
-                        const Divider(
-                          color: Colors.black26,
-                          height: 1,
-                        ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        SizedBox(
-                          height: kTextTabBarHeight,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "Switch Account",
-                                style: TextStyle(
-                                    fontSize: 18,
-                                    color: TColor.secondaryText,
-                                    fontWeight: FontWeight.w700),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(right: 20),
-                                child: Image.asset("assets/img/next.png",
-                                    width: 18, height: 18),
-                              )
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  )),
-                ),
-                Column(
-                  children: [
-                    const SizedBox(
-                      height: kToolbarHeight - 25,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(right: 15),
-                          child: IconButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              icon: Image.asset(
-                                "assets/img/meun_close.png",
-                                width: 25,
-                                height: 25,
-                              )),
-                        ),
-                      ],
-                    )
-                  ],
-                )
-              ],
-            ),
-          )),
+      drawer: CustomDrawer(),
       body: NestedScrollView(
         headerSliverBuilder: (context, innerBoxIsScrolled) {
           return [
@@ -304,64 +140,10 @@ class _MenuViewState extends State<MenuView> {
               childAspectRatio: 1),
           itemCount: menuArr.length,
           itemBuilder: ((context, index) {
-            var mObj = menuArr[index] as Map? ?? {};
-            return MenuCell(
-              mObj: mObj,
+            return CustomMenuCell(
+              menuCellsModel: menuArr[index],
               onPressed: () {
-                switch (mObj["tag"].toString()) {
-                  case "1":
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const HomeView()));
-                    break;
-                  case "2":
-                     Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const WeightView()));
-                    break;
-                  case "3":
-                    Scaffold.of(context).openDrawer();
-                    break;
-                   case "5":
-                     Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const MealPlanView2()));
-                    break;
-                  case "6":
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const ScheduleView()));
-                    break;
-                    case "7":
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const RunningView()));
-                    break;
-                   case "8":
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const ExerciseView2()));
-                    break;
-                   case "9":
-                  Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const TipsView()));
-                    break;
-                    case "10":
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const SettingsView()));
-                    break;
-                  default:
-                }
+                menuTapMethod(menuArr[index].tag, context);
               },
             );
           }),
