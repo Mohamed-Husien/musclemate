@@ -43,6 +43,7 @@ dependencies:
   animated_splash_screen:
   flutter_screenutil:
 
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
