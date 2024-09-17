@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gemini/flutter_gemini.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart'; // Import screenutil
 import 'package:musclemate/helpers/color_extension.dart';
+import 'package:musclemate/views/chatbot/const.dart';
 import 'package:musclemate/views/onboard/splash.dart';
 
 void main() {
+  Gemini.init(apiKey: GEMINI_API_KEY);
   runApp(const MyApp());
 }
 
