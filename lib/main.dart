@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart'; // Import screenutil
 import 'package:musclemate/helpers/color_extension.dart';
 import 'package:musclemate/views/menu/menu_view.dart';
+import 'package:musclemate/views/onboard/splash.dart';
 
 void main() {
   runApp(const MyApp());
@@ -8,6 +10,7 @@ void main() {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
