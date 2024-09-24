@@ -63,7 +63,7 @@ class _LoginState extends State<Login> {
                     height: 60.h,
                     child: CustomTextFormField(
                       onChange: (value) => password = value,
-                      validator: (value) => validatePassword(value!),
+                      validator: (value) => validateEmail(value!),
                       hientText: 'Enter your email',
                       lable: 'Email',
                       iconField: Icon(Icons.email),

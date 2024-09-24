@@ -47,6 +47,8 @@ dependencies:
   flutter_gemini: 
   image_picker: 
   lottie: 
+  permission_handler:
+  video_player:
 
 
 dev_dependencies:
@@ -82,6 +84,7 @@ flutter:
   assets:
     - assets/img/
     - assets/img/new/
+    - assets/vid/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
