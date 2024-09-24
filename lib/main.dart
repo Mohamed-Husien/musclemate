@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gemini/flutter_gemini.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart'; // Import screenutil
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:musclemate/helpers/color_extension.dart';
 import 'package:musclemate/views/chatbot/const.dart';
 import 'package:musclemate/views/onboard/splash.dart';
@@ -16,8 +16,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      // Initialize ScreenUtil here
-      designSize: const Size(375, 812), // Base design size (e.g., iPhone X)
+      designSize: const Size(375, 812),
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (context, child) {
@@ -29,7 +28,7 @@ class MyApp extends StatelessWidget {
             colorScheme: ColorScheme.fromSeed(seedColor: TColor.kPrimaryColor),
             useMaterial3: false,
           ),
-          home: const splash(),
+          home: const SplashScreen(),
         );
       },
     );
