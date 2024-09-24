@@ -46,6 +46,7 @@ dependencies:
   dash_chat_2: 
   flutter_gemini: 
   image_picker: 
+  lottie: 
 
 
 dev_dependencies:

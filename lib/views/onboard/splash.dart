@@ -1,5 +1,6 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'onboarding.dart';
 import 'package:page_transition/page_transition.dart';
 
@@ -10,34 +11,35 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      home: splash(),
+      home: SplashScreen(),
     );
   }
 }
 
-class splash extends StatefulWidget {
-  const splash({super.key});
+class SplashScreen extends StatefulWidget {
+  const SplashScreen({super.key});
 
   @override
-  State<splash> createState() => _splashState();
+  State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _splashState extends State<splash> {
+class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: AnimatedSplashScreen(
-        duration: 3,
+        duration: 4000,
         pageTransitionType: PageTransitionType.rightToLeft,
         backgroundColor: const Color(0xffae6a46),
         splashIconSize: 250,
-        splash: const CircleAvatar(
-            radius: 90,
-            backgroundImage: AssetImage("assets/img/new/splash.jpg")),
+        splash: CircleAvatar(
+          radius: 90,
+          child: Lottie.asset('assets/img/new/Animation - 1727080966366.json',
+              fit: BoxFit.cover),
+        ),
         nextScreen: const FirstOnBoarding(),
       ),
     );

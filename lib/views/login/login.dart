@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:musclemate/views/login/helper/custom_text_form_field.dart';
+import 'package:musclemate/views/login/helper/emial_and_password_validet_function.dart';
 import 'package:musclemate/views/login/register.dart';
 import '../menu/menu_view.dart';
 
@@ -11,8 +13,13 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  final _formKey = GlobalKey<FormState>(); // Key for the form
-  final TextEditingController _emailController = TextEditingController();
+  String? password;
+
+  String? email;
+
+  bool isLoading = false;
+  final _formKey = GlobalKey<FormState>();
+
   final TextEditingController _passwordController = TextEditingController();
   bool _obscurePassword = true;
 
@@ -54,23 +61,18 @@ class _LoginState extends State<Login> {
                   SizedBox(
                     width: 350.w,
                     height: 60.h,
-                    child: TextFormField(
-                      controller: _emailController,
-                      decoration: const InputDecoration(
-                        labelText: 'Email or Username',
-                        hintText: 'Enter your email or username',
-                        border: OutlineInputBorder(),
-                      ),
-                      keyboardType: TextInputType.emailAddress,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter your email or username';
-                        }
-                        return null;
-                      },
+                    child: CustomTextFormField(
+                      onChange: (value) => password = value,
+                      validator: (value) => validatePassword(value!),
+                      hientText: 'Enter your email',
+                      lable: 'Email',
+                      iconField: Icon(Icons.email),
+                      onPressedIcon: () {},
                     ),
                   ),
-                  SizedBox(height: 40.h),
+                  SizedBox(
+                    height: 20.h,
+                  ),
                   SizedBox(
                     width: 350.w,
                     height: 60.h,
@@ -91,12 +93,7 @@ class _LoginState extends State<Login> {
                         hintText: 'Enter your password',
                         border: const OutlineInputBorder(),
                       ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter your password';
-                        }
-                        return null;
-                      },
+                      validator: (Value) => validatePassword(Value!),
                     ),
                   ),
                   SizedBox(height: 40.h),

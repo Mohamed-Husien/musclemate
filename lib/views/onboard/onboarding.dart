@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:musclemate/views/login/login.dart';
 
-import '../menu/menu_view.dart';
-
 class FirstOnBoarding extends StatefulWidget {
   const FirstOnBoarding({super.key});
 
@@ -24,7 +22,8 @@ class _FirstOnBoardingState extends State<FirstOnBoarding> {
               height: 6.h,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(50),
-                  color: i == pagenumber ? const Color(0xff442712) : Colors.grey),
+                  color:
+                      i == pagenumber ? const Color(0xff442712) : Colors.grey),
             ),
         ],
       );
@@ -68,7 +67,7 @@ class _FirstOnBoardingState extends State<FirstOnBoarding> {
               Text(
                 textAlign: TextAlign.center,
                 "good morning\nlet's learn and make it part of your day",
-                style: TextStyle(fontSize: 12.sp,color: Color(0xff442712)),
+                style: TextStyle(fontSize: 12.sp, color: Color(0xff442712)),
               ),
               SizedBox(
                 height: 30.h,
@@ -90,9 +89,9 @@ class _FirstOnBoardingState extends State<FirstOnBoarding> {
                     ),
                     child: const Center(
                         child: Text(
-                          "Next",
-                          style: TextStyle(color: Colors.white, fontSize: 16),
-                        )),
+                      "Next",
+                      style: TextStyle(color: Colors.white, fontSize: 16),
+                    )),
                   ),
                 ),
               ),
@@ -124,7 +123,7 @@ class _FirstOnBoardingState extends State<FirstOnBoarding> {
               Text(
                 textAlign: TextAlign.center,
                 "Push your limits, break your boundaries. Your fitness journey starts now!!",
-                style: TextStyle(fontSize: 12.sp,color:Color(0xff442712)),
+                style: TextStyle(fontSize: 12.sp, color: Color(0xff442712)),
               ),
               SizedBox(
                 height: 30.h,
@@ -146,9 +145,9 @@ class _FirstOnBoardingState extends State<FirstOnBoarding> {
                     ),
                     child: const Center(
                         child: Text(
-                          "Next",
-                          style: TextStyle(color: Colors.white, fontSize: 16),
-                        )),
+                      "Next",
+                      style: TextStyle(color: Colors.white, fontSize: 16),
+                    )),
                   ),
                 ),
               ),
@@ -180,7 +179,7 @@ class _FirstOnBoardingState extends State<FirstOnBoarding> {
               Text(
                 textAlign: TextAlign.center,
                 "Every workout counts. Step into a healthier, stronger you!",
-                style: TextStyle(fontSize: 12.sp,color: Color(0xff442712)),
+                style: TextStyle(fontSize: 12.sp, color: Color(0xff442712)),
               ),
               SizedBox(
                 height: 30.h,
@@ -189,8 +188,8 @@ class _FirstOnBoardingState extends State<FirstOnBoarding> {
                 padding: const EdgeInsets.all(16),
                 child: InkWell(
                   onTap: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => const Login()));
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => const Login()));
                   },
                   child: Container(
                     width: double.infinity,
@@ -201,9 +200,9 @@ class _FirstOnBoardingState extends State<FirstOnBoarding> {
                     ),
                     child: const Center(
                         child: Text(
-                          "Get Started",
-                          style: TextStyle(color: Colors.white, fontSize: 16),
-                        )),
+                      "Get Started",
+                      style: TextStyle(color: Colors.white, fontSize: 16),
+                    )),
                   ),
                 ),
               ),
