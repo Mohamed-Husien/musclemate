@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1048604577644",
+    "project_id": "muscle-mate-app-bce15",
+    "storage_bucket": "muscle-mate-app-bce15.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1048604577644:android:39aba683052bf0eb006d49",
+        "android_client_info": {
+          "package_name": "com.example.musclemate"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAMbud38YjWu1mNFTulw61lyQ7cHdzwHSQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

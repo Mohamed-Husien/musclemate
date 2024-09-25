@@ -1,12 +1,18 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gemini/flutter_gemini.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:musclemate/firebase_options.dart';
 import 'package:musclemate/helpers/color_extension.dart';
 import 'package:musclemate/views/chatbot/const.dart';
 import 'package:musclemate/views/onboard/splash.dart';
 
-void main() {
+void main() async {
   Gemini.init(apiKey: GEMINI_API_KEY);
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 

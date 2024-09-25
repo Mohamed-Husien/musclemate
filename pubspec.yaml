@@ -49,6 +49,8 @@ dependencies:
   lottie: 
   permission_handler:
   video_player:
+  firebase_auth: ^5.3.0 
+  firebase_core: 
 
 
 dev_dependencies:
