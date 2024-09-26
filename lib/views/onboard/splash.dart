@@ -40,7 +40,7 @@ class _SplashScreenState extends State<SplashScreen> {
           child: Lottie.asset('assets/img/new/Animation - 1727080966366.json',
               fit: BoxFit.cover),
         ),
-        nextScreen: const FirstOnBoarding(),
+        nextScreen: FirstOnBoarding(),
       ),
     );
   }

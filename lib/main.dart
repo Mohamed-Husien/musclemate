@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:musclemate/firebase_options.dart';
 import 'package:musclemate/helpers/color_extension.dart';
 import 'package:musclemate/views/chatbot/const.dart';
+import 'package:musclemate/views/menu/menu_view.dart';
 import 'package:musclemate/views/onboard/splash.dart';
 
 void main() async {
@@ -27,6 +28,9 @@ class MyApp extends StatelessWidget {
       splitScreenMode: true,
       builder: (context, child) {
         return MaterialApp(
+          routes: {
+            MenuView.id: (context) => MenuView(),
+          },
           title: 'Workout Fitness',
           debugShowCheckedModeBanner: false,
           theme: ThemeData(

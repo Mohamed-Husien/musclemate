@@ -4,13 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:musclemate/helpers/color_extension.dart';
 import 'package:musclemate/helpers/drawer_click_fun.dart';
 import 'package:musclemate/models/drawer_items_model.dart';
-import 'package:musclemate/views/menu/yoga_view.dart';
-import 'package:musclemate/views/running/running_view.dart';
-import 'package:musclemate/views/workout/workout_view.dart';
+
 import 'package:musclemate/widgets/custom_drawer_item_row.dart';
 
 class CustomDrawer extends StatelessWidget {
-  CustomDrawer({super.key});
+  CustomDrawer({super.key, required this.text});
+  final String text;
   List<DrawerItemsModel> items = [
     DrawerItemsModel(
         icon: "assets/img/menu_running.png", name: "Running", rightIcon: ''),
@@ -65,7 +64,7 @@ class CustomDrawer extends StatelessWidget {
                             ),
                             Expanded(
                               child: Text(
-                                "Traning Plan",
+                                text,
                                 style: TextStyle(
                                     fontSize: 20,
                                     color: TColor.secondaryText,

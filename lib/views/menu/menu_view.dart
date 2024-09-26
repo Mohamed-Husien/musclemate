@@ -1,18 +1,24 @@
 import 'dart:ui';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:musclemate/helpers/color_extension.dart';
+import 'package:musclemate/helpers/loading_indicator_skeletonizer.dart';
 import 'package:musclemate/helpers/menu_tap_fun.dart';
 import 'package:musclemate/models/menu_cells_model.dart';
+import 'package:musclemate/models/user_data_model.dart';
 import 'package:musclemate/views/chatbot/chat_screen.dart';
 import 'package:musclemate/views/settings/setting_view.dart';
 import 'package:musclemate/views/weight/weight_view.dart';
 import 'package:musclemate/widgets/custom_drawer.dart';
 import 'package:musclemate/widgets/custom_menu_cell.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MenuView extends StatefulWidget {
   const MenuView({super.key});
+  static String id = 'MenuView';
 
   @override
   State<MenuView> createState() => _MenuViewState();
@@ -20,7 +26,8 @@ class MenuView extends StatefulWidget {
 
 class _MenuViewState extends State<MenuView> {
   int _selectedIndex = 0;
-
+  late CollectionReference users =
+      FirebaseFirestore.instance.collection('users');
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -79,159 +86,183 @@ class _MenuViewState extends State<MenuView> {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.leanBack);
   }
 
+  var name;
+  var userAge;
   @override
   Widget build(BuildContext context) {
+    var email = ModalRoute.of(context)!.settings.arguments;
     var media = MediaQuery.sizeOf(context);
-    return Scaffold(
-      drawer: CustomDrawer(),
-      body: Container(
-        color: Colors.white,
-        child: NestedScrollView(
-          headerSliverBuilder: (context, innerBoxIsScrolled) {
-            return [
-              SliverAppBar(
-                expandedHeight: media.width * 1,
-                collapsedHeight: kToolbarHeight + 20,
-                flexibleSpace: Stack(
-                  alignment: Alignment.bottomLeft,
-                  children: [
-                    Container(
-                      width: double.infinity,
-                      height: double.infinity,
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        image: DecorationImage(
-                          image: AssetImage("assets/img/new/15.jpg"),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                    Container(
-                      width: media.width,
-                      height: media.width * 0.9,
-                      decoration: const BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [Colors.transparent, Colors.brown],
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                        ),
-                        borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(40),
-                          bottomRight: Radius.circular(40),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 25, vertical: 30),
-                      child: Row(
+    return FutureBuilder<QuerySnapshot>(
+        future: users.where('email', isEqualTo: email).get(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return SkeletonizerIndicator();
+          }
+          if (snapshot.hasError) {
+            return const Center(child: Text('Error loading data'));
+          }
+          if (snapshot.hasData && snapshot.data!.docs.isNotEmpty) {
+            // Extract user data from the Firestore document
+            var userDoc =
+                snapshot.data!.docs.first.data() as Map<String, dynamic>;
+            name = userDoc['username'] ?? 'Name not available';
+            userAge = userDoc['age'] ?? 'Age not available';
+          }
+          return Scaffold(
+            drawer: CustomDrawer(
+              text: name,
+            ),
+            body: Container(
+              color: Colors.white,
+              child: NestedScrollView(
+                headerSliverBuilder: (context, innerBoxIsScrolled) {
+                  return [
+                    SliverAppBar(
+                      expandedHeight: media.width * 1,
+                      collapsedHeight: kToolbarHeight + 20,
+                      flexibleSpace: Stack(
+                        alignment: Alignment.bottomLeft,
                         children: [
                           Container(
-                            width: 54,
-                            height: 54,
-                            decoration: BoxDecoration(
-                                color: TColor.white,
-                                borderRadius: BorderRadius.circular(27)),
-                            alignment: Alignment.center,
-                            child: ClipRRect(
-                                borderRadius: BorderRadius.circular(25),
-                                child: Image.asset(
-                                  "assets/img/new/mo.jpg",
-                                  width: 50,
-                                  height: 50,
-                                  fit: BoxFit.cover,
-                                )),
-                          ),
-                          const SizedBox(
-                            width: 15,
-                          ),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Text("Mohamed Hussien",
-                                    style: TextStyle(
-                                      fontSize: 25,
-                                      color: TColor.white,
-                                      fontWeight: FontWeight.w700,
-                                    )),
-                                const SizedBox(
-                                  height: 4,
-                                ),
-                                Text("Mobile App Developer",
-                                    style: TextStyle(
-                                      fontSize: 15,
-                                      color: TColor.white,
-                                      fontWeight: FontWeight.w500,
-                                    ))
-                              ],
+                            width: double.infinity,
+                            height: double.infinity,
+                            decoration: const BoxDecoration(
+                              color: Colors.white,
+                              image: DecorationImage(
+                                image: AssetImage("assets/img/new/15.jpg"),
+                                fit: BoxFit.cover,
+                              ),
                             ),
                           ),
+                          Container(
+                            width: media.width,
+                            height: media.width * 0.9,
+                            decoration: const BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [Colors.transparent, Colors.brown],
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                              ),
+                              borderRadius: BorderRadius.only(
+                                bottomLeft: Radius.circular(40),
+                                bottomRight: Radius.circular(40),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 25, vertical: 30),
+                            child: Row(
+                              children: [
+                                Container(
+                                  width: 54,
+                                  height: 54,
+                                  decoration: BoxDecoration(
+                                      color: TColor.white,
+                                      borderRadius: BorderRadius.circular(27)),
+                                  alignment: Alignment.center,
+                                  child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(25),
+                                      child: Image.asset(
+                                        "assets/img/new/mo.jpg",
+                                        width: 50,
+                                        height: 50,
+                                        fit: BoxFit.cover,
+                                      )),
+                                ),
+                                const SizedBox(
+                                  width: 15,
+                                ),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Text(name,
+                                          style: TextStyle(
+                                            fontSize: 25,
+                                            color: TColor.white,
+                                            fontWeight: FontWeight.w700,
+                                          )),
+                                      const SizedBox(
+                                        height: 4,
+                                      ),
+                                      Text("Age $userAge",
+                                          style: TextStyle(
+                                            fontSize: 15,
+                                            color: TColor.white,
+                                            fontWeight: FontWeight.w500,
+                                          ))
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
                         ],
                       ),
                     )
-                  ],
-                ),
-              )
-            ];
-          },
-          body: GridView.builder(
-            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3,
-                crossAxisSpacing: 15,
-                mainAxisSpacing: 15,
-                childAspectRatio: 1.2),
-            itemCount: menuArr.length,
-            itemBuilder: ((context, index) {
-              return CustomMenuCell(
-                menuCellsModel: menuArr[index],
-                onPressed: () {
-                  menuTapMethod(menuArr[index].tag, context);
+                  ];
                 },
-              );
-            }),
-          ),
-        ),
-      ),
-      bottomNavigationBar: Container(
-        decoration: BoxDecoration(
-          color: Colors.brown,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(media.width * 0.1),
-            topRight: Radius.circular(media.width * 0.1),
-          ),
-        ),
-        child: BottomNavigationBar(
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Home',
+                body: GridView.builder(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 3,
+                      crossAxisSpacing: 15,
+                      mainAxisSpacing: 15,
+                      childAspectRatio: 1.2),
+                  itemCount: menuArr.length,
+                  itemBuilder: ((context, index) {
+                    return CustomMenuCell(
+                      menuCellsModel: menuArr[index],
+                      onPressed: () {
+                        menuTapMethod(menuArr[index].tag, context);
+                      },
+                    );
+                  }),
+                ),
+              ),
             ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.chat),
-              label: 'Chat',
+            bottomNavigationBar: Container(
+              decoration: BoxDecoration(
+                color: TColor.kPrimaryColor,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(media.width * 0.1),
+                  topRight: Radius.circular(media.width * 0.1),
+                ),
+              ),
+              child: BottomNavigationBar(
+                items: const <BottomNavigationBarItem>[
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.home),
+                    label: 'Home',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.chat),
+                    label: 'Chat',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.fitness_center),
+                    label: 'Weight',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.settings),
+                    label: 'Settings',
+                  ),
+                ],
+                currentIndex: _selectedIndex,
+                selectedItemColor: Colors.amber[800],
+                unselectedItemColor: Colors.grey,
+                backgroundColor: Colors.transparent,
+                onTap: _onItemTapped,
+                type: BottomNavigationBarType.fixed,
+                showUnselectedLabels: true,
+                elevation: 0,
+              ),
             ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.fitness_center),
-              label: 'Weight',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.settings),
-              label: 'Settings',
-            ),
-          ],
-          currentIndex: _selectedIndex,
-          selectedItemColor: Colors.amber[800],
-          unselectedItemColor: Colors.grey,
-          backgroundColor: Colors.transparent,
-          onTap: _onItemTapped,
-          type: BottomNavigationBarType.fixed,
-          showUnselectedLabels: true,
-          elevation: 0,
-        ),
-      ),
-    );
+          );
+        });
   }
 }
