@@ -10,6 +10,7 @@ import 'package:musclemate/widgets/custom_drawer_item_row.dart';
 class CustomDrawer extends StatelessWidget {
   CustomDrawer({super.key, required this.text});
   final String text;
+
   List<DrawerItemsModel> items = [
     DrawerItemsModel(
         icon: "assets/img/menu_running.png", name: "Running", rightIcon: ''),

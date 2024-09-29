@@ -54,6 +54,10 @@ dependencies:
   cloud_firestore:
   shared_preferences: 
   skeletonizer: ^1.4.2
+  firebase_storage: ^12.3.1
+  path: 
+  image_downloader: ^0.31.0
+  modal_progress_hud_nsn: ^0.5.1
 
 
 dev_dependencies:

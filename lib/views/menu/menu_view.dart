@@ -88,6 +88,7 @@ class _MenuViewState extends State<MenuView> {
 
   var name;
   var userAge;
+  String? _image;
   @override
   Widget build(BuildContext context) {
     var email = ModalRoute.of(context)!.settings.arguments;
@@ -107,6 +108,7 @@ class _MenuViewState extends State<MenuView> {
                 snapshot.data!.docs.first.data() as Map<String, dynamic>;
             name = userDoc['username'] ?? 'Name not available';
             userAge = userDoc['age'] ?? 'Age not available';
+            _image = userDoc['imageUrl'] ?? 'image not available';
           }
           return Scaffold(
             drawer: CustomDrawer(
@@ -162,13 +164,14 @@ class _MenuViewState extends State<MenuView> {
                                       borderRadius: BorderRadius.circular(27)),
                                   alignment: Alignment.center,
                                   child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(25),
-                                      child: Image.asset(
-                                        "assets/img/new/mo.jpg",
-                                        width: 50,
-                                        height: 50,
-                                        fit: BoxFit.cover,
-                                      )),
+                                    borderRadius: BorderRadius.circular(25),
+                                    child: Image.network(
+                                      _image!,
+                                      width: 50,
+                                      height: 50,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
                                 ),
                                 const SizedBox(
                                   width: 15,
