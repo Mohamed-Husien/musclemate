@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -89,6 +90,7 @@ class _MenuViewState extends State<MenuView> {
   var name;
   var userAge;
   String? _image;
+  String? _userEmail;
   @override
   Widget build(BuildContext context) {
     var email = ModalRoute.of(context)!.settings.arguments;
@@ -109,6 +111,7 @@ class _MenuViewState extends State<MenuView> {
             name = userDoc['username'] ?? 'Name not available';
             userAge = userDoc['age'] ?? 'Age not available';
             _image = userDoc['imageUrl'] ?? 'image not available';
+            _userEmail = userDoc['email'] ?? 'Email not available';
           }
           return Scaffold(
             drawer: CustomDrawer(
@@ -165,8 +168,8 @@ class _MenuViewState extends State<MenuView> {
                                   alignment: Alignment.center,
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(25),
-                                    child: Image.network(
-                                      _image!,
+                                    child: CachedNetworkImage(
+                                      imageUrl: _image!,
                                       width: 50,
                                       height: 50,
                                       fit: BoxFit.cover,
@@ -191,7 +194,7 @@ class _MenuViewState extends State<MenuView> {
                                       const SizedBox(
                                         height: 4,
                                       ),
-                                      Text("Age $userAge",
+                                      Text(_userEmail!,
                                           style: TextStyle(
                                             fontSize: 15,
                                             color: TColor.white,

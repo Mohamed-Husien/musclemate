@@ -188,8 +188,8 @@ class _FirstOnBoardingState extends State<FirstOnBoarding> {
                 padding: const EdgeInsets.all(16),
                 child: InkWell(
                   onTap: () {
-                    Navigator.of(context)
-                        .push(MaterialPageRoute(builder: (context) => Login()));
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => LoginPage()));
                   },
                   child: Container(
                     width: double.infinity,

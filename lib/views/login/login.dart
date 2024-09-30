@@ -11,14 +11,14 @@ import 'package:musclemate/views/login/helper/signIn_user_fun.dart';
 import 'package:musclemate/views/login/register.dart';
 import '../menu/menu_view.dart';
 
-class Login extends StatefulWidget {
-  const Login();
+class LoginPage extends StatefulWidget {
+  const LoginPage();
 
   @override
-  State<Login> createState() => _LoginState();
+  State<LoginPage> createState() => _LoginPageState();
 }
 
-class _LoginState extends State<Login> {
+class _LoginPageState extends State<LoginPage> {
   String? password;
 
   String? email;

@@ -50,7 +50,7 @@ packages:
     source: hosted
     version: "2.1.1"
   cached_network_image:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: cached_network_image
       sha256: "7c1183e361e5c8b0a0f21a28401eecdbde252441106a9816400dd4c2b2424916"
@@ -480,14 +480,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.2.0"
-  image_downloader:
-    dependency: "direct main"
-    description:
-      name: image_downloader
-      sha256: "2b1c1d1fcfb6677175d009af3fc86914aee07684c12ea061f380ef1f44cae8df"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.31.0"
   image_picker:
     dependency: "direct main"
     description:
