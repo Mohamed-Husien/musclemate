@@ -35,9 +35,6 @@ class _MenuViewState extends State<MenuView> {
           MaterialPageRoute(builder: (context) => ChatScreen()),
         );
         break;
-      case 1:
-        Navigator.pushNamed(context, '/home');
-        break;
       case 2:
         Navigator.push(
           context,
@@ -58,10 +55,6 @@ class _MenuViewState extends State<MenuView> {
     MenuCellsModel(name: "Weight", image: "assets/img/new/3.png", tag: "2"),
     MenuCellsModel(
         name: "Traning plan", image: "assets/img/new/4.jpg", tag: "3"),
-    // MenuCellsModel(
-    //     name: "Training Status",
-    //     image: "assets/img/menu_traning_status.png",
-    //     tag: "4"),
     MenuCellsModel(name: "Meal Plan", image: "assets/img/new/5.png", tag: "5"),
     MenuCellsModel(name: "Schedule", image: "assets/img/new/6.jpg", tag: "6"),
     MenuCellsModel(name: "Running", image: "assets/img/new/7.png", tag: "7"),
@@ -70,7 +63,6 @@ class _MenuViewState extends State<MenuView> {
     MenuCellsModel(name: "Support", image: "assets/img/new/10.jpg", tag: "10"),
   ];
 
-  // Increase text size for all menu items
   final double menuItemTextSize = 18.0;
 
   @override
@@ -90,8 +82,8 @@ class _MenuViewState extends State<MenuView> {
           headerSliverBuilder: (context, innerBoxIsScrolled) {
             return [
               SliverAppBar(
-                expandedHeight: media.width * 1,
-                collapsedHeight: kToolbarHeight + 20,
+                expandedHeight: media.width,
+                collapsedHeight: kToolbarHeight,
                 flexibleSpace: Stack(
                   alignment: Alignment.bottomLeft,
                   children: [

@@ -55,27 +55,30 @@ class _WorkoutView2State extends State<WorkoutView2> {
               decoration: BoxDecoration(color: TColor.white),
               child: Column(
                 children: [
-                  Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      Image.asset(
-                        wObj["image"].toString(),
-                        width: media.width,
-                        height: media.width * 0.55,
-                        fit: BoxFit.cover,
-                      ),
-                      Container(
-                        width: media.width,
-                        height: media.width * 0.55,
-                        decoration:
-                            BoxDecoration(color: Colors.black.withOpacity(0.5)),
-                      ),
-                      Image.asset(
-                        "assets/img/play.png",
-                        width: 60,
-                        height: 60,
-                      ),
-                    ],
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const WorkoutDetailView()));
+                    },
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        Image.asset(
+                          wObj["image"].toString(),
+                          width: media.width,
+                          height: media.width * 0.55,
+                          fit: BoxFit.cover,
+                        ),
+                        Container(
+                          width: media.width,
+                          height: media.width * 0.55,
+                          decoration: BoxDecoration(
+                              color: Colors.black.withOpacity(0.5)),
+                        ),
+                      ],
+                    ),
                   ),
                   Padding(
                     padding:
@@ -107,42 +110,42 @@ class _WorkoutView2State extends State<WorkoutView2> {
               ),
             );
           }),
-      bottomNavigationBar: BottomAppBar(
-        elevation: 1,
-        child: Padding(
-          padding: const EdgeInsets.only(top: 15),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              InkWell(
-                onTap: () {},
-                child: Image.asset("assets/img/menu_running.png",
-                    width: 25, height: 25),
-              ),
-              InkWell(
-                onTap: () {},
-                child: Image.asset("assets/img/menu_meal_plan.png",
-                    width: 25, height: 25),
-              ),
-              InkWell(
-                onTap: () {},
-                child: Image.asset("assets/img/menu_home.png",
-                    width: 25, height: 25),
-              ),
-              InkWell(
-                onTap: () {},
-                child: Image.asset("assets/img/menu_weight.png",
-                    width: 25, height: 25),
-              ),
-              InkWell(
-                onTap: () {},
-                child:
-                    Image.asset("assets/img/more.png", width: 25, height: 25),
-              ),
-            ],
-          ),
-        ),
-      ),
+      // bottomNavigationBar: BottomAppBar(
+      //   elevation: 1,
+      //   child: Padding(
+      //     padding: const EdgeInsets.only(top: 15),
+      //     child: Row(
+      //       mainAxisAlignment: MainAxisAlignment.spaceAround,
+      //       children: [
+      //         InkWell(
+      //           onTap: () {},
+      //           child: Image.asset("assets/img/menu_running.png",
+      //               width: 25, height: 25),
+      //         ),
+      //         InkWell(
+      //           onTap: () {},
+      //           child: Image.asset("assets/img/menu_meal_plan.png",
+      //               width: 25, height: 25),
+      //         ),
+      //         InkWell(
+      //           onTap: () {},
+      //           child: Image.asset("assets/img/menu_home.png",
+      //               width: 25, height: 25),
+      //         ),
+      //         InkWell(
+      //           onTap: () {},
+      //           child: Image.asset("assets/img/menu_weight.png",
+      //               width: 25, height: 25),
+      //         ),
+      //         InkWell(
+      //           onTap: () {},
+      //           child:
+      //               Image.asset("assets/img/more.png", width: 25, height: 25),
+      //         ),
+      //       ],
+      //     ),
+      //   ),
+      // ),
     );
   }
 }
