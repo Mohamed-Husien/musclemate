@@ -50,6 +50,7 @@ dependencies:
   permission_handler:
   video_player:
   shared_preferences: ^2.3.2
+  http: ^1.2.2
 
 
 dev_dependencies:

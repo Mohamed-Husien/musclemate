@@ -2,9 +2,9 @@ import 'dart:io';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:musclemate/helpers/color_extension.dart';
-import 'package:intl/intl.dart'; // For formatting dates
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:intl/intl.dart';
 
 class WeightView extends StatefulWidget {
   const WeightView({super.key});
@@ -45,11 +45,11 @@ class _WeightViewState extends State<WeightView> {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       List<String>? savedImages = prefs.getStringList('weight_images') ?? [];
 
-      savedImages.add(image.path);
+      savedImages.insert(0, image.path);
       await prefs.setStringList('weight_images', savedImages);
 
       setState(() {
-        myWeightArr.add({"name": "Custom Image", "image": image.path});
+        myWeightArr.insert(0, {"name": "Custom Image", "image": image.path});
       });
     }
   }
@@ -107,12 +107,24 @@ class _WeightViewState extends State<WeightView> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     List<String>? savedImages = prefs.getStringList('weight_images') ?? [];
 
-    // Remove the image at the given index
     savedImages.removeAt(index);
     await prefs.setStringList('weight_images', savedImages);
 
     setState(() {
       myWeightArr.removeAt(index);
+    });
+  }
+
+  Future<void> _deleteWeightData(int index) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    weightDataList.removeAt(index);
+    List<String> weightDataStrings = weightDataList
+        .map((data) => '${data['date']}|${data['weight']}')
+        .toList();
+    await prefs.setStringList('weight_data', weightDataStrings);
+
+    setState(() {
+      weightDataList = weightDataList;
     });
   }
 
@@ -128,7 +140,7 @@ class _WeightViewState extends State<WeightView> {
           title: Text(
             "Your Weight Progress",
             style: TextStyle(
-                color: TColor.white, fontSize: 20, fontWeight: FontWeight.w700),
+                color: Colors.white, fontSize: 20, fontWeight: FontWeight.w700),
           ),
         ),
         body: SingleChildScrollView(
@@ -141,7 +153,7 @@ class _WeightViewState extends State<WeightView> {
                 child: Text(
                   "Add more photos to track your progress",
                   textAlign: TextAlign.center,
-                  style: TextStyle(color: TColor.secondaryText, fontSize: 14),
+                  style: TextStyle(color: Colors.grey, fontSize: 14),
                 ),
               ),
               Padding(
@@ -165,10 +177,9 @@ class _WeightViewState extends State<WeightView> {
                       bool isAsset = dObj["image"]!.contains("assets");
 
                       return Dismissible(
-                        key: UniqueKey(), // Unique key for each item
-                        direction: DismissDirection.up, // Allow upward swipe
+                        key: UniqueKey(),
+                        direction: DismissDirection.up,
                         onDismissed: (direction) {
-                          // When swiped up, delete the image
                           _deleteImage(index);
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                             content: Text("Image deleted"),
@@ -179,7 +190,7 @@ class _WeightViewState extends State<WeightView> {
                           margin: const EdgeInsets.symmetric(
                               vertical: 10, horizontal: 10),
                           decoration: BoxDecoration(
-                              color: TColor.white,
+                              color: Colors.white,
                               borderRadius: BorderRadius.circular(10),
                               boxShadow: const [
                                 BoxShadow(
@@ -226,7 +237,7 @@ class _WeightViewState extends State<WeightView> {
                             : "Select Date",
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                            color: TColor.secondaryText,
+                            color: Colors.grey,
                             fontSize: 20,
                             fontWeight: FontWeight.w700),
                       ),
@@ -253,38 +264,39 @@ class _WeightViewState extends State<WeightView> {
               ),
               ElevatedButton(
                 onPressed: _saveWeightData,
-                child: Text("Save"),
+                child: Text("Add"),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: TColor.kPrimaryColor,
                 ),
               ),
               const SizedBox(height: 20),
               ListView.builder(
+                physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
                 itemCount: weightDataList.length,
                 itemBuilder: (context, index) {
-                  var weightData = weightDataList[index];
-                  return Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(vertical: 10),
-                      decoration: BoxDecoration(
-                          border:
-                              Border.all(color: TColor.gray.withOpacity(0.5)),
-                          borderRadius: BorderRadius.circular(10)),
+                  return Dismissible(
+                    key: UniqueKey(),
+                    direction: DismissDirection.endToStart,
+                    onDismissed: (direction) {
+                      _deleteWeightData(index);
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: Text("Weight entry deleted"),
+                        duration: Duration(seconds: 1),
+                      ));
+                    },
+                    background: Container(
+                      color: Colors.red,
+                      alignment: Alignment.centerRight,
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: const Icon(Icons.delete, color: Colors.white),
+                    ),
+                    child: Card(
+                      margin: const EdgeInsets.symmetric(
+                          vertical: 5, horizontal: 10),
                       child: ListTile(
-                        title: Text(
-                          weightData['date']!,
-                          style: TextStyle(fontWeight: FontWeight.w700),
-                        ),
-                        trailing: Text(
-                          "${weightData['weight']} kg",
-                          style: TextStyle(
-                              color: TColor.kPrimaryColor,
-                              fontWeight: FontWeight.w700),
-                        ),
+                        title: Text(weightDataList[index]['date']!),
+                        subtitle: Text('${weightDataList[index]['weight']} kg'),
                       ),
                     ),
                   );
