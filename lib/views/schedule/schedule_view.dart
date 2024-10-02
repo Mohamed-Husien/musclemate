@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:musclemate/helpers/color_extension.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';
+import 'package:musclemate/views/schedule/dummy_tips_data.dart';
 
 class ScheduleView extends StatefulWidget {
   const ScheduleView({super.key});
@@ -11,24 +12,16 @@ class ScheduleView extends StatefulWidget {
 }
 
 class _ScheduleViewState extends State<ScheduleView> {
+  List notArr = getTips();
   DateTime nowTime = DateTime.now();
   DateTime targetDate = DateTime.now();
+
   List dateArr = [
     DateTime(2023, 7, 2),
     DateTime(2023, 7, 14),
   ];
-  List notArr = [
-    {
-      "day": "2",
-      "detail":
-          " You exercise 40 minutes a day and five days a week at a certain time, you practice on a regular schedule. Changing the schedule will result in diminished results, resulting in fatigue."
-    },
-    {
-      "day": "14",
-      "detail":
-          "Tips for weight loss work towards functional exercises, proven strength and balance, and reduced risk of injury when muscle groups are active at the same time."
-    },
-  ];
+
+  final ScrollController _scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -39,14 +32,15 @@ class _ScheduleViewState extends State<ScheduleView> {
         centerTitle: true,
         elevation: 0.1,
         leading: IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: Image.asset(
-              "assets/img/black_white.png",
-              width: 25,
-              height: 25,
-            )),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: Image.asset(
+            "assets/img/black_white.png",
+            width: 25,
+            height: 25,
+          ),
+        ),
         title: Text(
           "Schedule",
           style: TextStyle(
@@ -54,6 +48,7 @@ class _ScheduleViewState extends State<ScheduleView> {
         ),
       ),
       body: SingleChildScrollView(
+        controller: _scrollController,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -124,7 +119,21 @@ class _ScheduleViewState extends State<ScheduleView> {
                     todayBorderColor: TColor.kPrimaryColor,
                     selectedDayButtonColor: TColor.kPrimaryColor,
                     selectedDayBorderColor: TColor.kPrimaryColor,
-                    onDayPressed: (DateTime date, List events) {},
+                    onDayPressed: (DateTime date, List events) {
+                      final selectedTip = notArr.firstWhere(
+                        (tip) => tip['day'] == date.day.toString(),
+                        orElse: () => null,
+                      );
+
+                      if (selectedTip != null) {
+                        final index = notArr.indexOf(selectedTip);
+                        _scrollController.animateTo(
+                          index * 70.0,
+                          duration: Duration(milliseconds: 500),
+                          curve: Curves.easeInOut,
+                        );
+                      }
+                    },
                     onCalendarChanged: (date) {
                       setState(() {
                         targetDate = date;
@@ -170,7 +179,7 @@ class _ScheduleViewState extends State<ScheduleView> {
                           width: 35,
                           height: 35,
                           decoration: BoxDecoration(
-                              color: Colors.blue,
+                              color: TColor.kPrimaryColor,
                               borderRadius: BorderRadius.circular(20)),
                           alignment: Alignment.center,
                           child: Text(
@@ -204,7 +213,7 @@ class _ScheduleViewState extends State<ScheduleView> {
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
               child: Text(
-                "Note",
+                "Tips",
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     color: TColor.secondaryText,
@@ -229,7 +238,7 @@ class _ScheduleViewState extends State<ScheduleView> {
                           width: 35,
                           height: 35,
                           decoration: BoxDecoration(
-                              color: Colors.blue,
+                              color: TColor.kPrimaryColor,
                               borderRadius: BorderRadius.circular(20)),
                           alignment: Alignment.center,
                           child: Text(
@@ -255,42 +264,6 @@ class _ScheduleViewState extends State<ScheduleView> {
                   );
                 })
           ],
-        ),
-      ),
-      bottomNavigationBar: BottomAppBar(
-        elevation: 1,
-        child: Padding(
-          padding: const EdgeInsets.only(top: 15),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              InkWell(
-                onTap: () {},
-                child: Image.asset("assets/img/menu_running.png",
-                    width: 25, height: 25),
-              ),
-              InkWell(
-                onTap: () {},
-                child: Image.asset("assets/img/menu_meal_plan.png",
-                    width: 25, height: 25),
-              ),
-              InkWell(
-                onTap: () {},
-                child: Image.asset("assets/img/menu_home.png",
-                    width: 25, height: 25),
-              ),
-              InkWell(
-                onTap: () {},
-                child: Image.asset("assets/img/menu_weight.png",
-                    width: 25, height: 25),
-              ),
-              InkWell(
-                onTap: () {},
-                child:
-                    Image.asset("assets/img/more.png", width: 25, height: 25),
-              ),
-            ],
-          ),
         ),
       ),
     );
