@@ -1,7 +1,10 @@
+import 'dart:io';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:musclemate/helpers/color_extension.dart';
-import 'package:musclemate/widgets/border_button.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:intl/intl.dart';
 
 class WeightView extends StatefulWidget {
   const WeightView({super.key});
@@ -11,37 +14,133 @@ class WeightView extends StatefulWidget {
 }
 
 class _WeightViewState extends State<WeightView> {
-  List myWeightArr = [
-    {"name": "Sunday, AUG 19", "image": "assets/img/w_1.png"},
-    {"name": "Sunday, AUG 26", "image": "assets/img/w_2.png"},
-    {
-      "name": "Sunday, AUG 26",
-      "image": "assets/img/w_3.png",
+  final ImagePicker _picker = ImagePicker();
+  final TextEditingController _weightController = TextEditingController();
+  DateTime? _selectedDate;
+  List<Map<String, String>> myWeightArr = [];
+  List<Map<String, String>> weightDataList = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadSavedImages();
+    _loadWeightData();
+  }
+
+  Future<void> _loadSavedImages() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String>? savedImages = prefs.getStringList('weight_images');
+    if (savedImages != null) {
+      setState(() {
+        myWeightArr.addAll(
+          savedImages.map((image) => {"name": "Custom Image", "image": image}),
+        );
+      });
     }
-  ];
+  }
+
+  Future<void> _addImageFromGallery() async {
+    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+    if (image != null) {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      List<String>? savedImages = prefs.getStringList('weight_images') ?? [];
+
+      savedImages.insert(0, image.path);
+      await prefs.setStringList('weight_images', savedImages);
+
+      setState(() {
+        myWeightArr.insert(0, {"name": "Custom Image", "image": image.path});
+      });
+    }
+  }
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2101),
+    );
+    if (picked != null && picked != _selectedDate) {
+      setState(() {
+        _selectedDate = picked;
+      });
+    }
+  }
+
+  Future<void> _saveWeightData() async {
+    if (_selectedDate != null && _weightController.text.isNotEmpty) {
+      String formattedDate = DateFormat('EEEE, MMM d').format(_selectedDate!);
+      String weight = _weightController.text;
+
+      Map<String, String> newWeightData = {
+        'date': formattedDate,
+        'weight': weight,
+      };
+
+      setState(() {
+        weightDataList.insert(0, newWeightData);
+      });
+
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      List<String> weightDataStrings = weightDataList
+          .map((data) => '${data['date']}|${data['weight']}')
+          .toList();
+      await prefs.setStringList('weight_data', weightDataStrings);
+    }
+  }
+
+  Future<void> _loadWeightData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String>? savedWeightData = prefs.getStringList('weight_data');
+    if (savedWeightData != null) {
+      setState(() {
+        weightDataList = savedWeightData.map((data) {
+          List<String> splitData = data.split('|');
+          return {'date': splitData[0], 'weight': splitData[1]};
+        }).toList();
+      });
+    }
+  }
+
+  Future<void> _deleteImage(int index) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String>? savedImages = prefs.getStringList('weight_images') ?? [];
+
+    savedImages.removeAt(index);
+    await prefs.setStringList('weight_images', savedImages);
+
+    setState(() {
+      myWeightArr.removeAt(index);
+    });
+  }
+
+  Future<void> _deleteWeightData(int index) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    weightDataList.removeAt(index);
+    List<String> weightDataStrings = weightDataList
+        .map((data) => '${data['date']}|${data['weight']}')
+        .toList();
+    await prefs.setStringList('weight_data', weightDataStrings);
+
+    setState(() {
+      weightDataList = weightDataList;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    var media = MediaQuery.sizeOf(context);
+    var media = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: TColor.kPrimaryColor,
           centerTitle: true,
           elevation: 0.1,
-          // leading: IconButton(
-          // onPressed: () {
-          //   Navigator.pop(context);
-          // },
-          // icon: Image.asset(
-          //   "assets/img/black_white.png",
-          //   width: 25,
-          //   height: 25,
-          // )),
           title: Text(
-            "Check your process",
+            "Your Weight Progress",
             style: TextStyle(
-                color: TColor.white, fontSize: 20, fontWeight: FontWeight.w700),
+                color: Colors.white, fontSize: 20, fontWeight: FontWeight.w700),
           ),
         ),
         body: SingleChildScrollView(
@@ -49,35 +148,12 @@ class _WeightViewState extends State<WeightView> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: BorderButton(
-                          title: "Check Process",
-                          type: BorderButtonType.inactive,
-                          onPressed: () {},
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 15,
-                      ),
-                      Expanded(
-                        child: BorderButton(
-                          title: "My Weight",
-                          onPressed: () {},
-                        ),
-                      ),
-                    ],
-                  )),
-              Padding(
                 padding:
                     const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
                 child: Text(
-                  "Add more photo to control your process",
+                  "Add more photos to track your progress",
                   textAlign: TextAlign.center,
-                  style: TextStyle(color: TColor.secondaryText, fontSize: 14),
+                  style: TextStyle(color: Colors.grey, fontSize: 14),
                 ),
               ),
               Padding(
@@ -97,25 +173,47 @@ class _WeightViewState extends State<WeightView> {
                     itemCount: myWeightArr.length,
                     itemBuilder:
                         (BuildContext context, int itemIndex, int index) {
-                      var dObj = myWeightArr[index] as Map? ?? {};
-                      return Container(
-                        margin: const EdgeInsets.symmetric(
-                            vertical: 10, horizontal: 10),
-                        decoration: BoxDecoration(
-                            color: TColor.white,
+                      var dObj = myWeightArr[index];
+                      bool isAsset = dObj["image"]!.contains("assets");
+
+                      return Dismissible(
+                        key: UniqueKey(),
+                        direction: DismissDirection.up,
+                        onDismissed: (direction) {
+                          _deleteImage(index);
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text("Image deleted"),
+                            duration: Duration(seconds: 1),
+                          ));
+                        },
+                        child: Container(
+                          margin: const EdgeInsets.symmetric(
+                              vertical: 10, horizontal: 10),
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(10),
+                              boxShadow: const [
+                                BoxShadow(
+                                    color: Colors.black12,
+                                    blurRadius: 4,
+                                    offset: Offset(0, 2)),
+                              ]),
+                          child: ClipRRect(
                             borderRadius: BorderRadius.circular(10),
-                            boxShadow: const [
-                              BoxShadow(
-                                  color: Colors.black12,
-                                  blurRadius: 4,
-                                  offset: Offset(0, 2)),
-                            ]),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: Image.asset(dObj["image"].toString(),
-                              width: double.maxFinite,
-                              height: double.maxFinite,
-                              fit: BoxFit.cover),
+                            child: isAsset
+                                ? Image.asset(
+                                    dObj["image"].toString(),
+                                    width: double.maxFinite,
+                                    height: double.maxFinite,
+                                    fit: BoxFit.cover,
+                                  )
+                                : Image.file(
+                                    File(dObj["image"].toString()),
+                                    width: double.maxFinite,
+                                    height: double.maxFinite,
+                                    fit: BoxFit.cover,
+                                  ),
+                          ),
                         ),
                       );
                     },
@@ -128,99 +226,83 @@ class _WeightViewState extends State<WeightView> {
                 child: Row(
                   children: [
                     IconButton(
-                      onPressed: () {},
-                      icon: Image.asset(
-                        "assets/img/black_fo.png",
-                        width: 20,
-                        height: 20,
-                      ),
+                      onPressed: _addImageFromGallery,
+                      icon:
+                          Icon(Icons.add_a_photo, color: TColor.kPrimaryColor),
                     ),
                     Expanded(
                       child: Text(
-                        "Sunday, AUG 26",
+                        _selectedDate != null
+                            ? DateFormat('EEEE, MMM d').format(_selectedDate!)
+                            : "Select Date",
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                            color: TColor.secondaryText,
+                            color: Colors.grey,
                             fontSize: 20,
                             fontWeight: FontWeight.w700),
                       ),
                     ),
                     IconButton(
-                      onPressed: () {},
-                      icon: Image.asset(
-                        "assets/img/next_go.png",
-                        width: 20,
-                        height: 20,
-                      ),
+                      onPressed: () => _selectDate(context),
+                      icon: Icon(Icons.calendar_today,
+                          color: TColor.kPrimaryColor),
                     ),
                   ],
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.symmetric(vertical: 8),
-                width: 160,
-                decoration: BoxDecoration(
-                    border: Border.all(
-                        color: TColor.gray.withOpacity(0.5), width: 1),
-                    borderRadius: BorderRadius.circular(10)),
-                child: Text(
-                  "74 kg",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      color: TColor.kPrimaryColor,
-                      fontSize: 24,
-                      fontWeight: FontWeight.w700),
                 ),
               ),
               Padding(
                 padding:
                     const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
-                child: Text(
-                  ''' Our current cultural climate leads us to believe weight is the enemy. Whether we want to lose 10 lbs or 110 lbs, we’re not addressing the core questions: What are our bodies trying to teach us about our weight? What messages are our bodies sending us? Not all of us are meant to be rail thin just like not all of us can be curvy. Our DNA predetermines our weight set points, but it is up to us to keep our bodies happy in that range.
-
-Most diseases and chronic ailments we experience are messages to us about how we have lived our lives. We can try to cover them up, treat just the symptoms, or ask ourselves a new question: What is this here to teach me about myself? Our beliefs and/or feelings about our weight are no different – we are presented with limiting beliefs so that we can grow, not get stuck in the belief.
-
-The body is constantly communicating with us. Every day it is telling us what it needs. We just have to remember to listen.''',
-                  style: TextStyle(color: TColor.secondaryText, fontSize: 16),
+                child: TextField(
+                  controller: _weightController,
+                  keyboardType: TextInputType.number,
+                  decoration: InputDecoration(
+                    labelText: "Enter your weight (kg)",
+                    border: OutlineInputBorder(),
+                  ),
                 ),
               ),
+              ElevatedButton(
+                onPressed: _saveWeightData,
+                child: Text("Add"),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: TColor.kPrimaryColor,
+                ),
+              ),
+              const SizedBox(height: 20),
+              ListView.builder(
+                physics: const NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: weightDataList.length,
+                itemBuilder: (context, index) {
+                  return Dismissible(
+                    key: UniqueKey(),
+                    direction: DismissDirection.endToStart,
+                    onDismissed: (direction) {
+                      _deleteWeightData(index);
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: Text("Weight entry deleted"),
+                        duration: Duration(seconds: 1),
+                      ));
+                    },
+                    background: Container(
+                      color: Colors.red,
+                      alignment: Alignment.centerRight,
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: const Icon(Icons.delete, color: Colors.white),
+                    ),
+                    child: Card(
+                      margin: const EdgeInsets.symmetric(
+                          vertical: 5, horizontal: 10),
+                      child: ListTile(
+                        title: Text(weightDataList[index]['date']!),
+                        subtitle: Text('${weightDataList[index]['weight']} kg'),
+                      ),
+                    ),
+                  );
+                },
+              ),
             ],
-          ),
-        ),
-        bottomNavigationBar: BottomAppBar(
-          elevation: 1,
-          child: Padding(
-            padding: const EdgeInsets.only(top: 15),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                InkWell(
-                  onTap: () {},
-                  child: Image.asset("assets/img/menu_running.png",
-                      width: 25, height: 25),
-                ),
-                InkWell(
-                  onTap: () {},
-                  child: Image.asset("assets/img/menu_meal_plan.png",
-                      width: 25, height: 25),
-                ),
-                InkWell(
-                  onTap: () {},
-                  child: Image.asset("assets/img/menu_home.png",
-                      width: 25, height: 25),
-                ),
-                InkWell(
-                  onTap: () {},
-                  child: Image.asset("assets/img/menu_weight.png",
-                      width: 25, height: 25),
-                ),
-                InkWell(
-                  onTap: () {},
-                  child:
-                      Image.asset("assets/img/more.png", width: 25, height: 25),
-                ),
-              ],
-            ),
           ),
         ),
       ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:musclemate/views/exercise/exercise_view_2.dart';
 import 'package:musclemate/views/home_view.dart';
-import 'package:musclemate/views/meal_plan/meal_plan_view_2.dart';
+import 'package:musclemate/views/meal_plan/meal_plan_view.dart';
 import 'package:musclemate/views/running/running_view.dart';
 import 'package:musclemate/views/schedule/schedule_view.dart';
 import 'package:musclemate/views/settings/setting_view.dart';

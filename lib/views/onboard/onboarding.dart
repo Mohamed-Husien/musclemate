@@ -77,7 +77,7 @@ class _FirstOnBoardingState extends State<FirstOnBoarding> {
                 child: InkWell(
                   onTap: () {
                     nextpage.animateToPage(1,
-                        duration: const Duration(milliseconds: 700),
+                        duration: const Duration(milliseconds: 500),
                         curve: Curves.easeIn);
                   },
                   child: Container(
@@ -133,7 +133,7 @@ class _FirstOnBoardingState extends State<FirstOnBoarding> {
                 child: InkWell(
                   onTap: () {
                     nextpage.animateToPage(2,
-                        duration: const Duration(milliseconds: 700),
+                        duration: const Duration(milliseconds: 500),
                         curve: Curves.easeIn);
                   },
                   child: Container(

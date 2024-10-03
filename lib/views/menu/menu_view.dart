@@ -64,10 +64,6 @@ class _MenuViewState extends State<MenuView> {
     MenuCellsModel(name: "Weight", image: "assets/img/new/3.png", tag: "2"),
     MenuCellsModel(
         name: "Traning plan", image: "assets/img/new/4.jpg", tag: "3"),
-    // MenuCellsModel(
-    //     name: "Training Status",
-    //     image: "assets/img/menu_traning_status.png",
-    //     tag: "4"),
     MenuCellsModel(name: "Meal Plan", image: "assets/img/new/5.png", tag: "5"),
     MenuCellsModel(name: "Schedule", image: "assets/img/new/6.jpg", tag: "6"),
     MenuCellsModel(name: "Running", image: "assets/img/new/7.png", tag: "7"),
@@ -76,7 +72,6 @@ class _MenuViewState extends State<MenuView> {
     MenuCellsModel(name: "Support", image: "assets/img/new/10.jpg", tag: "10"),
   ];
 
-  // Increase text size for all menu items
   final double menuItemTextSize = 18.0;
 
   @override
@@ -222,6 +217,89 @@ class _MenuViewState extends State<MenuView> {
                                 SizedBox(
                                   height: 24,
                                 ),
+    return Scaffold(
+      drawer: CustomDrawer(),
+      body: Container(
+        color: Colors.white,
+        child: NestedScrollView(
+          headerSliverBuilder: (context, innerBoxIsScrolled) {
+            return [
+              SliverAppBar(
+                expandedHeight: media.width,
+                collapsedHeight: kToolbarHeight,
+                flexibleSpace: Stack(
+                  alignment: Alignment.bottomLeft,
+                  children: [
+                    Container(
+                      width: double.infinity,
+                      height: double.infinity,
+                      decoration: const BoxDecoration(
+                        color: Colors.white,
+                        image: DecorationImage(
+                          image: AssetImage("assets/img/new/15.jpg"),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      width: media.width,
+                      height: media.width * 0.9,
+                      decoration: const BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [Colors.transparent, Colors.brown],
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                        ),
+                        borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(40),
+                          bottomRight: Radius.circular(40),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 25, vertical: 30),
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 54,
+                            height: 54,
+                            decoration: BoxDecoration(
+                                color: TColor.white,
+                                borderRadius: BorderRadius.circular(27)),
+                            alignment: Alignment.center,
+                            child: ClipRRect(
+                                borderRadius: BorderRadius.circular(25),
+                                child: Image.asset(
+                                  "assets/img/new/mo.jpg",
+                                  width: 50,
+                                  height: 50,
+                                  fit: BoxFit.cover,
+                                )),
+                          ),
+                          const SizedBox(
+                            width: 15,
+                          ),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text("Mohamed Hussien",
+                                    style: TextStyle(
+                                      fontSize: 25,
+                                      color: TColor.white,
+                                      fontWeight: FontWeight.w700,
+                                    )),
+                                const SizedBox(
+                                  height: 4,
+                                ),
+                                Text("Mobile App Developer",
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                      color: TColor.white,
+                                      fontWeight: FontWeight.w500,
+                                    ))
                               ],
                             ),
                           ),

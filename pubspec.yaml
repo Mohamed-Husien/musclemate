@@ -45,7 +45,7 @@ dependencies:
   chat_gpt_sdk: 
   dash_chat_2: 
   flutter_gemini: 
-  image_picker: 
+  image_picker: ^1.1.2 
   lottie: 
   permission_handler:
   video_player:
@@ -62,6 +62,8 @@ dependencies:
   google_sign_in:
   sign_in_button:
 
+  shared_preferences: ^2.3.2
+  http: ^1.2.2
 
 
 dev_dependencies:
