@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+ <string name = "app_name" > MuscleMate </string> 
+ <string name = "facebook_app_id" > 844960027808059 </string> 
+ <string name = "fb_login_protocol_scheme" > fbb7c010c0dda31bae9941d9972673186e </string>
+</resources>

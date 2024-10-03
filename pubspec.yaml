@@ -59,6 +59,9 @@ dependencies:
   # image_downloader:
   modal_progress_hud_nsn: ^0.5.1
   cached_network_image: 
+  google_sign_in:
+  sign_in_button:
+
 
 
 dev_dependencies:

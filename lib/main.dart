@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gemini/flutter_gemini.dart';
@@ -6,6 +7,7 @@ import 'package:musclemate/firebase_options.dart';
 import 'package:musclemate/helpers/color_extension.dart';
 import 'package:musclemate/views/chatbot/const.dart';
 import 'package:musclemate/views/menu/menu_view.dart';
+import 'package:musclemate/views/onboard/onboarding.dart';
 import 'package:musclemate/views/onboard/splash.dart';
 
 void main() async {
@@ -14,12 +16,18 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(

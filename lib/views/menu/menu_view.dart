@@ -11,6 +11,7 @@ import 'package:musclemate/helpers/menu_tap_fun.dart';
 import 'package:musclemate/models/menu_cells_model.dart';
 import 'package:musclemate/models/user_data_model.dart';
 import 'package:musclemate/views/chatbot/chat_screen.dart';
+import 'package:musclemate/views/login/login.dart';
 import 'package:musclemate/views/settings/setting_view.dart';
 import 'package:musclemate/views/weight/weight_view.dart';
 import 'package:musclemate/widgets/custom_drawer.dart';
@@ -29,7 +30,7 @@ class _MenuViewState extends State<MenuView> {
   int _selectedIndex = 0;
   late CollectionReference users =
       FirebaseFirestore.instance.collection('users');
-  void _onItemTapped(int index) {
+  void _onItemTapped(int index, BuildContext context) {
     setState(() {
       _selectedIndex = index;
     });
@@ -42,9 +43,6 @@ class _MenuViewState extends State<MenuView> {
           context,
           MaterialPageRoute(builder: (context) => ChatScreen()),
         );
-        break;
-      case 1:
-        Navigator.pushNamed(context, '/home');
         break;
       case 2:
         Navigator.push(
@@ -96,68 +94,88 @@ class _MenuViewState extends State<MenuView> {
     var email = ModalRoute.of(context)!.settings.arguments;
     var media = MediaQuery.sizeOf(context);
     return FutureBuilder<QuerySnapshot>(
-        future: users.where('email', isEqualTo: email).get(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return SkeletonizerIndicator();
-          }
-          if (snapshot.hasError) {
-            return const Center(child: Text('Error loading data'));
-          }
-          if (snapshot.hasData && snapshot.data!.docs.isNotEmpty) {
-            // Extract user data from the Firestore document
-            var userDoc =
-                snapshot.data!.docs.first.data() as Map<String, dynamic>;
-            name = userDoc['username'] ?? 'Name not available';
-            userAge = userDoc['age'] ?? 'Age not available';
-            _image = userDoc['imageUrl'] ?? 'image not available';
-            _userEmail = userDoc['email'] ?? 'Email not available';
-          }
-          return Scaffold(
-            drawer: CustomDrawer(
-              text: name,
-            ),
-            body: Container(
-              color: Colors.white,
-              child: NestedScrollView(
-                headerSliverBuilder: (context, innerBoxIsScrolled) {
-                  return [
-                    SliverAppBar(
-                      expandedHeight: media.width * 1,
-                      collapsedHeight: kToolbarHeight + 20,
-                      flexibleSpace: Stack(
-                        alignment: Alignment.bottomLeft,
-                        children: [
-                          Container(
-                            width: double.infinity,
-                            height: double.infinity,
-                            decoration: const BoxDecoration(
-                              color: Colors.white,
-                              image: DecorationImage(
-                                image: AssetImage("assets/img/new/15.jpg"),
-                                fit: BoxFit.cover,
+      future: users.where('email', isEqualTo: email).get(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return SkeletonizerIndicator();
+        }
+        if (snapshot.hasError) {
+          return const Center(child: Text('Error loading data'));
+        }
+        if (snapshot.hasData && snapshot.data!.docs.isNotEmpty) {
+          // Extract user data from the Firestore document
+          var userDoc =
+              snapshot.data!.docs.first.data() as Map<String, dynamic>;
+          name = userDoc['username'] ?? 'Name not available';
+          userAge = userDoc['age'] ?? 'Age not available';
+          _image = userDoc['imageUrl'] ?? 'image not available';
+          _userEmail = userDoc['email'] ?? 'Email not available';
+        }
+        return Scaffold(
+          // drawer: CustomDrawer(),
+          body: Container(
+            color: Colors.white,
+            child: NestedScrollView(
+              headerSliverBuilder: (context, innerBoxIsScrolled) {
+                return [
+                  SliverAppBar(
+                    actions: [
+                      IconButton(
+                        onPressed: () async {
+                          try {
+                            await FirebaseAuth.instance.signOut();
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => LoginPage(),
                               ),
+                            );
+                          } catch (e) {
+                            print("Error signing out: $e");
+                          }
+                        },
+                        icon: Icon(
+                          Icons.logout,
+                        ),
+                      )
+                    ],
+                    expandedHeight: media.width * 1,
+                    collapsedHeight: kToolbarHeight + 20,
+                    flexibleSpace: Stack(
+                      alignment: Alignment.bottomLeft,
+                      children: [
+                        Container(
+                          width: double.infinity,
+                          height: double.infinity,
+                          decoration: const BoxDecoration(
+                            color: Colors.white,
+                            image: DecorationImage(
+                              image: AssetImage("assets/img/new/15.jpg"),
+                              fit: BoxFit.cover,
                             ),
                           ),
-                          Container(
-                            width: media.width,
-                            height: media.width * 0.9,
-                            decoration: const BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: [Colors.transparent, Colors.brown],
-                                begin: Alignment.topCenter,
-                                end: Alignment.bottomCenter,
-                              ),
-                              borderRadius: BorderRadius.only(
-                                bottomLeft: Radius.circular(40),
-                                bottomRight: Radius.circular(40),
-                              ),
+                        ),
+                        Container(
+                          width: media.width,
+                          height: media.width * 0.9,
+                          decoration: const BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [Colors.transparent, Colors.brown],
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                            ),
+                            borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(40),
+                              bottomRight: Radius.circular(40),
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 25, vertical: 30),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 25, vertical: 30),
+                          child: SingleChildScrollView(
                             child: Row(
+                              mainAxisSize: MainAxisSize.min,
                               children: [
                                 Container(
                                   width: 54,
@@ -167,14 +185,13 @@ class _MenuViewState extends State<MenuView> {
                                       borderRadius: BorderRadius.circular(27)),
                                   alignment: Alignment.center,
                                   child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(25),
-                                    child: CachedNetworkImage(
-                                      imageUrl: _image!,
-                                      width: 50,
-                                      height: 50,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
+                                      borderRadius: BorderRadius.circular(25),
+                                      child: CachedNetworkImage(
+                                        imageUrl: _image!,
+                                        width: 50,
+                                        height: 50,
+                                        fit: BoxFit.cover,
+                                      )),
                                 ),
                                 const SizedBox(
                                   width: 15,
@@ -191,84 +208,90 @@ class _MenuViewState extends State<MenuView> {
                                             color: TColor.white,
                                             fontWeight: FontWeight.w700,
                                           )),
-                                      const SizedBox(
-                                        height: 4,
+                                      Text(
+                                        _userEmail!,
+                                        style: TextStyle(
+                                          fontSize: 15,
+                                          color: TColor.white,
+                                          fontWeight: FontWeight.w500,
+                                        ),
                                       ),
-                                      Text(_userEmail!,
-                                          style: TextStyle(
-                                            fontSize: 15,
-                                            color: TColor.white,
-                                            fontWeight: FontWeight.w500,
-                                          ))
                                     ],
                                   ),
                                 ),
+                                SizedBox(
+                                  height: 24,
+                                ),
                               ],
                             ),
-                          )
-                        ],
-                      ),
-                    )
-                  ];
-                },
-                body: GridView.builder(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3,
-                      crossAxisSpacing: 15,
-                      mainAxisSpacing: 15,
-                      childAspectRatio: 1.2),
-                  itemCount: menuArr.length,
-                  itemBuilder: ((context, index) {
-                    return CustomMenuCell(
-                      menuCellsModel: menuArr[index],
-                      onPressed: () {
-                        menuTapMethod(menuArr[index].tag, context);
-                      },
-                    );
-                  }),
-                ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                ];
+              },
+              body: GridView.builder(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3,
+                    crossAxisSpacing: 15,
+                    mainAxisSpacing: 15,
+                    childAspectRatio: 1.2),
+                itemCount: menuArr.length,
+                itemBuilder: ((context, index) {
+                  return CustomMenuCell(
+                    menuCellsModel: menuArr[index],
+                    onPressed: () {
+                      menuTapMethod(menuArr[index].tag, context);
+                    },
+                  );
+                }),
               ),
             ),
-            bottomNavigationBar: Container(
-              decoration: BoxDecoration(
-                color: TColor.kPrimaryColor,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(media.width * 0.1),
-                  topRight: Radius.circular(media.width * 0.1),
-                ),
-              ),
-              child: BottomNavigationBar(
-                items: const <BottomNavigationBarItem>[
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.home),
-                    label: 'Home',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.chat),
-                    label: 'Chat',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.fitness_center),
-                    label: 'Weight',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.settings),
-                    label: 'Settings',
-                  ),
-                ],
-                currentIndex: _selectedIndex,
-                selectedItemColor: Colors.amber[800],
-                unselectedItemColor: Colors.grey,
-                backgroundColor: Colors.transparent,
-                onTap: _onItemTapped,
-                type: BottomNavigationBarType.fixed,
-                showUnselectedLabels: true,
-                elevation: 0,
+          ),
+          bottomNavigationBar: Container(
+            decoration: BoxDecoration(
+              color: Colors.brown,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(media.width * 0.1),
+                topRight: Radius.circular(media.width * 0.1),
               ),
             ),
-          );
-        });
+            child: BottomNavigationBar(
+              items: const <BottomNavigationBarItem>[
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.home),
+                  label: 'Home',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.chat),
+                  label: 'Chat',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.fitness_center),
+                  label: 'Weight',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.settings),
+                  label: 'Settings',
+                ),
+              ],
+              currentIndex: _selectedIndex,
+              selectedItemColor: Colors.amber[800],
+              unselectedItemColor: Colors.grey,
+              backgroundColor: Colors.transparent,
+              onTap: (index) {
+                _onItemTapped(index, context);
+              },
+              type: BottomNavigationBarType.fixed,
+              showUnselectedLabels: true,
+              elevation: 0,
+            ),
+          ),
+        );
+      },
+    );
   }
 }

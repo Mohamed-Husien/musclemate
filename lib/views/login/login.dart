@@ -1,14 +1,14 @@
-import 'dart:developer';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:musclemate/models/user_data_model.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:musclemate/views/login/helper/custom_text_form_field.dart';
 import 'package:musclemate/views/login/helper/emial_and_password_validet_function.dart';
 import 'package:musclemate/views/login/helper/show_snack_bar_function.dart';
 import 'package:musclemate/views/login/helper/signIn_user_fun.dart';
 import 'package:musclemate/views/login/register.dart';
+import 'package:sign_in_button/sign_in_button.dart';
 import '../menu/menu_view.dart';
 
 class LoginPage extends StatefulWidget {
@@ -20,8 +20,8 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   String? password;
-
   String? email;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   bool isLoading = false;
   final _formKey = GlobalKey<FormState>();
@@ -35,6 +35,7 @@ class _LoginPageState extends State<LoginPage> {
     });
   }
 
+  @override
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -148,34 +149,20 @@ class _LoginPageState extends State<LoginPage> {
                         style: TextStyle(color: Color(0xff442712)),
                       ),
                       SizedBox(height: 20.h),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.white,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              fixedSize: Size(40.w, 20.h),
-                            ),
-                            onPressed: () async {},
-                            child:
-                                Image.asset("assets/img/new/googleicon.webp"),
-                          ),
-                          SizedBox(width: 25.w),
-                          ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.white,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              fixedSize: Size(40.w, 20.h),
-                            ),
-                            onPressed: () {},
-                            child: Image.asset("assets/img/new/facebook.webp"),
-                          ),
-                        ],
+                      SizedBox(width: 25.w),
+                      SignInButton(
+                        Buttons.google,
+                        onPressed: () async {
+                          try {
+                            await signInWithGoogle();
+                            showSnachBarFun(context, 'Login successful.');
+                            Navigator.pushNamed(context, MenuView.id,
+                                arguments: email);
+                          } on Exception catch (e) {
+                            showSnachBarFun(context, e.toString());
+                          }
+                        },
+                        text: 'sign in with google ',
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -210,5 +197,52 @@ class _LoginPageState extends State<LoginPage> {
         ],
       ),
     );
+  }
+
+  Future<UserCredential?> signInWithGoogle() async {
+    // Trigger the authentication flow
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+    if (googleUser == null) {
+      return null; // Handle the case where googleUser is null
+    }
+
+    // Obtain the auth details from the request
+    final GoogleSignInAuthentication? googleAuth =
+        await googleUser.authentication;
+
+    if (googleAuth == null) {
+      // Handle the case where googleAuth is null
+      return null;
+    }
+
+    // Create a new credential
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
+    );
+
+    await storeUserDataFirestore(
+        googleUser.displayName!, googleUser.photoUrl!, googleUser.email);
+
+    setState(() {
+      email = googleUser.email;
+    });
+
+    // Once signed in, return the UserCredential
+    return await FirebaseAuth.instance.signInWithCredential(credential);
+  }
+
+  Future<void> storeUserDataFirestore(
+      String fullName, String url, String email) async {
+    try {
+      await _firestore.collection('users').doc().set({
+        'email': email,
+        'username': fullName,
+        'imageUrl': url,
+      });
+    } catch (e) {
+      showSnachBarFun(context, 'Error storing user data');
+    }
   }
 }
