@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gemini/flutter_gemini.dart';
@@ -7,7 +6,6 @@ import 'package:musclemate/firebase_options.dart';
 import 'package:musclemate/helpers/color_extension.dart';
 import 'package:musclemate/views/chatbot/const.dart';
 import 'package:musclemate/views/menu/menu_view.dart';
-import 'package:musclemate/views/onboard/onboarding.dart';
 import 'package:musclemate/views/onboard/splash.dart';
 
 void main() async {

@@ -52,7 +52,6 @@ dependencies:
   firebase_auth:
   firebase_core: 
   cloud_firestore:
-  shared_preferences: 
   skeletonizer: ^1.4.2
   firebase_storage: ^12.3.1
   path: 
@@ -61,8 +60,7 @@ dependencies:
   cached_network_image: 
   google_sign_in:
   sign_in_button:
-
-  shared_preferences: ^2.3.2
+  shared_preferences: 
   http: ^1.2.2
 
 
