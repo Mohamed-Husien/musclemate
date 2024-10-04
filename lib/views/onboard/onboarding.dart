@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:musclemate/views/login/login.dart';
 
 class FirstOnBoarding extends StatefulWidget {
-  const FirstOnBoarding({super.key});
+  FirstOnBoarding({super.key});
 
   @override
   State<FirstOnBoarding> createState() => _FirstOnBoardingState();
@@ -32,7 +32,6 @@ class _FirstOnBoardingState extends State<FirstOnBoarding> {
 
   PageController nextpage = PageController();
   int pagenumber = 0;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -189,7 +188,7 @@ class _FirstOnBoardingState extends State<FirstOnBoarding> {
                 child: InkWell(
                   onTap: () {
                     Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => const Login()));
+                        MaterialPageRoute(builder: (context) => LoginPage()));
                   },
                   child: Container(
                     width: double.infinity,

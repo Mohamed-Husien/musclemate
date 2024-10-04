@@ -49,8 +49,20 @@ dependencies:
   lottie: 
   permission_handler:
   video_player:
-  shared_preferences: ^2.3.2
+  firebase_auth:
+  firebase_core: 
+  cloud_firestore:
+  skeletonizer: ^1.4.2
+  firebase_storage: ^12.3.1
+  path: 
+  # image_downloader:
+  modal_progress_hud_nsn: ^0.5.1
+  cached_network_image: 
+  google_sign_in:
+  sign_in_button:
+  shared_preferences: 
   http: ^1.2.2
+  heart_bpm: 
 
 
 dev_dependencies:
