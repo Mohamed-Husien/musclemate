@@ -148,7 +148,7 @@ class _LoginPageState extends State<LoginPage> {
                         "... or sign in with ...",
                         style: TextStyle(color: Color(0xff442712)),
                       ),
-                      SizedBox(height: 20.h),
+                      SizedBox(height: 30.h),
                       SizedBox(width: 25.w),
                       SignInButton(
                         Buttons.google,
@@ -163,6 +163,9 @@ class _LoginPageState extends State<LoginPage> {
                           }
                         },
                         text: 'sign in with google ',
+                      ),
+                      SizedBox(
+                        height: 60,
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
