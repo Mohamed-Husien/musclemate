@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:musclemate/models/user_data_model.dart';
 import 'package:musclemate/views/login/login.dart';
 
 class FirstOnBoarding extends StatefulWidget {

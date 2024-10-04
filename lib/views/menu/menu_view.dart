@@ -9,14 +9,11 @@ import 'package:musclemate/helpers/color_extension.dart';
 import 'package:musclemate/helpers/loading_indicator_skeletonizer.dart';
 import 'package:musclemate/helpers/menu_tap_fun.dart';
 import 'package:musclemate/models/menu_cells_model.dart';
-import 'package:musclemate/models/user_data_model.dart';
 import 'package:musclemate/views/chatbot/chat_screen.dart';
 import 'package:musclemate/views/login/login.dart';
 import 'package:musclemate/views/settings/setting_view.dart';
 import 'package:musclemate/views/weight/weight_view.dart';
-import 'package:musclemate/widgets/custom_drawer.dart';
 import 'package:musclemate/widgets/custom_menu_cell.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class MenuView extends StatefulWidget {
   const MenuView({super.key});
@@ -63,7 +60,7 @@ class _MenuViewState extends State<MenuView> {
     MenuCellsModel(name: "Home", image: "assets/img/new/2.png", tag: "1"),
     MenuCellsModel(name: "Weight", image: "assets/img/new/3.png", tag: "2"),
     MenuCellsModel(
-        name: "Traning plan", image: "assets/img/new/4.jpg", tag: "3"),
+        name: "Heart Rate", image: "assets/img/new/images_rate.jpeg", tag: "3"),
     MenuCellsModel(name: "Meal Plan", image: "assets/img/new/5.png", tag: "5"),
     MenuCellsModel(name: "Schedule", image: "assets/img/new/6.jpg", tag: "6"),
     MenuCellsModel(name: "Running", image: "assets/img/new/7.png", tag: "7"),
@@ -115,22 +112,25 @@ class _MenuViewState extends State<MenuView> {
                 return [
                   SliverAppBar(
                     actions: [
-                      IconButton(
-                        onPressed: () async {
-                          try {
-                            await FirebaseAuth.instance.signOut();
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => LoginPage(),
-                              ),
-                            );
-                          } catch (e) {
-                            print("Error signing out: $e");
-                          }
-                        },
-                        icon: Icon(
-                          Icons.logout,
+                      Padding(
+                        padding: const EdgeInsets.only(top: 16, right: 16),
+                        child: IconButton(
+                          onPressed: () async {
+                            try {
+                              await FirebaseAuth.instance.signOut();
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => LoginPage(),
+                                ),
+                              );
+                            } catch (e) {
+                              print("Error signing out: $e");
+                            }
+                          },
+                          icon: Icon(
+                            Icons.logout,
+                          ),
                         ),
                       )
                     ],

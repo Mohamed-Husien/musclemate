@@ -276,7 +276,8 @@ class _RegistrationPageState extends State<RegistrationPage> {
         'email': user.email,
         'username': fullName,
         'age': age,
-        'imageUrl': url,
+        'imageUrl': url ??
+            'https://static.vecteezy.com/system/resources/thumbnails/002/387/693/small_2x/user-profile-icon-free-vector.jpg',
       });
     } catch (e) {
       showSnachBarFun(context, 'Error storing user data');

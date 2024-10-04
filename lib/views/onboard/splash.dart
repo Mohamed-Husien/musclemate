@@ -5,21 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:musclemate/views/login/login.dart';
 import 'package:musclemate/views/menu/menu_view.dart';
 import 'package:musclemate/views/onboard/onboarding.dart';
-
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: SplashScreen(),
-    );
-  }
-}
+import 'package:musclemate/views/onboard/splash_for_register.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key});
@@ -41,7 +27,7 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       body: AnimatedSplashScreen(
         backgroundColor: const Color(0xffae6a46),
-        duration: 4000,
+        duration: 3000,
         splashIconSize: 250,
         splash: CircleAvatar(
           radius: 90,
@@ -61,7 +47,7 @@ class _SplashScreenState extends State<SplashScreen> {
               return MenuView();
             } else {
               // User is not authenticated, navigate to OnBoarding screen
-              return FirstOnBoarding();
+              return SplashForRegister();
             }
           },
         ),
