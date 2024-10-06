@@ -219,20 +219,21 @@ class _LoginPageState extends State<LoginPage> {
       return null;
     }
 
-    // Create a new credential
     final credential = GoogleAuthProvider.credential(
       accessToken: googleAuth.accessToken,
       idToken: googleAuth.idToken,
     );
 
     await storeUserDataFirestore(
-        googleUser.displayName!, googleUser.photoUrl!, googleUser.email);
+        googleUser.displayName!,
+        googleUser.photoUrl ??
+            'https://static.vecteezy.com/system/resources/thumbnails/002/387/693/small_2x/user-profile-icon-free-vector.jpg',
+        googleUser.email);
 
     setState(() {
       email = googleUser.email;
     });
 
-    // Once signed in, return the UserCredential
     return await FirebaseAuth.instance.signInWithCredential(credential);
   }
 
