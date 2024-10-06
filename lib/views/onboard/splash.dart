@@ -33,15 +33,16 @@ class _SplashScreenState extends State<SplashScreen> {
               fit: BoxFit.cover),
         ),
         nextScreen: FutureBuilder<User?>(
-          future: FirebaseAuth.instance.authStateChanges().first,
+          future: Future.value(FirebaseAuth.instance.currentUser),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              // While checking user authentication status.
+              //checking user authentication status.
               return const CircularProgressIndicator();
             }
 
-            if (snapshot.hasData) {
+            if (snapshot.hasData && snapshot.data != null) {
               // User is authenticated, navigate to MenuView
+
               return MenuView();
             } else {
               // User is not authenticated, navigate to OnBoarding screen
@@ -66,7 +67,7 @@ class _SplashScreenState extends State<SplashScreen> {
         MaterialPageRoute(
           builder: (context) => FirstOnBoarding(),
         ),
-      ); // Replace '/onboarding' with your route for the onboarding screen
+      );
     }
   }
 }

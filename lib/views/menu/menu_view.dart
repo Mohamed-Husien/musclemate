@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -14,6 +12,8 @@ import 'package:musclemate/views/login/login.dart';
 import 'package:musclemate/views/settings/setting_view.dart';
 import 'package:musclemate/views/weight/weight_view.dart';
 import 'package:musclemate/widgets/custom_menu_cell.dart';
+
+String? userId;
 
 class MenuView extends StatefulWidget {
   const MenuView({super.key});
@@ -102,6 +102,7 @@ class _MenuViewState extends State<MenuView> {
           userAge = userDoc['age'] ?? 'Age not available';
           _image = userDoc['imageUrl'] ?? 'image not available';
           _userEmail = userDoc['email'] ?? 'Email not available';
+          userId = userDoc['uid'] ?? 'User Id not available';
         }
         return Scaffold(
           // drawer: CustomDrawer(),
