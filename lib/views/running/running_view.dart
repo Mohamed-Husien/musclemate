@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:musclemate/helpers/color_extension.dart';
 import 'package:musclemate/views/running/running_setting_view.dart';
-import 'package:musclemate/widgets/running_density_view.dart';
-import 'package:musclemate/widgets/running_heart_view.dart';
 import 'package:musclemate/widgets/running_length_view.dart';
-import 'package:musclemate/widgets/running_speed_view.dart';
-import 'package:musclemate/widgets/running_timer_view.dart';
 import 'package:musclemate/widgets/ruuing_top_button.dart';
 
 class RunningView extends StatefulWidget {
@@ -60,46 +56,6 @@ class _RunningViewState extends State<RunningView> {
                         });
                       },
                     ),
-                    Container(width: 1, height: 40, color: TColor.gray),
-                    RunningTopButton(
-                      icon: "assets/img/dashboard-half.png",
-                      isActive: selectTab == 1,
-                      onPressed: () {
-                        setState(() {
-                          selectTab = 1;
-                        });
-                      },
-                    ),
-                    Container(width: 1, height: 40, color: TColor.gray),
-                    RunningTopButton(
-                      icon: "assets/img/time-wall-clock.png",
-                      isActive: selectTab == 2,
-                      onPressed: () {
-                        setState(() {
-                          selectTab = 2;
-                        });
-                      },
-                    ),
-                    Container(width: 1, height: 40, color: TColor.gray),
-                    RunningTopButton(
-                      icon: "assets/img/r_heartbeat.png",
-                      isActive: selectTab == 3,
-                      onPressed: () {
-                        setState(() {
-                          selectTab = 3;
-                        });
-                      },
-                    ),
-                    Container(width: 1, height: 40, color: TColor.gray),
-                    RunningTopButton(
-                      icon: "assets/img/Group 1309.png",
-                      isActive: selectTab == 4,
-                      onPressed: () {
-                        setState(() {
-                          selectTab = 4;
-                        });
-                      },
-                    ),
                   ],
                 ),
               ),
@@ -122,14 +78,6 @@ class _RunningViewState extends State<RunningView> {
                   children: [
                     if (selectTab == 0)
                       RunningLengthView(height: media.height * 0.65),
-                    if (selectTab == 1)
-                      RunningSpeedView(height: media.height * 0.65),
-                    if (selectTab == 2)
-                      RunningTimerView(height: media.height * 0.65),
-                    if (selectTab == 3)
-                      RunningHeartView(height: media.height * 0.65),
-                    if (selectTab == 4)
-                      RunningDensityView(height: media.height * 0.65),
                   ],
                 )),
             Padding(
