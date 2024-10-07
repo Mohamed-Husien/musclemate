@@ -26,15 +26,6 @@ class _RunningViewState extends State<RunningView> {
           backgroundColor: TColor.kPrimaryColor,
           centerTitle: true,
           elevation: 0,
-          leading: IconButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              icon: Image.asset(
-                "assets/img/black_white.png",
-                width: 25,
-                height: 25,
-              )),
           title: Text(
             "Running",
             style: TextStyle(

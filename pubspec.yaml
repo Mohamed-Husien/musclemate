@@ -47,10 +47,11 @@ dependencies:
   flutter_gemini: 
   image_picker: ^1.1.2 
   lottie: 
-  permission_handler:
+  permission_handler: ^11.3.1
   video_player:
   shared_preferences: ^2.3.2
   http: ^1.2.2
+  pedometer: ^4.0.2
 
 
 dev_dependencies:
