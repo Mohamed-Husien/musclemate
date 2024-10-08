@@ -60,7 +60,7 @@ class _WorkoutView2State extends State<WorkoutView2> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const WorkoutDetailView()));
+                              builder: (context) => const WorkoutDetailView(exercise: {}, imageUrl: '',)));
                     },
                     child: Stack(
                       alignment: Alignment.center,
@@ -99,7 +99,7 @@ class _WorkoutView2State extends State<WorkoutView2> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) =>
-                                          const WorkoutDetailView()));
+                                          const WorkoutDetailView(exercise: {}, imageUrl: '',)));
                             },
                             icon: Image.asset("assets/img/more.png",
                                 width: 25, height: 25))

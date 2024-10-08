@@ -42,17 +42,16 @@ dependencies:
   simple_circular_progress_bar: ^1.0.2
   animated_splash_screen:
   flutter_screenutil:
-  chat_gpt_sdk: 
-  dash_chat_2: 
-  flutter_gemini: 
-  image_picker: ^1.1.2 
-  lottie: 
+  chat_gpt_sdk:
+  dash_chat_2:
+  flutter_gemini:
+  image_picker: ^1.1.2
+  lottie:
   permission_handler: ^11.3.1
   video_player:
   shared_preferences: ^2.3.2
   http: ^1.2.2
   pedometer: ^4.0.2
-
 
 dev_dependencies:
   flutter_launcher_icons:

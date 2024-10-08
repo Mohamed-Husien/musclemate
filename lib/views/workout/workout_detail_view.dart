@@ -1,258 +1,78 @@
 import 'package:flutter/material.dart';
-import 'package:musclemate/helpers/color_extension.dart';
-import 'package:musclemate/widgets/response_row.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class WorkoutDetailView extends StatefulWidget {
-  const WorkoutDetailView({super.key});
+  final Map exercise;
+  final String imageUrl;
+
+  const WorkoutDetailView({
+    super.key,
+    required this.exercise,
+    required this.imageUrl,
+  });
 
   @override
   State<WorkoutDetailView> createState() => _WorkoutDetailViewState();
 }
 
 class _WorkoutDetailViewState extends State<WorkoutDetailView> {
-  List workArr = [
-    {"name": "Running", "image": "assets/img/1.png"},
-    {"name": "Jumping", "image": "assets/img/2.png"},
-    {
-      "name": "Running",
-      "image": "assets/img/5.png",
-    },
-    {
-      "name": "Jumping",
-      "image": "assets/img/3.png",
-    },
-  ];
-
-  List responseArr = [
-    {
-      "name": "Mikhail Eduardovich",
-      "time": "09 days ago",
-      "image": "assets/img/u2.png",
-      "message": "Lorem ipsum dolor sit amet, conse ctetur adipiscing elit,"
-    },
-    {
-      "name": "Mikhail Eduardovich",
-      "time": "11 days ago",
-      "image": "assets/img/u1.png",
-      "message": "Lorem ipsum dolor sit amet, conse ctetur adipiscing elit,"
-    },
-    {
-      "name": "Mikhail Eduardovich",
-      "time": "12 days ago",
-      "image": "assets/img/u2.png",
-      "message": "Lorem ipsum dolor sit amet, conse ctetur adipiscing elit,"
-    },
-    {
-      "name": "Mikhail Eduardovich",
-      "time": "13 days ago",
-      "image": "assets/img/u1.png",
-      "message": "Lorem ipsum dolor sit amet, conse ctetur adipiscing elit,"
-    }
-  ];
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    var media = MediaQuery.sizeOf(context);
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: TColor.kPrimaryColor,
-        centerTitle: true,
-        elevation: 0.1,
-        leading: IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: Image.asset(
-              "assets/img/black_white.png",
-              width: 25,
-              height: 25,
-            )),
-        title: Text(
-          "Climbers",
-          style: TextStyle(
-              color: TColor.white, fontSize: 20, fontWeight: FontWeight.w700),
-        ),
-        actions: [
-          IconButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              icon: Image.asset(
-                "assets/img/node_music.png",
-                width: 25,
-                height: 25,
-              ))
-        ],
-      ),
+      appBar: AppBar(title: Text(widget.exercise['name'])),
       body: SingleChildScrollView(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Image.asset(
-              "assets/img/1.png",
-              width: media.width,
-              height: media.width * 0.55,
-              fit: BoxFit.cover,
+            Hero(
+              tag: widget.exercise['id'],
+              child: Container(
+                width: double.infinity,
+                child: Image.asset(
+                  widget.imageUrl,
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) {
+                    return Container(
+                      color: Colors.grey,
+                      child: Center(
+                        child: Text(
+                          'No Image',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Row(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  IgnorePointer(
-                    ignoring: true,
-                    child: RatingBar.builder(
-                      initialRating: 4,
-                      minRating: 1,
-                      direction: Axis.horizontal,
-                      allowHalfRating: true,
-                      itemCount: 5,
-                      itemSize: 25,
-                      itemPadding: const EdgeInsets.symmetric(horizontal: 1.0),
-                      itemBuilder: (context, _) => Icon(
-                        Icons.star,
-                        color: TColor.kPrimaryColor,
-                      ),
-                      onRatingUpdate: (rating) {
-                        print(rating);
-                      },
-                    ),
+                  Text(
+                    widget.exercise['name'],
+                    style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
                   ),
-                  const Spacer(),
-                  IconButton(
-                      onPressed: () {},
-                      icon: Image.asset(
-                        "assets/img/like.png",
-                        width: 20,
-                        height: 20,
-                      )),
-                  IconButton(
-                      onPressed: () {},
-                      icon: Image.asset(
-                        "assets/img/share.png",
-                        width: 20,
-                        height: 20,
-                      ))
+                  const SizedBox(height: 20),
+                  Text("Time elapsed: 50 seconds"),
+                  const SizedBox(height: 20),
+                  Text(
+                    (widget.exercise['description']
+                                ?.replaceAll(RegExp(r'<p>|</p>'), '') ?? '')
+                            .isEmpty
+                        ? 'Playing that exercise for more than one muscle in your body just focus and try to do it with yourself, do your best hero and don\'t forget you are the target not the around.'
+                        : widget.exercise['description']
+                                ?.replaceAll(RegExp(r'<p>|</p>'), '') ??
+                            '',
+                  ),
                 ],
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
-              child: Text(
-                "Recommended",
-                style: TextStyle(
-                    color: TColor.secondaryText,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w700),
-              ),
-            ),
-            SizedBox(
-              height: media.width * 0.26,
-              child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  padding: const EdgeInsets.symmetric(horizontal: 15),
-                  itemCount: workArr.length,
-                  itemBuilder: (context, index) {
-                    var wObj = workArr[index] as Map? ?? {};
-                    return Container(
-                      margin: const EdgeInsets.symmetric(
-                          vertical: 4, horizontal: 8),
-                      width: media.width * 0.28,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Stack(
-                            alignment: Alignment.center,
-                            children: [
-                              Image.asset(
-                                wObj["image"].toString(),
-                                width: media.width,
-                                height: media.width * 0.15,
-                                fit: BoxFit.cover,
-                              ),
-                              Container(
-                                width: media.width,
-                                height: media.width * 0.15,
-                                decoration: BoxDecoration(
-                                    color: Colors.white.withOpacity(0.5)),
-                              ),
-                            ],
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 4, horizontal: 0),
-                            child: Text(
-                              wObj["name"],
-                              style: TextStyle(
-                                  color: TColor.secondaryText,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w700),
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-                  }),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Text(
-                "17 Responses",
-                style: TextStyle(
-                    color: TColor.secondaryText,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w700),
-              ),
-            ),
-            ListView.builder(
-              physics: const NeverScrollableScrollPhysics(),
-              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-              shrinkWrap: true,
-              itemCount: responseArr.length,
-              itemBuilder: ((context, index) {
-                var rObj = responseArr[index] as Map? ?? {};
-                return ResponsesRow(
-                  rObj: rObj,
-                );
-              }),
-            )
           ],
-        ),
-      ),
-      bottomNavigationBar: BottomAppBar(
-        elevation: 1,
-        child: Padding(
-          padding: const EdgeInsets.only(top: 15),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              InkWell(
-                onTap: () {},
-                child: Image.asset("assets/img/menu_running.png",
-                    width: 25, height: 25),
-              ),
-              InkWell(
-                onTap: () {},
-                child: Image.asset("assets/img/menu_meal_plan.png",
-                    width: 25, height: 25),
-              ),
-              InkWell(
-                onTap: () {},
-                child: Image.asset("assets/img/menu_home.png",
-                    width: 25, height: 25),
-              ),
-              InkWell(
-                onTap: () {},
-                child: Image.asset("assets/img/menu_weight.png",
-                    width: 25, height: 25),
-              ),
-              InkWell(
-                onTap: () {},
-                child:
-                    Image.asset("assets/img/more.png", width: 25, height: 25),
-              ),
-            ],
-          ),
         ),
       ),
     );
