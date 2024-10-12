@@ -130,14 +130,14 @@ class _WorkoutViewState extends State<WorkoutView> {
                                   fontSize: 14,
                                   fontWeight: FontWeight.w500,
                                   onPressed: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                const WorkoutDetailView(
-                                                  exercise: {},
-                                                  imageUrl: '',
-                                                )));
+                                    // Navigator.push(
+                                    //     context,
+                                    //     MaterialPageRoute(
+                                    //         builder: (context) =>
+                                    //             const WorkoutDetailView(
+                                    //               exercise: {},
+                                    //               imageUrl: '',
+                                    //             )));
                                   },
                                 )),
                           ],

@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-import 'package:musclemate/views/workout/workout_detail_view.dart';
-import 'package:musclemate/widgets/tab_button.dart';
-import 'dart:math';
+import 'package:musclemate/helpers/color_extension.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class ExerciseView2 extends StatefulWidget {
   const ExerciseView2({super.key});
@@ -13,58 +10,65 @@ class ExerciseView2 extends StatefulWidget {
 }
 
 class _ExerciseView2State extends State<ExerciseView2> {
-  int isActiveTab = 0;
-  List exercises = [];
-  List<String> images = [
-    "assets/img/1.png",
-    "assets/img/2.png",
-    "assets/img/3.png",
-    "assets/img/4.jpg",
-    "assets/img/5.png",
-    "assets/img/6.jpg",
-    "assets/img/7.png",
-    "assets/img/8.jpg",
-    "assets/img/9.jpg",
-    "assets/img/10.jpg",
-    "assets/img/11.jpg",
-    "assets/img/12.jpg",
-    "assets/img/13.jpg",
-    "assets/img/14.jpg",
-    "assets/img/15.jpg",
-    "assets/img/16.jpg",
-    "assets/img/17.jpg",
-    "assets/img/18.jpg",
-    "assets/img/19.jpg",
-    "assets/img/20.jpg"
+  List<Map<String, String>> currentExercises = [];
+
+  final List<Map<String, String>> chestExercises = [
+    {
+      "title": "Kneeling Barbell Landmine Press exercise",
+      "url": "https://youtu.be/WiqeCtJdWnw?si=P-ZRLAQ-7Ow60QSk",
+    },
+    {
+      "title": "Incline Barbell Bench Press exercise",
+      "url": "https://youtu.be/qeHr4_tZjqc?si=FvoDnwxbVXvTEL7r",
+    },
+    {
+      "title": "Barbell Landmine Single Arm Low exercise",
+      "url": "https://youtu.be/u2eCSS2OXq0?si=pUJqWM1qvl6HwNoV",
+    },
+    {
+      "title": "Barbell Bench Press exercise",
+      "url": "https://youtu.be/70kFVv5z1bE?si=Ko17TcMtX5cMVr1f",
+    },
   ];
 
-  @override
-  void initState() {
-    super.initState();
-    fetchExercises(8);
-  }
+  final List<Map<String, String>> backExercises = [
+    {
+      "title": "Dumbbell Palm Rotational Bent Over Row exercise",
+      "url": "https://youtu.be/xyi0gDhqQ5Y?si=_wH9xzCq0PleY9GD",
+    },
+    {
+      "title": "Single Arm Dumbbell Row exercise",
+      "url": "https://youtu.be/yaFLjkOPK9Y?si=aY8_6OnxOEmbkP5u",
+    },
+    {
+      "title": "Incline Dumbbell Hammer Row exercise",
+      "url": "https://youtu.be/Err7TfT3bag?si=KJ5jiapnQoj7qasq",
+    },
+    {
+      "title": "Bent Over Dumbbell Row exercise",
+      "url": "https://youtu.be/oldIH_CdFyk?si=bpmECkgfK6ubPaUu",
+    },
+  ];
 
-  Future<void> fetchExercises(int categoryId) async {
-    final String apiUrl =
-        'https://wger.de/api/v2/exercise/?category=$categoryId&language=2';
-    var response = await http.get(Uri.parse(apiUrl));
+  final List<Map<String, String>> shoulderExercises = [
+    {
+      "title": "Prone Incline Barbell Rear Delt Raise",
+      "url": "https://youtu.be/iaGrU8O1E6E?si=S84Xm4z4aNdCeZ4N",
+    },
+  ];
 
-    if (response.statusCode == 200) {
-      var data = json.decode(response.body);
-      setState(() {
-        exercises = data['results'];
-        _assignImagesToExercises();
-      });
-    } else {
-      print("Failed to fetch exercises");
-    }
-  }
+  final List<Map<String, String>> armExercises = [];
 
-  void _assignImagesToExercises() {
-    final random = Random();
-    for (var exercise in exercises) {
-      exercise['image'] = images[random.nextInt(images.length)];
-    }
+  final List<Map<String, String>> footExercises = [];
+
+  void _navigateToExercisePage(
+      BuildContext context, List<Map<String, String>> exercises) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ExerciseDetailView(exercises: exercises),
+      ),
+    );
   }
 
   @override
@@ -72,150 +76,108 @@ class _ExerciseView2State extends State<ExerciseView2> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text("Exercise"),
+        title: const Text("Exercise Categories"),
       ),
       body: Column(
         children: [
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              children: [
-                TabButton2(
-                  title: "Full Body",
-                  isActive: isActiveTab == 0,
-                  onPressed: () {
-                    setState(() {
-                      isActiveTab = 0;
-                    });
-                    fetchExercises(8);
-                  },
-                ),
-                TabButton2(
-                  title: "Chest",
-                  isActive: isActiveTab == 1,
-                  onPressed: () {
-                    setState(() {
-                      isActiveTab = 1;
-                    });
-                    fetchExercises(10);
-                  },
-                ),
-                TabButton2(
-                  title: "Back",
-                  isActive: isActiveTab == 2,
-                  onPressed: () {
-                    setState(() {
-                      isActiveTab = 2;
-                    });
-                    fetchExercises(12);
-                  },
-                ),
-                TabButton2(
-                  title: "Shoulder",
-                  isActive: isActiveTab == 3,
-                  onPressed: () {
-                    setState(() {
-                      isActiveTab = 3;
-                    });
-                    fetchExercises(13);
-                  },
-                ),
-                TabButton2(
-                  title: "Foot",
-                  isActive: isActiveTab == 4,
-                  onPressed: () {
-                    setState(() {
-                      isActiveTab = 4;
-                    });
-                    fetchExercises(14);
-                  },
-                ),
-                TabButton2(
-                  title: "Arm",
-                  isActive: isActiveTab == 5,
-                  onPressed: () {
-                    setState(() {
-                      isActiveTab = 5;
-                    });
-                    fetchExercises(11);
-                  },
-                ),
-              ],
-            ),
+          SizedBox(
+            height: 30,
           ),
-          Expanded(
-            child: exercises.isEmpty
-                ? Center(child: CircularProgressIndicator())
-                : ListView.builder(
-                    itemCount: exercises.length,
-                    itemBuilder: (context, index) {
-                      var exercise = exercises[index];
-                      String imageUrl = exercise['image'] ?? '';
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => WorkoutDetailView(
-                                    exercise: exercise,
-                                    imageUrl: imageUrl,
-                                  ),
-                                ),
-                              );
-                            },
-                            child: Container(
-                              width: double.infinity,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Hero(
-                                    tag: exercise['id'],
-                                    child: imageUrl.isNotEmpty
-                                        ? Image.asset(
-                                            imageUrl,
-                                            fit: BoxFit.cover,
-                                            errorBuilder:
-                                                (context, error, stackTrace) {
-                                              return Container(
-                                                color: Colors.grey,
-                                                child: Center(
-                                                  child: Text(
-                                                    'No Image',
-                                                    style: TextStyle(
-                                                        color: Colors.white),
-                                                  ),
-                                                ),
-                                              );
-                                            },
-                                          )
-                                        : Image.asset(
-                                            imageUrl,
-                                            width: double.infinity,
-                                          ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Text(
-                                      exercise['name'] ?? 'Unnamed Exercise',
-                                      style: TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          SizedBox(height: 20),
-                        ],
-                      );
-                    },
-                  ),
-          ),
+          _buildExerciseCategory("Push", () {
+            _navigateToExercisePage(context, chestExercises);
+          }),
+          _buildExerciseCategory("Bull", () {
+            _navigateToExercisePage(context, backExercises);
+          }),
+          _buildExerciseCategory("Shoulder", () {
+            _navigateToExercisePage(context, shoulderExercises);
+          }),
+          _buildExerciseCategory("Arm", () {
+            _navigateToExercisePage(context, armExercises);
+          }),
+          _buildExerciseCategory("Foot", () {
+            _navigateToExercisePage(context, footExercises);
+          }),
         ],
+      ),
+    );
+  }
+
+  Widget _buildExerciseCategory(String title, VoidCallback onTap) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: TColor.kPrimaryColor,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              title,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const Icon(Icons.arrow_forward, color: Colors.white),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class ExerciseDetailView extends StatelessWidget {
+  final List<Map<String, String>> exercises;
+
+  const ExerciseDetailView({required this.exercises, Key? key})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Exercise Details'),
+      ),
+      body: ListView.builder(
+        itemCount: exercises.length,
+        itemBuilder: (context, index) {
+          String videoUrl = exercises[index]['url']!;
+          String title = exercises[index]['title']!;
+          String videoId = YoutubePlayer.convertUrlToId(videoUrl)!;
+
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              YoutubePlayer(
+                controller: YoutubePlayerController(
+                  initialVideoId: videoId,
+                  flags: const YoutubePlayerFlags(
+                    autoPlay: false,
+                    mute: false,
+                  ),
+                ),
+                showVideoProgressIndicator: true,
+                progressIndicatorColor: TColor.kPrimaryColor,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  title,
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ],
+          );
+        },
       ),
     );
   }

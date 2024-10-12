@@ -57,10 +57,10 @@ class _WorkoutView2State extends State<WorkoutView2> {
                 children: [
                   InkWell(
                     onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const WorkoutDetailView(exercise: {}, imageUrl: '',)));
+                      // Navigator.push(
+                      //     context,
+                      //     MaterialPageRoute(
+                      //         builder: (context) => const WorkoutDetailView(exercise: {}, imageUrl: '',)));
                     },
                     child: Stack(
                       alignment: Alignment.center,
@@ -95,11 +95,12 @@ class _WorkoutView2State extends State<WorkoutView2> {
                         ),
                         IconButton(
                             onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const WorkoutDetailView(exercise: {}, imageUrl: '',)));
+                              // Navigator.push(
+                              //     context,
+                              //     MaterialPageRoute(
+                              //         builder: (context) =>
+                              //             const WorkoutDetailView(exercise: {}, imageUrl: '',)
+                              //             ));
                             },
                             icon: Image.asset("assets/img/more.png",
                                 width: 25, height: 25))
