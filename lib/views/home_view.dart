@@ -315,7 +315,7 @@ class _HomeViewState extends State<HomeView> {
             topLeft: Radius.circular(media.width * 0.1),
             topRight: Radius.circular(media.width * 0.1),
           ),
-          border: Border.all(color: TColor.kPrimaryColor, width: 2),
+          border: Border.all(color: TColor.white, width: 2),
         ),
         child: BottomNavigationBar(
           items: const <BottomNavigationBarItem>[
@@ -333,7 +333,7 @@ class _HomeViewState extends State<HomeView> {
             ),
           ],
           currentIndex: _selectedIndex,
-          selectedItemColor: TColor.kPrimaryColor,
+          selectedItemColor: Colors.amber[800],
           onTap: _onItemTapped,
           backgroundColor: Colors.transparent,
           type: BottomNavigationBarType.fixed,

@@ -24,17 +24,18 @@ class CustomTextFormField extends StatelessWidget {
       validator: validator,
       onChanged: onChange,
       decoration: InputDecoration(
-          suffixIcon: IconButton(onPressed: onPressedIcon, icon: iconField),
-          labelText: lable,
-          hintText: hientText,
-          border: OutlineInputBorder()
-          // enabledBorder: const OutlineInputBorder(
-          //   borderSide: BorderSide(color: Colors.white),
-          // ),
-          // focusedBorder: const OutlineInputBorder(
-          //   borderSide: BorderSide(color: Colors.blue),
-          // ),
-          ),
+        suffixIcon: IconButton(onPressed: onPressedIcon, icon: iconField),
+        labelText: lable,
+        hintText: hientText,
+        border: OutlineInputBorder(),
+        errorBorder: OutlineInputBorder(),
+        // enabledBorder: const OutlineInputBorder(
+        //   borderSide: BorderSide(color: Colors.white),
+        // ),
+        // focusedBorder: const OutlineInputBorder(
+        //   borderSide: BorderSide(color: Colors.blue),
+        // ),
+      ),
     );
   }
 }

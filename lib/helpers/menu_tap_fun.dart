@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:musclemate/views/exercise/exercise_view.dart';
+import 'package:musclemate/views/exercise/exercise_view_2.dart';
+import 'package:musclemate/views/heart_rate_view.dart';
 import 'package:musclemate/views/home_view.dart';
 import 'package:musclemate/views/meal_plan/meal_plan_view.dart';
 import 'package:musclemate/views/running/running_view.dart';
@@ -19,7 +20,8 @@ void menuTapMethod(String tag, BuildContext context) {
           context, MaterialPageRoute(builder: (context) => const WeightView()));
       break;
     case "3":
-      Scaffold.of(context).openDrawer();
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => const HeartRateView()));
       break;
 
     case "5":
@@ -36,7 +38,7 @@ void menuTapMethod(String tag, BuildContext context) {
       break;
     case "8":
       Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const ExersizeView()));
+          MaterialPageRoute(builder: (context) => const ExerciseView2()));
       break;
     case "9":
       Navigator.push(context,
