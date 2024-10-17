@@ -63,6 +63,8 @@ dependencies:
   shared_preferences: 
   http: ^1.2.2
   heart_bpm: 
+  pedometer: ^4.0.2
+  youtube_player_flutter: ^9.1.1
 
 
 dev_dependencies:
