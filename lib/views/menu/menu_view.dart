@@ -1,3 +1,4 @@
+import 'package:musclemate/generated/l10n.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -9,6 +10,7 @@ import 'package:musclemate/helpers/menu_tap_fun.dart';
 import 'package:musclemate/models/menu_cells_model.dart';
 import 'package:musclemate/views/chatbot/chat_screen.dart';
 import 'package:musclemate/views/login/login.dart';
+import 'package:musclemate/views/profile/profileview.dart';
 import 'package:musclemate/views/settings/setting_view.dart';
 import 'package:musclemate/views/weight/weight_view.dart';
 import 'package:musclemate/widgets/custom_menu_cell.dart';
@@ -81,8 +83,41 @@ class _MenuViewState extends State<MenuView> {
   var userAge;
   String? _image;
   String? _userEmail;
+
   @override
   Widget build(BuildContext context) {
+    List<MenuCellsModel> menuArr = [
+      MenuCellsModel(
+          name: S.of(context).home, image: "assets/img/new/2.png", tag: "1"),
+      MenuCellsModel(
+          name: S.of(context).weight, image: "assets/img/new/3.png", tag: "2"),
+      MenuCellsModel(
+          name: S.of(context).heartrate,
+          image: "assets/img/new/images_rate.jpeg",
+          tag: "3"),
+      MenuCellsModel(
+          name: S.of(context).mealplan,
+          image: "assets/img/new/5.png",
+          tag: "5"),
+      MenuCellsModel(
+          name: S.of(context).schedule,
+          image: "assets/img/new/6.jpg",
+          tag: "6"),
+      MenuCellsModel(
+          name: S.of(context).running, image: "assets/img/new/7.png", tag: "7"),
+      MenuCellsModel(
+          name: S.of(context).excercises,
+          image: "assets/img/new/8.jpeg",
+          tag: "8"),
+      MenuCellsModel(
+          name: S.of(context).settings,
+          image: "assets/img/new/9.jpg",
+          tag: "9"),
+      MenuCellsModel(
+          name: S.of(context).support,
+          image: "assets/img/new/10.jpg",
+          tag: "10"),
+    ];
     var email = ModalRoute.of(context)!.settings.arguments;
     var media = MediaQuery.sizeOf(context);
     return FutureBuilder<QuerySnapshot>(
@@ -95,7 +130,6 @@ class _MenuViewState extends State<MenuView> {
           return const Center(child: Text('Error loading data'));
         }
         if (snapshot.hasData && snapshot.data!.docs.isNotEmpty) {
-          // Extract user data from the Firestore document
           var userDoc =
               snapshot.data!.docs.first.data() as Map<String, dynamic>;
           name = userDoc['username'] ?? 'Name not available';
@@ -105,13 +139,29 @@ class _MenuViewState extends State<MenuView> {
           userId = userDoc['uid'] ?? 'User Id not available';
         }
         return Scaffold(
-          // drawer: CustomDrawer(),
           body: Container(
             color: Colors.white,
             child: NestedScrollView(
               headerSliverBuilder: (context, innerBoxIsScrolled) {
                 return [
                   SliverAppBar(
+                    leading: Padding(
+                      padding: const EdgeInsets.only(top: 16, right: 16),
+                      child: IconButton(
+                        onPressed: () async {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ProfileView(),
+                            ),
+                          );
+                        },
+                        icon: Icon(
+                          Icons.person,
+                          size: 33,
+                        ),
+                      ),
+                    ),
                     actions: [
                       Padding(
                         padding: const EdgeInsets.only(top: 16, right: 16),
@@ -166,59 +216,70 @@ class _MenuViewState extends State<MenuView> {
                             ),
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 25, vertical: 30),
-                          child: SingleChildScrollView(
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Container(
-                                  width: 54,
-                                  height: 54,
-                                  decoration: BoxDecoration(
-                                      color: TColor.white,
-                                      borderRadius: BorderRadius.circular(27)),
-                                  alignment: Alignment.center,
-                                  child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(25),
-                                      child: CachedNetworkImage(
-                                        imageUrl: _image!,
-                                        width: 50,
-                                        height: 50,
-                                        fit: BoxFit.cover,
-                                      )),
-                                ),
-                                const SizedBox(
-                                  width: 15,
-                                ),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Text(name,
-                                          style: TextStyle(
-                                            fontSize: 25,
-                                            color: TColor.white,
-                                            fontWeight: FontWeight.w700,
-                                          )),
-                                      Text(
-                                        _userEmail!,
-                                        style: TextStyle(
-                                          fontSize: 15,
-                                          color: TColor.white,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                    ],
+                        InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const ProfileView(),
+                              ),
+                            );
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 25, vertical: 30),
+                            child: SingleChildScrollView(
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Container(
+                                    width: 54,
+                                    height: 54,
+                                    decoration: BoxDecoration(
+                                        color: TColor.white,
+                                        borderRadius:
+                                            BorderRadius.circular(27)),
+                                    alignment: Alignment.center,
+                                    child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(25),
+                                        child: CachedNetworkImage(
+                                          imageUrl: _image!,
+                                          width: 50,
+                                          height: 50,
+                                          fit: BoxFit.cover,
+                                        )),
                                   ),
-                                ),
-                                SizedBox(
-                                  height: 24,
-                                ),
-                              ],
+                                  const SizedBox(
+                                    width: 15,
+                                  ),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Text(name,
+                                            style: TextStyle(
+                                              fontSize: 25,
+                                              color: TColor.white,
+                                              fontWeight: FontWeight.w700,
+                                            )),
+                                        Text(
+                                          _userEmail!,
+                                          style: TextStyle(
+                                            fontSize: 15,
+                                            color: TColor.white,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 24,
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
@@ -256,22 +317,22 @@ class _MenuViewState extends State<MenuView> {
               ),
             ),
             child: BottomNavigationBar(
-              items: const <BottomNavigationBarItem>[
+              items: <BottomNavigationBarItem>[
                 BottomNavigationBarItem(
                   icon: Icon(Icons.home),
-                  label: 'Home',
+                  label: S.of(context).bhome,
                 ),
                 BottomNavigationBarItem(
                   icon: Icon(Icons.chat),
-                  label: 'Chat',
+                  label: S.of(context).bchat,
                 ),
                 BottomNavigationBarItem(
                   icon: Icon(Icons.fitness_center),
-                  label: 'Weight',
+                  label: S.of(context).bweight,
                 ),
                 BottomNavigationBarItem(
                   icon: Icon(Icons.settings),
-                  label: 'Settings',
+                  label: S.of(context).bsetting,
                 ),
               ],
               currentIndex: _selectedIndex,

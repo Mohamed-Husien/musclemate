@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:musclemate/1/day1_ex1.dart';
 import 'package:musclemate/1/day1_ex2.dart';
 import 'package:musclemate/1/day1_ex3.dart';
+import 'package:musclemate/generated/l10n.dart';
 import 'package:musclemate/helpers/color_extension.dart';
 import 'package:musclemate/views/meal_plan/meal_plan_view.dart';
 import 'package:musclemate/views/weight/weight_view.dart';
@@ -19,35 +20,34 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
   int? _selectedExerciseIndex;
 
-  List dataArr = [
-    {
-      "name": "Running",
-      "image": "assets/img/2.png",
-    },
-    {
-      "name": "Push-Up",
-      "image": "assets/img/3.png",
-    },
-    {
-      "name": "Leg Extension",
-      "image": "assets/img/5.png",
-    }
-  ];
-
-  List trainingDayArr = [
-    {
-      "name": "Training Day 1",
-    },
-    {
-      "name": "Training Day 2",
-    },
-    {
-      "name": "Training Day 3",
-    }
-  ];
-
   @override
   Widget build(BuildContext context) {
+    List dataArr = [
+      {
+        "name": S.of(context).running,
+        "image": "assets/img/2.png",
+      },
+      {
+        "name": S.of(context).push,
+        "image": "assets/img/3.png",
+      },
+      {
+        "name": S.of(context).leg,
+        "image": "assets/img/5.png",
+      }
+    ];
+
+    List trainingDayArr = [
+      {
+        "name": S.of(context).day1,
+      },
+      {
+        "name": S.of(context).day2,
+      },
+      {
+        "name": S.of(context).day3,
+      }
+    ];
     var media = MediaQuery.sizeOf(context);
     return Scaffold(
       appBar: AppBar(
@@ -64,7 +64,7 @@ class _HomeViewState extends State<HomeView> {
               height: 25,
             )),
         title: Text(
-          "Fitness Application",
+          S.of(context).fitness,
           style: TextStyle(
               color: TColor.white, fontSize: 20, fontWeight: FontWeight.w700),
         ),
@@ -198,7 +198,7 @@ class _HomeViewState extends State<HomeView> {
                             height: 8,
                           ),
                           Text(
-                            "week 1",
+                            S.of(context).week1,
                             style: TextStyle(
                                 color: TColor.secondaryText.withOpacity(0.8),
                                 fontSize: 16,
@@ -207,7 +207,7 @@ class _HomeViewState extends State<HomeView> {
                           const Spacer(),
                           ExercisesRow(
                             number: "1",
-                            title: "Exercises 1",
+                            title: S.of(context).ex1,
                             time: "7 min",
                             isActive: _selectedExerciseIndex == 1,
                             onPressed: () {
@@ -226,7 +226,7 @@ class _HomeViewState extends State<HomeView> {
                           ),
                           ExercisesRow(
                             number: "2",
-                            title: "Exercises 2",
+                            title: S.of(context).ex2,
                             time: "15 min",
                             isActive: _selectedExerciseIndex == 2,
                             onPressed: () {
@@ -245,7 +245,7 @@ class _HomeViewState extends State<HomeView> {
                           ),
                           ExercisesRow(
                             number: "3",
-                            title: "Finished",
+                            title: S.of(context).ex3,
                             time: "5 min",
                             isLast: true,
                             isActive: _selectedExerciseIndex == 3,

@@ -1,3 +1,4 @@
+import 'package:musclemate/generated/l10n.dart';
 import 'dart:io';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
@@ -141,7 +142,7 @@ class _WeightViewState extends State<WeightView> {
           centerTitle: true,
           elevation: 0.1,
           title: Text(
-            "Your Weight Progress",
+            S.of(context).your_weight_progress,
             style: TextStyle(
                 color: Colors.white, fontSize: 20, fontWeight: FontWeight.w700),
           ),
@@ -154,7 +155,7 @@ class _WeightViewState extends State<WeightView> {
                 padding:
                     const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
                 child: Text(
-                  "Add more photos to track your progress",
+                  S.of(context).add_more_photos,
                   textAlign: TextAlign.center,
                   style: TextStyle(color: Colors.grey, fontSize: 14),
                 ),
@@ -185,7 +186,7 @@ class _WeightViewState extends State<WeightView> {
                         onDismissed: (direction) {
                           _deleteImage(index);
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            content: Text("Image deleted"),
+                            content: Text(S.of(context).image_deleted),
                             duration: Duration(seconds: 1),
                           ));
                         },
@@ -237,7 +238,7 @@ class _WeightViewState extends State<WeightView> {
                       child: Text(
                         _selectedDate != null
                             ? DateFormat('EEEE, MMM d').format(_selectedDate!)
-                            : "Select Date",
+                            : S.of(context).select_date,
                         textAlign: TextAlign.center,
                         style: TextStyle(
                             color: Colors.grey,
@@ -260,14 +261,14 @@ class _WeightViewState extends State<WeightView> {
                   controller: _weightController,
                   keyboardType: TextInputType.number,
                   decoration: InputDecoration(
-                    labelText: "Enter your weight (kg)",
+                    labelText: S.of(context).enter_weight,
                     border: OutlineInputBorder(),
                   ),
                 ),
               ),
               ElevatedButton(
                 onPressed: _saveWeightData,
-                child: Text("Add"),
+                child: Text(S.of(context).add),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: TColor.kPrimaryColor,
                 ),
@@ -284,7 +285,7 @@ class _WeightViewState extends State<WeightView> {
                     onDismissed: (direction) {
                       _deleteWeightData(index);
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        content: Text("Weight entry deleted"),
+                        content: Text(S.of(context).weight_entry_deleted),
                         duration: Duration(seconds: 1),
                       ));
                     },

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:heart_bpm/heart_bpm.dart';
 import 'package:musclemate/helpers/color_extension.dart';
+import 'package:musclemate/generated/l10n.dart';
 import 'package:musclemate/views/home_view.dart';
 import 'package:musclemate/views/meal_plan/meal_plan_view.dart';
 import 'package:musclemate/views/running/running_view.dart';
@@ -16,11 +17,12 @@ class HeartRateView extends StatefulWidget {
 class _HeartRateViewState extends State<HeartRateView> {
   List<SensorValue> data = [];
   int? bpmValue;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Rate Your Heart Measure'),
+        title: Text(S.of(context).appTitle),
         centerTitle: true,
         backgroundColor: TColor.kPrimaryColor,
       ),
@@ -29,7 +31,7 @@ class _HeartRateViewState extends State<HeartRateView> {
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text('Cover both the camera and the flash with your finger'),
+            Text(S.of(context).coverCamera),
             SizedBox(
               height: 24,
             ),

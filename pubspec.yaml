@@ -40,35 +40,39 @@ dependencies:
   flutter_rating_bar: ^4.0.1
   flutter_calendar_carousel: ^2.4.4
   simple_circular_progress_bar: ^1.0.2
-  animated_splash_screen:
-  flutter_screenutil:
-  chat_gpt_sdk: 
-  dash_chat_2: 
-  flutter_gemini: 
-  image_picker: ^1.1.2 
-  lottie: 
-  permission_handler:
-  video_player:
-  firebase_auth:
-  firebase_core: 
-  cloud_firestore:
+  animated_splash_screen: null
+  flutter_screenutil: null
+  chat_gpt_sdk: null
+  dash_chat_2: null
+  flutter_gemini: null
+  image_picker: ^1.1.2
+  lottie: null
+  permission_handler: null
+  video_player: null
+  firebase_auth: null
+  firebase_core: null
+  cloud_firestore: null
   skeletonizer: ^1.4.2
   firebase_storage: ^12.3.1
-  path: 
+  path: null
   # image_downloader:
   modal_progress_hud_nsn: ^0.5.1
-  cached_network_image: 
-  google_sign_in:
-  sign_in_button:
-  shared_preferences: 
+  cached_network_image: null
+  google_sign_in: null
+  sign_in_button: null
+  shared_preferences: null
   http: ^1.2.2
-  heart_bpm: 
+  heart_bpm: null
   pedometer: ^4.0.2
   youtube_player_flutter: ^9.1.1
-
+  flutter_intl: ^0.0.1
+  localization: ^2.1.1
+  flutter_localizations:
+    sdk: flutter
+  convert: ^3.1.2
 
 dev_dependencies:
-  flutter_launcher_icons:
+  ? flutter_launcher_icons
 
 flutter_launcher_icons:
   android: "launcher_icon"
@@ -88,7 +92,6 @@ flutter_launcher_icons:
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
-
 # The following section is specific to Flutter packages.
 flutter:
   # The following line ensures that the Material Icons font is
@@ -104,10 +107,8 @@ flutter:
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
-
   # For details regarding adding assets from package dependencies, see
   # https://flutter.dev/to/asset-from-package
-
   # To add custom fonts to your application, add a fonts section here,
   # in this "flutter" section. Each entry in this list should have a
   # "family" key with the font family name, and a "fonts" key with a
@@ -120,7 +121,6 @@ flutter:
     - family: Pacifico
       fonts:
         - asset: assets/font/Pacifico-Regular.ttf
-
   #   - family: Trajan Pro
   #     fonts:
   #       - asset: fonts/TrajanPro.ttf
@@ -129,3 +129,5 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
+flutter_intl:
+  enabled: true

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:musclemate/generated/l10n.dart';
 import 'package:musclemate/helpers/color_extension.dart';
 import 'package:pedometer/pedometer.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -77,7 +78,7 @@ class _RunningLengthViewState extends State<RunningLengthView> {
                 Padding(
                   padding: const EdgeInsets.all(15.0),
                   child: Text(
-                    "Length",
+                    S.of(context).lenght,
                     style: TextStyle(
                       color: TColor.secondaryText,
                       fontSize: 18,
@@ -104,7 +105,7 @@ class _RunningLengthViewState extends State<RunningLengthView> {
                           },
                         ),
                         Text(
-                          "meters",
+                          S.of(context).meters,
                           style: TextStyle(
                             color: TColor.secondaryText,
                             fontSize: 27,
@@ -133,7 +134,7 @@ class _RunningLengthViewState extends State<RunningLengthView> {
                 Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: Text(
-                    "Max daily is $maxMeters meters",
+                    S.of(context).max_daily_meters(maxMeters),
                     style: TextStyle(
                       color: TColor.secondaryText,
                       fontSize: 16,
@@ -149,7 +150,7 @@ class _RunningLengthViewState extends State<RunningLengthView> {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                "Steps: $steps",
+                S.of(context).steps_walked(steps),
                 style: TextStyle(
                   color: TColor.secondaryText,
                   fontSize: 22,

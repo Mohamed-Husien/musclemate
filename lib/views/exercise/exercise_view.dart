@@ -1,3 +1,4 @@
+import 'package:musclemate/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:musclemate/helpers/color_extension.dart';
 import 'package:musclemate/views/exercise/dummy_data_exercise.dart';
@@ -31,24 +32,24 @@ class _ExersizeViewState extends State<ExersizeView> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text("Exercise Categories"),
+        title: Text(S.of(context).exercisecat),
       ),
       body: Column(
         children: [
           const SizedBox(height: 30),
-          _buildExerciseCategory("Push", () {
+          _buildExerciseCategory(S.of(context).push, () {
             _navigateToExercisePage(context, chestExercises, "Push");
           }),
-          _buildExerciseCategory("Pull", () {
+          _buildExerciseCategory(S.of(context).pull, () {
             _navigateToExercisePage(context, backExercises, "Pull");
           }),
-          _buildExerciseCategory("Shoulder", () {
+          _buildExerciseCategory(S.of(context).shoulder, () {
             _navigateToExercisePage(context, shoulderExercises, "Shoulder");
           }),
-          _buildExerciseCategory("Arm", () {
+          _buildExerciseCategory(S.of(context).arm, () {
             _navigateToExercisePage(context, armExercises, "Arm");
           }),
-          _buildExerciseCategory("Leg", () {
+          _buildExerciseCategory(S.of(context).leg, () {
             _navigateToExercisePage(context, legExercises, "Leg");
           }),
         ],

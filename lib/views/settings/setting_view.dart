@@ -1,154 +1,141 @@
 import 'package:flutter/material.dart';
+import 'package:musclemate/generated/l10n.dart';
 import 'package:musclemate/helpers/color_extension.dart';
-import 'package:musclemate/views/home_view.dart';
-import 'package:musclemate/views/meal_plan/meal_plan_view.dart';
-import 'package:musclemate/views/running/running_view.dart';
-import 'package:musclemate/views/settings/connect_view.dart';
-import 'package:musclemate/views/settings/select_language_view.dart';
-import 'package:musclemate/views/weight/weight_view.dart';
-import 'package:musclemate/widgets/setting_select_row.dart';
-import 'package:musclemate/widgets/setting_switch_row.dart';
+import 'package:musclemate/views/profile/profileview.dart';
+import 'package:musclemate/views/settings/language.dart';
+import 'package:musclemate/views/settings/social_connect.dart';
+import 'package:musclemate/views/tips/tips_view.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsView extends StatefulWidget {
   const SettingsView({super.key});
 
   @override
-  State<SettingsView> createState() => _SettingsViewState();
+  _SettingsViewState createState() => _SettingsViewState();
 }
 
 class _SettingsViewState extends State<SettingsView> {
-  List settingArr = [
-    {"name": "Reminders", "type": "switch", "value": "false"},
-    {"name": "Language", "type": "select", "value": "ENGLISH"},
-    {"name": "Connected", "type": "select", "value": "Facebook"},
-    {"name": "Apple health", "type": "switch", "value": "true"},
-    {"name": "Warm-Up", "type": "switch", "value": "false"},
-    {"name": "Cool-Down", "type": "switch", "value": "false"},
-    {"name": "Auto Push", "type": "switch", "value": "false"},
-    {"name": "Pause for Running", "type": "switch", "value": "false"}
-  ];
+  bool isNotificationEnabled = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadNotificationPreference();
+  }
+
+  void _loadNotificationPreference() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      isNotificationEnabled = prefs.getBool('notification') ?? false;
+    });
+  }
+
+  void _saveNotificationPreference(bool value) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool('notification', value);
+  }
 
   @override
   Widget build(BuildContext context) {
-    MediaQuery.sizeOf(context);
     return Scaffold(
       appBar: AppBar(
+        title: Center(
+          child: Text(
+            S.of(context).settings,
+            style: TextStyle(fontSize: 26),
+          ),
+        ),
         backgroundColor: TColor.kPrimaryColor,
-        centerTitle: true,
-        elevation: 0.1,
-        leading: IconButton(
-            onPressed: () {
-              Navigator.pop(context);
+      ),
+      body: ListView(
+        padding: const EdgeInsets.all(16.0),
+        children: [
+          _buildSettingsBox(
+            context: context,
+            title: S.of(context).editprofile,
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return ProfileView();
+              }));
             },
-            icon: Image.asset(
-              "assets/img/black_white.png",
-              width: 25,
-              height: 25,
-            )),
-        title: Text(
-          "Settings",
-          style: TextStyle(
-              color: TColor.white, fontSize: 20, fontWeight: FontWeight.w700),
+          ),
+          _buildNotificationBox(),
+          _buildSettingsBox(
+            context: context,
+            title: S.of(context).socailconnect,
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return SocialConnect();
+              }));
+            },
+          ),
+          _buildSettingsBox(
+            context: context,
+            title: S.of(context).Language,
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return Language();
+              }));
+            },
+          ),
+          _buildSettingsBox(
+            context: context,
+            title: S.of(context).aboutapp,
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return TipsView();
+              }));
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSettingsBox({
+    required BuildContext context,
+    required String title,
+    VoidCallback? onTap,
+  }) {
+    return Card(
+      elevation: 4,
+      margin: const EdgeInsets.symmetric(vertical: 8),
+      child: InkWell(
+        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Text(
+            title,
+            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
         ),
       ),
-      body: ListView.separated(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          itemBuilder: (context, index) {
-            var tObj = settingArr[index] as Map? ?? {};
+    );
+  }
 
-            if (tObj["type"] == "switch") {
-              return SettingSwitchRow(
-                  tObj: tObj,
-                  onChanged: (newVal) {
-                    settingArr[index]["value"] = newVal ? "true" : "false";
-                    setState(() {});
-                  });
-            } else if (tObj["type"] == "select") {
-              return SettingSelectRow(
-                  tObj: tObj,
-                  onPressed: () {
-                    if (tObj["name"] == "Language") {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  SelectLanguageView(didSelect: (newVal) {})));
-                    } else {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  ConnectView(didSelect: (newVal) {})));
-                    }
-                  });
-            } else {
-              return Container();
-            }
-          },
-          separatorBuilder: (context, index) {
-            return const Divider(
-              color: Colors.black26,
-              height: 1,
-            );
-          },
-          itemCount: settingArr.length),
-      bottomNavigationBar: BottomAppBar(
-        elevation: 1,
-        child: Padding(
-          padding: const EdgeInsets.only(top: 15, bottom: 20),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              InkWell(
-                onTap: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const RunningView(),
-                    ),
-                  );
-                },
-                child: Image.asset("assets/img/menu_running.png",
-                    width: 25, height: 25),
-              ),
-              InkWell(
-                onTap: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const MealPlanView2(),
-                    ),
-                  );
-                },
-                child: Image.asset("assets/img/menu_meal_plan.png",
-                    width: 25, height: 25),
-              ),
-              InkWell(
-                onTap: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const HomeView(),
-                    ),
-                  );
-                },
-                child: Image.asset("assets/img/menu_home.png",
-                    width: 25, height: 25),
-              ),
-              InkWell(
-                onTap: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const WeightView(),
-                    ),
-                  );
-                },
-                child: Image.asset("assets/img/menu_weight.png",
-                    width: 25, height: 25),
-              ),
-            ],
-          ),
+  Widget _buildNotificationBox() {
+    return Card(
+      elevation: 4,
+      margin: const EdgeInsets.symmetric(vertical: 8),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              S.of(context).notifications,
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            Switch(
+              value: isNotificationEnabled,
+              onChanged: (value) {
+                setState(() {
+                  isNotificationEnabled = value;
+                  _saveNotificationPreference(value);
+                });
+              },
+            ),
+          ],
         ),
       ),
     );

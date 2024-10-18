@@ -1,10 +1,10 @@
 import 'dart:io';
 import 'dart:typed_data';
-
 import 'package:dash_chat_2/dash_chat_2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gemini/flutter_gemini.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:musclemate/generated/l10n.dart';
 import 'package:musclemate/helpers/color_extension.dart';
 
 class ChatScreen extends StatefulWidget {
@@ -28,8 +28,8 @@ class _ChatScreenState extends State<ChatScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: TColor.kPrimaryColor,
-        title: const Text(
-          "Let's Chat ",
+        title: Text(
+          S.of(context).lets_chat,
           style: TextStyle(color: Colors.white, fontFamily: 'Pacifico'),
         ),
         centerTitle: true,
@@ -113,7 +113,7 @@ class _ChatScreenState extends State<ChatScreen> {
       ChatMessage chatMessage = ChatMessage(
         user: currentUser,
         createdAt: DateTime.now(),
-        text: "Describe this picture",
+        text: S.of(context).describe_image,
         medias: [
           ChatMedia(
             url: file.path,

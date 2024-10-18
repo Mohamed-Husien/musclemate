@@ -1,3 +1,4 @@
+import 'package:musclemate/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:musclemate/helpers/color_extension.dart';
 import 'package:musclemate/views/home_view.dart';
@@ -25,7 +26,7 @@ class _RunningViewState extends State<RunningView> {
         centerTitle: true,
         elevation: 0,
         title: Text(
-          "Running",
+          S.of(context).running,
           style: TextStyle(
               color: TColor.white, fontSize: 20, fontWeight: FontWeight.w700),
         ),

@@ -209,6 +209,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.4"
+  convert:
+    dependency: "direct main"
+    description:
+      name: convert
+      sha256: b30acd5944035672bc15c6b7a8b47d773e41e2f17de064350988c5d02adb1c68
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.1.2"
   cross_file:
     dependency: transitive
     description:
@@ -494,6 +502,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.6.0"
+  flutter_intl:
+    dependency: "direct main"
+    description:
+      name: flutter_intl
+      sha256: "17b138fab0477c7d17abd8ba67d294786eef8fe80342e58b6253aef7d0ca2bad"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.1"
   flutter_launcher_icons:
     dependency: "direct dev"
     description:
@@ -502,6 +518,11 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.13.1"
+  flutter_localizations:
+    dependency: "direct main"
+    description: flutter
+    source: sdk
+    version: "0.0.0"
   flutter_markdown:
     dependency: transitive
     description:
@@ -768,6 +789,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.1"
+  localization:
+    dependency: "direct main"
+    description:
+      name: localization
+      sha256: "9fa21644b75ca3fe844f8f115d03cd6fdc675054dd9aab6c5de5861145ea57b5"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.1"
   lottie:
     dependency: "direct main"
     description:

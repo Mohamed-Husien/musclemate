@@ -1,10 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:musclemate/generated/l10n.dart';
 import 'package:musclemate/helpers/color_extension.dart';
-import 'package:musclemate/views/home_view.dart';
-import 'package:musclemate/views/running/running_view.dart';
-import 'package:musclemate/views/weight/weight_view.dart';
 
 class MealPlanView2 extends StatefulWidget {
   const MealPlanView2({super.key});
@@ -14,28 +12,38 @@ class MealPlanView2 extends StatefulWidget {
 }
 
 class _MealPlanView2State extends State<MealPlanView2> {
-  String selectedDiet = "bulking";
-  String selectedDay = "Monday";
+  String selectedDiet = '';
+  String selectedDay = '';
   List meals = [];
 
-  final List<String> days = [
-    'Monday',
-    'Tuesday',
-    'Wednesday',
-    'Thursday',
-    'Friday',
-    'Saturday',
-    'Sunday'
-  ];
-
-  final List<String> dietTypes = ['bulking', 'cutting'];
+  List<String> days = [];
+  List<String> dietTypes = [];
 
   bool isLoading = false;
   String apiKey = '06faa44a593a42f58cc7ca5de595a96d';
 
   @override
-  void initState() {
-    super.initState();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    selectedDiet = S.of(context).bulking;
+    selectedDay = S.of(context).monday;
+
+    days = [
+      S.of(context).monday,
+      S.of(context).tuesday,
+      S.of(context).wednesday,
+      S.of(context).thursday,
+      S.of(context).friday,
+      S.of(context).saturday,
+      S.of(context).sunday,
+    ];
+
+    dietTypes = [
+      S.of(context).bulking,
+      S.of(context).cutting,
+    ];
+
     fetchMeals();
   }
 
@@ -101,8 +109,8 @@ class _MealPlanView2State extends State<MealPlanView2> {
             height: 25,
           ),
         ),
-        title: const Text(
-          "Meal Plan",
+        title: Text(
+          S.of(context).mealplan,
           style: TextStyle(
               color: Colors.white, fontSize: 20, fontWeight: FontWeight.w700),
         ),
@@ -121,7 +129,7 @@ class _MealPlanView2State extends State<MealPlanView2> {
                         child: DropdownButtonFormField<String>(
                           value: selectedDiet,
                           decoration: InputDecoration(
-                            labelText: 'Select Diet Type',
+                            labelText: S.of(context).Select_Diet_Type,
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10),
                             ),
@@ -148,7 +156,7 @@ class _MealPlanView2State extends State<MealPlanView2> {
                         child: DropdownButtonFormField<String>(
                           value: selectedDay,
                           decoration: InputDecoration(
-                            labelText: 'Select Day',
+                            labelText: S.of(context).Select_Day,
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10),
                             ),
@@ -225,65 +233,6 @@ class _MealPlanView2State extends State<MealPlanView2> {
                 ),
               ],
             ),
-      bottomNavigationBar: BottomAppBar(
-        elevation: 1,
-        child: Padding(
-          padding: const EdgeInsets.only(top: 15, bottom: 20),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              InkWell(
-                onTap: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const RunningView(),
-                    ),
-                  );
-                },
-                child: Image.asset("assets/img/menu_running.png",
-                    width: 25, height: 25),
-              ),
-              InkWell(
-                onTap: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const MealPlanView2(),
-                    ),
-                  );
-                },
-                child: Image.asset("assets/img/menu_meal_plan.png",
-                    width: 25, height: 25),
-              ),
-              InkWell(
-                onTap: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const HomeView(),
-                    ),
-                  );
-                },
-                child: Image.asset("assets/img/menu_home.png",
-                    width: 25, height: 25),
-              ),
-              InkWell(
-                onTap: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const WeightView(),
-                    ),
-                  );
-                },
-                child: Image.asset("assets/img/menu_weight.png",
-                    width: 25, height: 25),
-              ),
-            ],
-          ),
-        ),
-      ),
     );
   }
 }
