@@ -2,6 +2,16 @@ import 'package:musclemate/models/tips_model.dart';
 
 List<TipsModel> tipsDatails = [
   TipsModel(
+    name: 'Customer Support',
+    titleText_1: 'Feel Free To Contact Us Any Time',
+    titleText_1_Info: '''- Email: ahmedlshennawy10@gmail.com
+- Phone: +201093757296
+- Website: www.musclemateapp.com/support
+''',
+    titleText_2: '',
+    titleText_2_Info: '',
+  ),
+  TipsModel(
     name: 'About Training',
     titleText_1: 'Benefits of Gym Training',
     titleText_1_Info:

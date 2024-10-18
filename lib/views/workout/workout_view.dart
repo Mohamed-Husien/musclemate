@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:musclemate/helpers/color_extension.dart';
-import 'package:musclemate/views/workout/workout_detail_view.dart';
 import 'package:musclemate/widgets/round_button.dart';
 
 class WorkoutView extends StatefulWidget {
@@ -149,42 +148,42 @@ class _WorkoutViewState extends State<WorkoutView> {
               ),
             );
           }),
-      bottomNavigationBar: BottomAppBar(
-        elevation: 1,
-        child: Padding(
-          padding: const EdgeInsets.only(top: 15),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              InkWell(
-                onTap: () {},
-                child: Image.asset("assets/img/menu_running.png",
-                    width: 25, height: 25),
-              ),
-              InkWell(
-                onTap: () {},
-                child: Image.asset("assets/img/menu_meal_plan.png",
-                    width: 25, height: 25),
-              ),
-              InkWell(
-                onTap: () {},
-                child: Image.asset("assets/img/menu_home.png",
-                    width: 25, height: 25),
-              ),
-              InkWell(
-                onTap: () {},
-                child: Image.asset("assets/img/menu_weight.png",
-                    width: 25, height: 25),
-              ),
-              InkWell(
-                onTap: () {},
-                child:
-                    Image.asset("assets/img/more.png", width: 25, height: 25),
-              ),
-            ],
-          ),
-        ),
-      ),
+      // bottomNavigationBar: BottomAppBar(
+      //   elevation: 1,
+      //   child: Padding(
+      //     padding: const EdgeInsets.only(top: 15),
+      //     child: Row(
+      //       mainAxisAlignment: MainAxisAlignment.spaceAround,
+      //       children: [
+      //         InkWell(
+      //           onTap: () {},
+      //           child: Image.asset("assets/img/menu_running.png",
+      //               width: 25, height: 25),
+      //         ),
+      //         InkWell(
+      //           onTap: () {},
+      //           child: Image.asset("assets/img/menu_meal_plan.png",
+      //               width: 25, height: 25),
+      //         ),
+      //         InkWell(
+      //           onTap: () {},
+      //           child: Image.asset("assets/img/menu_home.png",
+      //               width: 25, height: 25),
+      //         ),
+      //         InkWell(
+      //           onTap: () {},
+      //           child: Image.asset("assets/img/menu_weight.png",
+      //               width: 25, height: 25),
+      //         ),
+      //         InkWell(
+      //           onTap: () {},
+      //           child:
+      //               Image.asset("assets/img/more.png", width: 25, height: 25),
+      //         ),
+      //       ],
+      //     ),
+      //   ),
+      // ),
     );
   }
 }

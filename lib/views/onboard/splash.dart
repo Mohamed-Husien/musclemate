@@ -16,8 +16,6 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    checkUserAndLogoutIfNeeded(
-        context); // Check if user exists in Firebase and logout if needed
   }
 
   @override
@@ -36,16 +34,12 @@ class _SplashScreenState extends State<SplashScreen> {
           future: Future.value(FirebaseAuth.instance.currentUser),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              //checking user authentication status.
               return const CircularProgressIndicator();
             }
 
             if (snapshot.hasData && snapshot.data != null) {
-              // User is authenticated, navigate to MenuView
-
               return MenuView();
             } else {
-              // User is not authenticated, navigate to OnBoarding screen
               return FirstOnBoarding();
             }
           },
@@ -58,10 +52,8 @@ class _SplashScreenState extends State<SplashScreen> {
     User? user = FirebaseAuth.instance.currentUser;
 
     if (user == null) {
-      // If no user is signed in, perform sign out
       await FirebaseAuth.instance.signOut();
 
-      // Navigate to the onboarding screen or another appropriate screen
       Navigator.push(
         context,
         MaterialPageRoute(

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:musclemate/helpers/color_extension.dart';
-import 'dart:async'; // For Timer
+import 'dart:async';
 import 'package:video_player/video_player.dart';
 
 class Day1Ex3View extends StatefulWidget {
@@ -11,10 +11,10 @@ class Day1Ex3View extends StatefulWidget {
 }
 
 class _Day1Ex3ViewState extends State<Day1Ex3View> {
-  int remainingSeconds = 5 * 60; // Initial countdown time (5 minutes)
-  Timer? timer; // Timer object
-  bool isRunning = false; // To track whether the timer is running or not
-  bool isVideoPlaying = false; // To track whether the video is playing or not
+  int remainingSeconds = 5 * 60;
+  Timer? timer;
+  bool isRunning = false;
+  bool isVideoPlaying = false;
 
   late VideoPlayerController _controller;
   bool _isVideoInitialized = false;
@@ -32,7 +32,7 @@ class _Day1Ex3ViewState extends State<Day1Ex3View> {
 
   @override
   void dispose() {
-    timer?.cancel(); // Cancel timer when the widget is disposed
+    timer?.cancel();
     _controller.dispose();
     super.dispose();
   }
@@ -75,7 +75,6 @@ class _Day1Ex3ViewState extends State<Day1Ex3View> {
 
   void handlePlayPause() {
     if (isRunning || isVideoPlaying) {
-      // Pause both timer and video
       pauseTimer();
       if (_controller.value.isPlaying) {
         _controller.pause();
@@ -84,7 +83,6 @@ class _Day1Ex3ViewState extends State<Day1Ex3View> {
         isVideoPlaying = false;
       });
     } else {
-      // Start both timer and video
       startTimer();
       _controller.play();
       setState(() {
@@ -124,7 +122,7 @@ class _Day1Ex3ViewState extends State<Day1Ex3View> {
             ),
             const SizedBox(height: 20),
             Text(
-              formattedTime, // Display formatted time
+              formattedTime,
               style: const TextStyle(fontSize: 48, fontWeight: FontWeight.bold),
             ),
           ],

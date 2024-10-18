@@ -47,7 +47,7 @@ class SkeletonizerIndicator extends StatelessWidget {
                       Container(
                         width: 100,
                         height: 14,
-                        color: Colors.white, // Placeholder color for the text
+                        color: Colors.white,
                       ),
                     ],
                   ),

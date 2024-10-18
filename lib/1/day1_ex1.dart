@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:musclemate/helpers/color_extension.dart';
-import 'dart:async'; // For Timer
-import 'package:video_player/video_player.dart'; // For Video Player
+import 'dart:async';
+import 'package:video_player/video_player.dart';
 
 class Day1Ex1View extends StatefulWidget {
   const Day1Ex1View({super.key});
@@ -11,22 +11,20 @@ class Day1Ex1View extends StatefulWidget {
 }
 
 class _Day1Ex1ViewState extends State<Day1Ex1View> {
-  int remainingSeconds = 7 * 60; // Initial countdown time (7 minutes)
-  Timer? timer; // Timer object
-  late VideoPlayerController _controller; // Video player controller
-  bool _isVideoReady = false; // Track if the video is ready to play
+  int remainingSeconds = 7 * 60;
+  Timer? timer;
+  late VideoPlayerController _controller;
+  bool _isVideoReady = false;
 
   @override
   void initState() {
     super.initState();
 
-    // Initialize the video player
     _controller = VideoPlayerController.asset('assets/vid/7.mp4')
       ..initialize().then((_) {
         setState(() {
-          _isVideoReady = true; // Mark video as ready
+          _isVideoReady = true;
         });
-        // Don't play video immediately, allow user control
       }).catchError((error) {
         print('Error loading video: $error');
       });
@@ -34,8 +32,8 @@ class _Day1Ex1ViewState extends State<Day1Ex1View> {
 
   @override
   void dispose() {
-    timer?.cancel(); // Cancel timer when the widget is disposed
-    _controller.dispose(); // Dispose video player controller
+    timer?.cancel();
+    _controller.dispose();
     super.dispose();
   }
 
@@ -67,10 +65,10 @@ class _Day1Ex1ViewState extends State<Day1Ex1View> {
     setState(() {
       if (_controller.value.isPlaying) {
         _controller.pause();
-        pauseTimer(); // Pause timer when video pauses
+        pauseTimer();
       } else {
         _controller.play();
-        startTimer(); // Start timer when video plays
+        startTimer();
       }
     });
   }
@@ -88,18 +86,16 @@ class _Day1Ex1ViewState extends State<Day1Ex1View> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Display the video player if the video is ready
             if (_isVideoReady)
               AspectRatio(
-                aspectRatio: _controller
-                    .value.aspectRatio, // Ensure correct aspect ratio
+                aspectRatio: _controller.value.aspectRatio,
                 child: VideoPlayer(_controller),
               )
             else
-              const CircularProgressIndicator(), // Show a loader while video is loading
+              const CircularProgressIndicator(),
             const SizedBox(height: 20),
             Text(
-              formattedTime, // Display formatted time
+              formattedTime,
               style: const TextStyle(fontSize: 48, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 20),

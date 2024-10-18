@@ -4,14 +4,9 @@ import 'package:musclemate/1/day1_ex1.dart';
 import 'package:musclemate/1/day1_ex2.dart';
 import 'package:musclemate/1/day1_ex3.dart';
 import 'package:musclemate/helpers/color_extension.dart';
-import 'package:musclemate/views/menu/menu_view.dart';
-import 'package:musclemate/views/settings/setting_view.dart';
-// ignore: unused_import
-import 'package:musclemate/views/workout/workout_view.dart';
+import 'package:musclemate/views/meal_plan/meal_plan_view.dart';
+import 'package:musclemate/views/weight/weight_view.dart';
 import 'package:musclemate/views/workout/workout_view_2.dart';
-import 'package:musclemate/widgets/exercises_row.dart';
-// ignore: unused_import
-import 'package:musclemate/widgets/round_button.dart';
 import 'package:musclemate/views/running/running_view.dart';
 
 class HomeView extends StatefulWidget {
@@ -22,34 +17,7 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  int _selectedIndex = 0;
-  int? _selectedExerciseIndex; // Track the selected exercise
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-    switch (index) {
-      case 0:
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => MenuView()),
-        );
-        break;
-      case 1:
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => WorkoutView2()),
-        );
-        break;
-      case 2:
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => SettingsView()),
-        );
-        break;
-    }
-  }
+  int? _selectedExerciseIndex;
 
   List dataArr = [
     {
@@ -309,38 +277,63 @@ class _HomeViewState extends State<HomeView> {
           ],
         ),
       ),
-      bottomNavigationBar: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(media.width * 0.1),
-            topRight: Radius.circular(media.width * 0.1),
+      bottomNavigationBar: BottomAppBar(
+        elevation: 1,
+        child: Padding(
+          padding: const EdgeInsets.only(top: 15, bottom: 20),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              InkWell(
+                onTap: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const RunningView(),
+                    ),
+                  );
+                },
+                child: Image.asset("assets/img/menu_running.png",
+                    width: 25, height: 25),
+              ),
+              InkWell(
+                onTap: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const MealPlanView2(),
+                    ),
+                  );
+                },
+                child: Image.asset("assets/img/menu_meal_plan.png",
+                    width: 25, height: 25),
+              ),
+              InkWell(
+                onTap: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const HomeView(),
+                    ),
+                  );
+                },
+                child: Image.asset("assets/img/menu_home.png",
+                    width: 25, height: 25),
+              ),
+              InkWell(
+                onTap: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const WeightView(),
+                    ),
+                  );
+                },
+                child: Image.asset("assets/img/menu_weight.png",
+                    width: 25, height: 25),
+              ),
+            ],
           ),
-          border: Border.all(color: TColor.white, width: 2),
-        ),
-        child: BottomNavigationBar(
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Home',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.fitness_center),
-              label: 'Workouts',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.settings),
-              label: 'Settings',
-            ),
-          ],
-          currentIndex: _selectedIndex,
-          selectedItemColor: Colors.amber[800],
-          onTap: _onItemTapped,
-          backgroundColor: Colors.transparent,
-          type: BottomNavigationBarType.fixed,
-          unselectedItemColor: TColor.secondaryText,
-          selectedFontSize: 14,
-          unselectedFontSize: 12,
-          elevation: 0,
         ),
       ),
     );
@@ -354,7 +347,7 @@ class ExercisesRow extends StatelessWidget {
   final bool isActive;
   final bool isLast;
   final VoidCallback onPressed;
-  final Color iconColor; // Added for color customization
+  final Color iconColor;
 
   const ExercisesRow({
     super.key,
@@ -364,7 +357,7 @@ class ExercisesRow extends StatelessWidget {
     required this.onPressed,
     this.isActive = false,
     this.isLast = false,
-    this.iconColor = Colors.grey, // Default color
+    this.iconColor = Colors.grey,
   });
 
   @override

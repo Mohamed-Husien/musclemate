@@ -15,11 +15,9 @@ class RegisterUser {
         password: password,
       );
 
-      // Get the newly registered user
       User? user = result.user;
 
       if (user != null) {
-        // Store the additional user information in Firestore
         try {
           await _firestore.collection('users').doc(user.uid).set({
             'uid': user.uid,

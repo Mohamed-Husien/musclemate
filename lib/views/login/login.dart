@@ -68,7 +68,6 @@ class _LoginPageState extends State<LoginPage> {
                       SizedBox(height: 80.h),
                       SizedBox(
                         width: 350.w,
-                        // height: 60.h,
                         child: CustomTextFormField(
                           onChange: (value) {
                             setState(() {
@@ -87,7 +86,6 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       SizedBox(
                         width: 350.w,
-                        // height: 60.h,//to make the field hight doesn't be smaller when throw any validate message bellow the filed
                         child: TextFormField(
                           controller: _passwordController,
                           obscureText: _obscurePassword,
@@ -116,7 +114,6 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       SizedBox(height: 40.h),
                       ElevatedButton(
-                        //button for sign in and navigation if done successfully
                         style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(16),
@@ -203,19 +200,16 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future<UserCredential?> signInWithGoogle() async {
-    // Trigger the authentication flow
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
     if (googleUser == null) {
-      return null; // Handle the case where googleUser is null
+      return null;
     }
 
-    // Obtain the auth details from the request
     final GoogleSignInAuthentication? googleAuth =
         await googleUser.authentication;
 
     if (googleAuth == null) {
-      // Handle the case where googleAuth is null
       return null;
     }
 

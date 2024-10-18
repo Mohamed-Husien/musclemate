@@ -2,6 +2,9 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:musclemate/helpers/color_extension.dart';
+import 'package:musclemate/views/home_view.dart';
+import 'package:musclemate/views/running/running_view.dart';
+import 'package:musclemate/views/weight/weight_view.dart';
 
 class MealPlanView2 extends StatefulWidget {
   const MealPlanView2({super.key});
@@ -25,7 +28,7 @@ class _MealPlanView2State extends State<MealPlanView2> {
     'Sunday'
   ];
 
-  final List<String> dietTypes = ['bulking', 'drying'];
+  final List<String> dietTypes = ['bulking', 'cutting'];
 
   bool isLoading = false;
   String apiKey = '06faa44a593a42f58cc7ca5de595a96d';
@@ -222,6 +225,65 @@ class _MealPlanView2State extends State<MealPlanView2> {
                 ),
               ],
             ),
+      bottomNavigationBar: BottomAppBar(
+        elevation: 1,
+        child: Padding(
+          padding: const EdgeInsets.only(top: 15, bottom: 20),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              InkWell(
+                onTap: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const RunningView(),
+                    ),
+                  );
+                },
+                child: Image.asset("assets/img/menu_running.png",
+                    width: 25, height: 25),
+              ),
+              InkWell(
+                onTap: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const MealPlanView2(),
+                    ),
+                  );
+                },
+                child: Image.asset("assets/img/menu_meal_plan.png",
+                    width: 25, height: 25),
+              ),
+              InkWell(
+                onTap: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const HomeView(),
+                    ),
+                  );
+                },
+                child: Image.asset("assets/img/menu_home.png",
+                    width: 25, height: 25),
+              ),
+              InkWell(
+                onTap: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const WeightView(),
+                    ),
+                  );
+                },
+                child: Image.asset("assets/img/menu_weight.png",
+                    width: 25, height: 25),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

@@ -17,5 +17,5 @@ String? validateAge(String? value) {
     return 'Please enter a realistic age';
   }
 
-  return null; // Age is valid
+  return null;
 }

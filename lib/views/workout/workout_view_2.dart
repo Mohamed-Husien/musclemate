@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:musclemate/helpers/color_extension.dart';
-import 'package:musclemate/views/workout/workout_detail_view.dart';
 
 class WorkoutView2 extends StatefulWidget {
   const WorkoutView2({super.key});

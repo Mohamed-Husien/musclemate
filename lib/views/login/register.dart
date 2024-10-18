@@ -47,7 +47,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
     _lastNameController;
     _emailController;
     _passwordController;
-    // upLoadImage();
   }
 
   void _togglePasswordVisibility() {
