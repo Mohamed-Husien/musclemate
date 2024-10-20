@@ -20,7 +20,12 @@ void showLogoutConfirmationDialog(BuildContext context) {
               Navigator.of(context).pop();
               logoutUser(context);
             },
-            child: Text("Logout"),
+            child: Text(
+              "Logout",
+              style: TextStyle(
+                color: Colors.red,
+              ),
+            ),
           ),
         ],
       );

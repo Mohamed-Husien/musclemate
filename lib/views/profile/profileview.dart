@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:musclemate/generated/l10n.dart';
 import 'package:musclemate/helpers/color_extension.dart';
 import 'package:musclemate/helpers/confirm_dialog.dart';
+import 'package:musclemate/helpers/delet_account_confirm_dialog.dart';
 import 'package:musclemate/helpers/get_current_user_email.dart';
 import 'package:musclemate/helpers/loading_indicator_skeletonizer.dart';
 
@@ -20,6 +21,9 @@ class ProfileView extends StatefulWidget {
   @override
   _ProfileViewState createState() => _ProfileViewState();
 }
+
+GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<
+    ScaffoldState>(); //to access the context of this widget befor this widget dispose or closed
 
 class _ProfileViewState extends State<ProfileView> {
   String? email;
@@ -56,6 +60,7 @@ class _ProfileViewState extends State<ProfileView> {
           _userPhone = userDoc['phone'] ?? 'Phone not available';
         }
         return Scaffold(
+          key: scaffoldKey,
           appBar: AppBar(
             backgroundColor: TColor.kPrimaryColor,
             title: Text('Your account details'),
@@ -197,23 +202,61 @@ class _ProfileViewState extends State<ProfileView> {
                           );
                         },
                       ),
+                      SizedBox(
+                        height: 16,
+                      ),
+                      Divider(
+                        thickness: 0.5,
+                        color: Colors.grey,
+                        indent: 16,
+                        endIndent: 16,
+                      ),
                       SizedBox(height: 64),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          foregroundColor: Colors.white,
-                          backgroundColor: TColor.kPrimaryColor,
-                          padding: EdgeInsets.symmetric(
-                              vertical: 15, horizontal: 50),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                foregroundColor: Colors.white,
+                                backgroundColor: TColor.kPrimaryColor,
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 15, horizontal: 16),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(30),
+                                ),
+                                elevation: 5,
+                                textStyle: TextStyle(fontSize: 18),
+                              ),
+                              onPressed: () {
+                                showLogoutConfirmationDialog(context);
+                              },
+                              child: Text(S.of(context).logout),
+                            ),
                           ),
-                          elevation: 5,
-                          textStyle: TextStyle(fontSize: 18),
-                        ),
-                        onPressed: () {
-                          showLogoutConfirmationDialog(context);
-                        },
-                        child: Text(S.of(context).logout),
+                          SizedBox(
+                            width: 32,
+                          ),
+                          Expanded(
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                foregroundColor: Colors.white,
+                                backgroundColor: TColor.kPrimaryColor,
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 15, horizontal: 16),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(30),
+                                ),
+                                elevation: 5,
+                                textStyle: TextStyle(fontSize: 16),
+                              ),
+                              onPressed: () async {
+                                await showDeleteAccountConfirmationDialog();
+                              },
+                              child: Text("Delete!"),
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),

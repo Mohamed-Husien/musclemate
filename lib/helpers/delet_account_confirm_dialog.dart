@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:musclemate/helpers/delet_account_fun.dart';
+import 'package:musclemate/views/profile/profileview.dart';
 
-void showDeleteAccountConfirmationDialog(BuildContext context) {
+Future showDeleteAccountConfirmationDialog() async {
   showDialog(
-    context: context,
+    context: scaffoldKey.currentContext!,
     builder: (BuildContext context) {
       return AlertDialog(
         title: Text("Confirm Account Deletion"),
@@ -18,9 +19,9 @@ void showDeleteAccountConfirmationDialog(BuildContext context) {
           ),
           TextButton(
             onPressed: () async {
-              Navigator.of(context).pop();
-              await deleteAccountAndFirestoreDocument(
-                  context); //call the fun that i made for delet account and user data
+              Navigator.of(scaffoldKey.currentContext!).pop();
+              await deleteAccountAndFirestoreDocument(scaffoldKey
+                  .currentContext!); //call the fun that i made for delet account and user data
             },
             child: Text(
               "Delete",
