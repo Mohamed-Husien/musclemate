@@ -36,8 +36,8 @@ class _ProfileViewState extends State<ProfileView> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: users.where('email', isEqualTo: email).get(),
+    return StreamBuilder<QuerySnapshot>(
+      stream: users.where('email', isEqualTo: email).snapshots(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return SkeletonizerIndicator();
@@ -56,6 +56,7 @@ class _ProfileViewState extends State<ProfileView> {
         }
         return Scaffold(
           appBar: AppBar(
+            backgroundColor: TColor.kPrimaryColor,
             title: Text('Your account details'),
             elevation: 0,
             centerTitle: true,

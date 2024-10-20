@@ -1,7 +1,9 @@
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:musclemate/helpers/get_current_user_email.dart';
 import 'package:path/path.dart' as p;
 import 'package:firebase_storage/firebase_storage.dart';
@@ -57,6 +59,7 @@ class _ProfileViewState extends State<EditProfile> {
   var _selectedImage;
   var pickedImage;
   String? url;
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -66,109 +69,113 @@ class _ProfileViewState extends State<EditProfile> {
         centerTitle: true,
         backgroundColor: TColor.kPrimaryColor,
       ),
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Colors.brown.shade300, Colors.brown.shade100],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
+      body: ModalProgressHUD(
+        inAsyncCall: isLoading,
+        child: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Colors.brown.shade300, Colors.brown.shade100],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
           ),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Form(
-            key: _formKey,
-            child: ListView(
-              children: [
-                CustomTextFormField(
-                  controller: nameController,
-                  hintText: 'Enter your name',
-                  prefixIcon: Icon(Icons.person),
-                ),
-                SizedBox(height: 16.0),
-                CustomTextFormField(
-                  controller: phoneController,
-                  hintText: 'Enter your phone number',
-                  textInputType: TextInputType.phone,
-                  prefixIcon: Icon(Icons.phone),
-                ),
-                SizedBox(height: 16.0),
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(30),
-                    border: Border.all(
-                      color: Colors.brown.shade400,
-                      width: 2,
-                    ),
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Form(
+              key: _formKey,
+              child: ListView(
+                children: [
+                  CustomTextFormField(
+                    controller: nameController,
+                    hintText: 'Enter your name',
+                    prefixIcon: Icon(Icons.person),
                   ),
-                  child: ListTile(
-                    title: Text(
-                      'Click here to add your profile picture',
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.grey,
-                      ),
-                    ),
-                    trailing: IconButton(
-                      onPressed: () {
-                        pickImageFromGallery();
-                      },
-                      icon: Icon(
-                        Icons.add_a_photo,
-                      ),
-                    ),
-                    leading: Container(
-                      width: 50.h,
-                      height: 50.h,
-                      decoration: BoxDecoration(
-                        color: TColor.white,
-                        borderRadius: BorderRadius.circular(27),
-                      ),
-                      alignment: Alignment.center,
-                      child: image != null
-                          ? ClipRRect(
-                              borderRadius: BorderRadius.circular(25),
-                              child: Image(
-                                image: MemoryImage(image!),
-                                width: 40,
-                                height: 40,
-                                fit: BoxFit.cover,
-                              ),
-                            )
-                          : ClipRRect(
-                              borderRadius: BorderRadius.circular(25),
-                              child: Icon(
-                                Icons.person_2_rounded,
-                                size: 50, // Adjust size
-                              ),
-                            ),
-                    ),
+                  SizedBox(height: 16.0),
+                  CustomTextFormField(
+                    controller: phoneController,
+                    hintText: 'Enter your phone number',
+                    textInputType: TextInputType.phone,
+                    prefixIcon: Icon(Icons.phone),
                   ),
-                ),
-                SizedBox(height: 16.0),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.white,
-                    backgroundColor: TColor.kPrimaryColor,
-                    padding: EdgeInsets.symmetric(vertical: 15),
-                    shape: RoundedRectangleBorder(
+                  SizedBox(height: 16.0),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
                       borderRadius: BorderRadius.circular(30),
+                      border: Border.all(
+                        color: Colors.brown.shade400,
+                        width: 2,
+                      ),
                     ),
-                    elevation: 5,
-                    textStyle: TextStyle(fontSize: 18),
+                    child: ListTile(
+                      title: Text(
+                        'Click here to add your profile picture',
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Colors.grey,
+                        ),
+                      ),
+                      trailing: IconButton(
+                        onPressed: () {
+                          pickImageFromGallery();
+                        },
+                        icon: Icon(
+                          Icons.add_a_photo,
+                        ),
+                      ),
+                      leading: Container(
+                          width: 50.h,
+                          height: 50.h,
+                          decoration: BoxDecoration(
+                            color: TColor.white,
+                            borderRadius: BorderRadius.circular(27),
+                          ),
+                          alignment: Alignment.center,
+                          child: image != null
+                              ? ClipRRect(
+                                  borderRadius: BorderRadius.circular(25),
+                                  child: Image(
+                                    image: MemoryImage(image!),
+                                    width: 40,
+                                    height: 40,
+                                    fit: BoxFit.cover,
+                                  ),
+                                )
+                              : ClipRRect(
+                                  borderRadius: BorderRadius.circular(20),
+                                  child: CachedNetworkImage(
+                                    imageUrl: widget.profileImage,
+                                    width: 40,
+                                    height: 40,
+                                    fit: BoxFit.cover,
+                                  ),
+                                )),
+                    ),
                   ),
-                  onPressed: () async {
-                    try {
-                      await _submitForm();
-                      Navigator.pop(context);
-                    } catch (e) {
-                      showSnachBarFun(context, e.toString());
-                    }
-                  },
-                  child: Text(S.of(context).save),
-                ),
-              ],
+                  SizedBox(height: 16.0),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.white,
+                      backgroundColor: TColor.kPrimaryColor,
+                      padding: EdgeInsets.symmetric(vertical: 15),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      elevation: 5,
+                      textStyle: TextStyle(fontSize: 18),
+                    ),
+                    onPressed: () async {
+                      try {
+                        await _submitForm();
+                        Navigator.pop(context);
+                      } catch (e) {
+                        showSnachBarFun(context, e.toString());
+                      }
+                    },
+                    child: Text(S.of(context).save),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
@@ -178,9 +185,13 @@ class _ProfileViewState extends State<EditProfile> {
 
   Future _submitForm() async {
     if (_formKey.currentState?.validate() ?? false) {
+      isLoading = true;
+      setState(() {});
       await upLoadImage();
       await updateUserDocument();
     }
+    isLoading = false;
+    setState(() {});
   }
 
   Future pickImageFromGallery() async {
@@ -250,9 +261,9 @@ class _ProfileViewState extends State<EditProfile> {
           'imageUrl': url ?? widget.profileImage,
           'phone': phoneController.text ?? widget.phoneNumber,
         });
-        showSnachBarFun(context, 'Document updated successfully');
+        showSnachBarFun(context, 'Profile updated successfully');
       } else {
-        showSnachBarFun(context, 'No document found with the matching email');
+        showSnachBarFun(context, 'No data found with the matching Profile');
       }
     } else {
       showSnachBarFun(context, "you didn't update any data!");
