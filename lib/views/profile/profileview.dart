@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:musclemate/generated/l10n.dart';
 import 'package:musclemate/helpers/color_extension.dart';
+import 'package:musclemate/helpers/confirm_dialog.dart';
 import 'package:musclemate/helpers/get_current_user_email.dart';
 import 'package:musclemate/helpers/loading_indicator_skeletonizer.dart';
 
@@ -210,7 +211,7 @@ class _ProfileViewState extends State<ProfileView> {
                           textStyle: TextStyle(fontSize: 18),
                         ),
                         onPressed: () {
-                          log(getCurrentUserEmail()!);
+                          showLogoutConfirmationDialog(context);
                         },
                         child: Text(S.of(context).logout),
                       ),
