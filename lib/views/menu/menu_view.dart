@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:musclemate/helpers/color_extension.dart';
+import 'package:musclemate/helpers/confirm_dialog.dart';
 import 'package:musclemate/helpers/loading_indicator_skeletonizer.dart';
 import 'package:musclemate/helpers/menu_tap_fun.dart';
 import 'package:musclemate/models/menu_cells_model.dart';
@@ -168,13 +169,7 @@ class _MenuViewState extends State<MenuView> {
                         child: IconButton(
                           onPressed: () async {
                             try {
-                              await FirebaseAuth.instance.signOut();
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => LoginPage(),
-                                ),
-                              );
+                              showLogoutConfirmationDialog(context);
                             } catch (e) {
                               print("Error signing out: $e");
                             }
