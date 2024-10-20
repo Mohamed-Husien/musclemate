@@ -36,7 +36,7 @@ class _MenuViewState extends State<MenuView> {
     });
     switch (index) {
       case 0:
-        Navigator.pushNamed(context, '/home');
+        // Navigator.pushNamed(context, 'home');
         break;
       case 1:
         Navigator.push(

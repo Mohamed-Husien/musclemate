@@ -1033,7 +1033,7 @@ class S {
   /// `Rate Your Heart Measure`
   String get appTitle {
     return Intl.message(
-      'Rate Your Heart Measure',
+      'Your Heart Measure Rate',
       name: 'appTitle',
       desc: '',
       args: [],
