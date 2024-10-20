@@ -227,7 +227,6 @@ class _ProfileViewState extends State<EditProfile> {
 
       if (taskSnapshot.state == TaskState.success) {
         String downloadUrl = await reference.getDownloadURL();
-        print(downloadUrl);
         if (mounted) {
           setState(() {
             url = downloadUrl;
