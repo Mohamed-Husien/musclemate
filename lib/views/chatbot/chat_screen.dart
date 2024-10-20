@@ -66,7 +66,8 @@ class _ChatScreenState extends State<ChatScreen> {
       messages = [chatMessage, ...messages];
     });
     try {
-      String question = chatMessage.text;
+      String question = normalizeArabicNumbers(chatMessage.text);
+
       List<Uint8List>? images;
       if (chatMessage.medias?.isNotEmpty ?? false) {
         images = [
@@ -124,5 +125,16 @@ class _ChatScreenState extends State<ChatScreen> {
       );
       _sendMessage(chatMessage);
     }
+  }
+
+  String normalizeArabicNumbers(String input) {
+    const arabicNumerals = '٠١٢٣٤٥٦٧٨٩';
+    const westernNumerals = '0123456789';
+
+    for (int i = 0; i < arabicNumerals.length; i++) {
+      input = input.replaceAll(arabicNumerals[i], westernNumerals[i]);
+    }
+
+    return input;
   }
 }

@@ -72,6 +72,7 @@ class _MyAppState extends State<MyApp> {
           supportedLocales: S.delegate.supportedLocales,
           routes: {
             MenuView.id: (context) => MenuView(),
+            SplashScreen.id: (context) => SplashScreen(),
           },
           title: 'Musclemate App',
           debugShowCheckedModeBanner: false,
@@ -80,7 +81,7 @@ class _MyAppState extends State<MyApp> {
             colorScheme: ColorScheme.fromSeed(seedColor: TColor.kPrimaryColor),
             useMaterial3: false,
           ),
-          home: const SplashScreen(),
+          initialRoute: SplashScreen.id,
         );
       },
     );

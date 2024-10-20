@@ -1,15 +1,15 @@
 import 'package:musclemate/generated/l10n.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:musclemate/helpers/color_extension.dart';
+import 'package:musclemate/helpers/confirm_dialog.dart';
 import 'package:musclemate/helpers/loading_indicator_skeletonizer.dart';
 import 'package:musclemate/helpers/menu_tap_fun.dart';
 import 'package:musclemate/models/menu_cells_model.dart';
 import 'package:musclemate/views/chatbot/chat_screen.dart';
-import 'package:musclemate/views/login/login.dart';
+import 'package:musclemate/views/home_view.dart';
 import 'package:musclemate/views/profile/profileview.dart';
 import 'package:musclemate/views/settings/setting_view.dart';
 import 'package:musclemate/views/weight/weight_view.dart';
@@ -35,7 +35,10 @@ class _MenuViewState extends State<MenuView> {
     });
     switch (index) {
       case 0:
-        Navigator.pushNamed(context, '/home');
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => HomeView()),
+        );
         break;
       case 1:
         Navigator.push(
@@ -168,13 +171,7 @@ class _MenuViewState extends State<MenuView> {
                         child: IconButton(
                           onPressed: () async {
                             try {
-                              await FirebaseAuth.instance.signOut();
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => LoginPage(),
-                                ),
-                              );
+                              showLogoutConfirmationDialog(context);
                             } catch (e) {
                               print("Error signing out: $e");
                             }
@@ -233,19 +230,19 @@ class _MenuViewState extends State<MenuView> {
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   Container(
-                                    width: 54,
-                                    height: 54,
+                                    width: 74,
+                                    height: 74,
                                     decoration: BoxDecoration(
-                                        color: TColor.white,
-                                        borderRadius:
-                                            BorderRadius.circular(27)),
+                                      color: TColor.white,
+                                      borderRadius: BorderRadius.circular(40),
+                                    ),
                                     alignment: Alignment.center,
                                     child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(25),
+                                        borderRadius: BorderRadius.circular(40),
                                         child: CachedNetworkImage(
                                           imageUrl: _image!,
-                                          width: 50,
-                                          height: 50,
+                                          width: 70,
+                                          height: 70,
                                           fit: BoxFit.cover,
                                         )),
                                   ),
@@ -258,16 +255,21 @@ class _MenuViewState extends State<MenuView> {
                                           CrossAxisAlignment.start,
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
-                                        Text(name,
-                                            style: TextStyle(
-                                              fontSize: 25,
-                                              color: TColor.white,
-                                              fontWeight: FontWeight.w700,
-                                            )),
+                                        Text(
+                                          name,
+                                          style: TextStyle(
+                                            fontSize: 18,
+                                            color: TColor.white,
+                                            fontWeight: FontWeight.w700,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 6,
+                                        ),
                                         Text(
                                           _userEmail!,
                                           style: TextStyle(
-                                            fontSize: 15,
+                                            fontSize: 12,
                                             color: TColor.white,
                                             fontWeight: FontWeight.w500,
                                           ),

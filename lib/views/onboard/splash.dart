@@ -7,6 +7,7 @@ import 'package:musclemate/views/onboard/onboarding.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key});
+  static String id = 'SplachScreen';
 
   @override
   State<SplashScreen> createState() => _SplashScreenState();
@@ -48,18 +49,18 @@ class _SplashScreenState extends State<SplashScreen> {
     );
   }
 
-  Future<void> checkUserAndLogoutIfNeeded(BuildContext context) async {
-    User? user = FirebaseAuth.instance.currentUser;
+  // Future<void> checkUserAndLogoutIfNeeded(BuildContext context) async {
+  //   User? user = FirebaseAuth.instance.currentUser;
 
-    if (user == null) {
-      await FirebaseAuth.instance.signOut();
+  //   if (user == null) {
+  //     await FirebaseAuth.instance.signOut();
 
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => FirstOnBoarding(),
-        ),
-      );
-    }
-  }
+  //     Navigator.push(
+  //       context,
+  //       MaterialPageRoute(
+  //         builder: (context) => FirstOnBoarding(),
+  //       ),
+  //     );
+  //   }
+  // }
 }
