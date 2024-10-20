@@ -1,7 +1,6 @@
 import 'package:musclemate/generated/l10n.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:musclemate/helpers/color_extension.dart';
@@ -10,7 +9,7 @@ import 'package:musclemate/helpers/loading_indicator_skeletonizer.dart';
 import 'package:musclemate/helpers/menu_tap_fun.dart';
 import 'package:musclemate/models/menu_cells_model.dart';
 import 'package:musclemate/views/chatbot/chat_screen.dart';
-import 'package:musclemate/views/login/login.dart';
+import 'package:musclemate/views/home_view.dart';
 import 'package:musclemate/views/profile/profileview.dart';
 import 'package:musclemate/views/settings/setting_view.dart';
 import 'package:musclemate/views/weight/weight_view.dart';
@@ -36,7 +35,10 @@ class _MenuViewState extends State<MenuView> {
     });
     switch (index) {
       case 0:
-        // Navigator.pushNamed(context, 'home');
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => HomeView()),
+        );
         break;
       case 1:
         Navigator.push(

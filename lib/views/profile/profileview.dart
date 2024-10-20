@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:insta_image_viewer/insta_image_viewer.dart';
 import 'package:musclemate/generated/l10n.dart';
 import 'package:musclemate/helpers/color_extension.dart';
 import 'package:musclemate/helpers/confirm_dialog.dart';
@@ -100,12 +101,48 @@ class _ProfileViewState extends State<ProfileView> {
                               width: 2,
                             ),
                           ),
-                          child: ClipOval(
-                            child: CachedNetworkImage(
-                              imageUrl: _image!,
-                              height: 80,
-                              width: 80,
-                              fit: BoxFit.cover,
+                          child: GestureDetector(
+                            onTap: () {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return Dialog(
+                                    backgroundColor: Colors.transparent,
+                                    insetPadding: EdgeInsets.all(10),
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.9,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.6,
+                                      decoration: BoxDecoration(
+                                        border: Border.all(
+                                          color: Colors.white,
+                                          width: 2,
+                                        ),
+                                        borderRadius: BorderRadius.circular(22),
+                                      ),
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(20),
+                                        child: CachedNetworkImage(
+                                          imageUrl: _image!,
+                                          fit: BoxFit.cover,
+                                          width: double.infinity,
+                                          height: double.infinity,
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                },
+                              );
+                            },
+                            child: ClipOval(
+                              child: CachedNetworkImage(
+                                imageUrl: _image!,
+                                height: 80,
+                                width: 80,
+                                fit: BoxFit.cover,
+                              ),
                             ),
                           ),
                         ),
