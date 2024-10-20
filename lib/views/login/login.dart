@@ -238,6 +238,7 @@ class _LoginPageState extends State<LoginPage> {
         'email': email,
         'username': fullName,
         'imageUrl': url,
+        'phone': '',
       });
     } catch (e) {
       showSnachBarFun(context, 'Error storing user data');
