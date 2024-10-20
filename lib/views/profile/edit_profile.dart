@@ -11,7 +11,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:musclemate/generated/l10n.dart';
 import 'package:musclemate/helpers/color_extension.dart';
 import 'package:musclemate/views/login/helper/show_snack_bar_function.dart';
-import 'package:musclemate/views/profile/profile_custom_text_form_field.dart';
+import 'package:musclemate/views/profile/helper/profile_custom_text_form_field.dart';
 
 class EditProfile extends StatefulWidget {
   final String name;

@@ -37,180 +37,191 @@ class _ProfileViewState extends State<ProfileView> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: users.where('email', isEqualTo: email).get(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return SkeletonizerIndicator();
-          }
-          if (snapshot.hasError) {
-            return const Center(child: Text('Error loading data'));
-          }
-          if (snapshot.hasData && snapshot.data!.docs.isNotEmpty) {
-            var userDoc =
-                snapshot.data!.docs.first.data() as Map<String, dynamic>;
-            name = userDoc['username'] ?? 'Name not available';
+      future: users.where('email', isEqualTo: email).get(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return SkeletonizerIndicator();
+        }
+        if (snapshot.hasError) {
+          return const Center(child: Text('Error loading data'));
+        }
+        if (snapshot.hasData && snapshot.data!.docs.isNotEmpty) {
+          var userDoc =
+              snapshot.data!.docs.first.data() as Map<String, dynamic>;
+          name = userDoc['username'] ?? 'Name not available';
 
-            _image = userDoc['imageUrl'] ?? 'image not available';
-            _userEmail = userDoc['email'] ?? 'Email not available';
-            _userPhone = userDoc['phone'] ?? 'Phone not available';
-          }
-          return Scaffold(
-            body: Column(
-              children: [
-                Container(
-                  width: double.infinity,
-                  height: 300,
+          _image = userDoc['imageUrl'] ?? 'image not available';
+          _userEmail = userDoc['email'] ?? 'Email not available';
+          _userPhone = userDoc['phone'] ?? 'Phone not available';
+        }
+        return Scaffold(
+          appBar: AppBar(
+            title: Text('Your account details'),
+            elevation: 0,
+            centerTitle: true,
+          ),
+          body: Column(
+            children: [
+              Container(
+                width: double.infinity,
+                height: 200,
+                decoration: BoxDecoration(
                   color: TColor.kPrimaryColor,
-                  child: Center(
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                        right: 16,
-                        left: 16,
-                        top: 130,
-                      ),
-                      child: SingleChildScrollView(
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Container(
-                              height: 84,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                border: Border.all(
-                                  color: Colors.white,
-                                  width: 2,
-                                ),
-                              ),
-                              child: ClipOval(
-                                child: CachedNetworkImage(
-                                  imageUrl: _image!,
-                                  height: 80,
-                                  width: 80,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(
-                              width: 16,
-                            ),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Text(
-                                    name!,
-                                    style: TextStyle(
-                                      fontSize: 17,
-                                      color: TColor.white,
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 8,
-                                  ),
-                                  Text(
-                                    _userEmail!,
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: TColor.white,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            SizedBox(
-                              height: 24,
-                            ),
-                          ],
-                        ),
-                      ),
+                  image: DecorationImage(
+                    image: CachedNetworkImageProvider(
+                      'https://i.shgcdn.com/d61f124a-5eb2-41c7-abd1-ace0dd6f7d97/-/format/auto/-/preview/3000x3000/-/quality/lighter/',
                     ),
+                    fit: BoxFit.cover,
                   ),
                 ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                    right: 16,
+                    left: 16,
+                    top: 70,
+                  ),
+                  child: SingleChildScrollView(
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
                       children: [
-                        _buildProfileOption(
-                          context,
-                          title: S.of(context).editprofile,
-                          icon: Icons.person,
-                          onTap: () async {
-                            final result = await Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => EditProfile(
-                                  name: name!,
-                                  phoneNumber: _userPhone!,
-                                  profileImage: _image!,
+                        Container(
+                          height: 84,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              color: Colors.white,
+                              width: 2,
+                            ),
+                          ),
+                          child: ClipOval(
+                            child: CachedNetworkImage(
+                              imageUrl: _image!,
+                              height: 80,
+                              width: 80,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 16,
+                        ),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                name!,
+                                style: TextStyle(
+                                  fontSize: 17,
+                                  color: TColor.white,
+                                  fontWeight: FontWeight.w700,
                                 ),
                               ),
-                            );
-
-                            if (result != null) {
-                              setState(() {
-                                name = result['name'];
-                                email = result['email'];
-                              });
-                            }
-                          },
-                        ),
-                        SizedBox(height: 10),
-                        _buildProfileOption(
-                          context,
-                          title: S.of(context).contactus,
-                          icon: Icons.contact_support,
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => ContactUsPage()),
-                            );
-                          },
-                        ),
-                        SizedBox(height: 10),
-                        _buildProfileOption(
-                          context,
-                          title: S.of(context).privacy,
-                          icon: Icons.privacy_tip_outlined,
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => PrivacyPolicyPage()),
-                            );
-                          },
-                        ),
-                        SizedBox(height: 20),
-                        Spacer(),
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            foregroundColor: Colors.white,
-                            backgroundColor: TColor.kPrimaryColor,
-                            padding: EdgeInsets.symmetric(
-                                vertical: 15, horizontal: 50),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30),
-                            ),
-                            elevation: 5,
-                            textStyle: TextStyle(fontSize: 18),
+                              SizedBox(
+                                height: 8,
+                              ),
+                              Text(
+                                _userEmail!,
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: TColor.white,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ],
                           ),
-                          onPressed: () {
-                            log(getCurrentUserEmail()!);
-                          },
-                          child: Text(S.of(context).logout),
+                        ),
+                        SizedBox(
+                          height: 24,
                         ),
                       ],
                     ),
                   ),
                 ),
-              ],
-            ),
-          );
-        });
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    children: [
+                      _buildProfileOption(
+                        context,
+                        title: S.of(context).editprofile,
+                        icon: Icons.person,
+                        onTap: () async {
+                          final result = await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => EditProfile(
+                                name: name!,
+                                phoneNumber: _userPhone!,
+                                profileImage: _image!,
+                              ),
+                            ),
+                          );
+
+                          if (result != null) {
+                            setState(() {
+                              name = result['name'];
+                              email = result['email'];
+                            });
+                          }
+                        },
+                      ),
+                      SizedBox(height: 10),
+                      _buildProfileOption(
+                        context,
+                        title: S.of(context).contactus,
+                        icon: Icons.contact_support,
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ContactUsPage()),
+                          );
+                        },
+                      ),
+                      SizedBox(height: 10),
+                      _buildProfileOption(
+                        context,
+                        title: S.of(context).privacy,
+                        icon: Icons.privacy_tip_outlined,
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => PrivacyPolicyPage()),
+                          );
+                        },
+                      ),
+                      SizedBox(height: 64),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          foregroundColor: Colors.white,
+                          backgroundColor: TColor.kPrimaryColor,
+                          padding: EdgeInsets.symmetric(
+                              vertical: 15, horizontal: 50),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                          elevation: 5,
+                          textStyle: TextStyle(fontSize: 18),
+                        ),
+                        onPressed: () {
+                          log(getCurrentUserEmail()!);
+                        },
+                        child: Text(S.of(context).logout),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   Widget _buildProfileOption(
