@@ -17,8 +17,8 @@ void showLogoutConfirmationDialog(BuildContext context) {
           ),
           TextButton(
             onPressed: () {
-              Navigator.of(context).pop();
               logoutUser(context);
+              Navigator.of(context).pop();
             },
             child: Text(
               "Logout",
