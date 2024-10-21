@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:musclemate/helpers/save_uid_in_sharedpreference.dart';
 import 'package:musclemate/views/login/helper/custom_text_form_field.dart';
 import 'package:musclemate/views/login/helper/emial_and_password_validet_function.dart';
 import 'package:musclemate/views/login/helper/show_snack_bar_function.dart';
@@ -125,7 +126,7 @@ class _LoginPageState extends State<LoginPage> {
                             try {
                               await signInUserMethod(
                                   email: email!, password: password!);
-
+                              storeUserUID();
                               showSnachBarFun(context, 'Login successful.');
                               Navigator.pushNamed(context, MenuView.id,
                                   arguments: email);
@@ -155,6 +156,7 @@ class _LoginPageState extends State<LoginPage> {
                             showSnachBarFun(context, 'Login successful.');
                             Navigator.pushNamed(context, MenuView.id,
                                 arguments: email);
+                            await storeUserUID();
                           } on Exception catch (e) {
                             showSnachBarFun(context, e.toString());
                           }
@@ -218,30 +220,46 @@ class _LoginPageState extends State<LoginPage> {
       idToken: googleAuth.idToken,
     );
 
-    await storeUserDataFirestore(
+    // Sign in the user first
+    UserCredential userCredential =
+        await FirebaseAuth.instance.signInWithCredential(credential);
+
+    // Check if the user is successfully signed in
+    if (userCredential.user != null) {
+      // Store user data in Firestore using UID as the document ID
+      await storeUserDataFirestore(
+        userCredential.user!.uid,
         googleUser.displayName!,
         googleUser.photoUrl ??
             'https://static.vecteezy.com/system/resources/thumbnails/002/387/693/small_2x/user-profile-icon-free-vector.jpg',
-        googleUser.email);
+        googleUser.email,
+      );
 
-    setState(() {
-      email = googleUser.email;
-    });
+      setState(() {
+        email = googleUser.email; // Update the local state
+      });
+    }
 
-    return await FirebaseAuth.instance.signInWithCredential(credential);
+    return userCredential;
   }
 
   Future<void> storeUserDataFirestore(
-      String fullName, String url, String email) async {
+    String uid, // Pass the UID to use as document ID
+    String fullName,
+    String url,
+    String email,
+  ) async {
     try {
-      await _firestore.collection('users').doc().set({
+      await _firestore.collection('users').doc(uid).set({
+        // Use UID as document ID
         'email': email,
         'username': fullName,
         'imageUrl': url,
         'phone': '',
       });
     } catch (e) {
-      showSnachBarFun(context, 'Error storing user data');
+      showSnachBarFun(
+          context, 'Error storing user data: $e'); // Include error details
     }
   }
 }
