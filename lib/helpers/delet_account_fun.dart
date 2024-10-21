@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:musclemate/views/login/helper/show_snack_bar_function.dart';
+import 'package:musclemate/views/onboard/splash.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> deleteAccountAndFirestoreDocument(BuildContext context) async {
@@ -32,6 +33,7 @@ Future<void> deleteAccountAndFirestoreDocument(BuildContext context) async {
         await prefs.remove('userUID');
 //----------------------------------------------
         // Navigate to the SplashScreen after deletion
+        Navigator.pushReplacementNamed(context, SplashScreen.id);
       } else {
         showSnachBarFun(context, 'User data not found ');
       }

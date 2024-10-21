@@ -37,280 +37,272 @@ class _ProfileViewState extends State<ProfileView> {
 
   @override
   Widget build(BuildContext context) {
-    return Builder(builder: (context) {
-      return FutureBuilder<String?>(
-          future: getUserUID(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return SkeletonizerIndicator();
-            }
+    return FutureBuilder<String?>(
+        future: getUserUID(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return SkeletonizerIndicator();
+          }
 
-            if (snapshot.hasError ||
-                !snapshot.hasData ||
-                snapshot.data == null) {
-              return ErrorMessageWidget(
-                  text:
-                      'Error in fetching your data please try later , or try another login way.      ');
-            }
+          if (snapshot.hasError || !snapshot.hasData || snapshot.data == null) {
+            return ErrorMessageWidget(
+                text:
+                    'Error in fetching your data please try later , or try another login way.      ');
+          }
 
-            String? uid = snapshot.data;
-            return StreamBuilder<DocumentSnapshot>(
-              stream: users
-                  .doc(uid)
-                  .snapshots(), // Query by UID from SharedPreferences
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return SkeletonizerIndicator();
-                }
-                if (snapshot.hasError) {
-                  return const Center(child: Text('Error loading data'));
-                }
-                if (snapshot.hasData && snapshot.data!.exists) {
-                  var userDoc = snapshot.data!.data() as Map<String, dynamic>;
-                  name = userDoc['username'] ?? 'Name not available';
-                  _image = userDoc['imageUrl'] ?? 'image not available';
-                  _userEmail = userDoc['email'] ?? 'Email not available';
-                  _userPhone = userDoc['phone'] ?? 'Phone not available';
-                } else {
-                  return const Center(child: Text('User not found'));
-                }
+          String? uid = snapshot.data;
+          return StreamBuilder<DocumentSnapshot>(
+            stream: users
+                .doc(uid)
+                .snapshots(), // Query by UID from SharedPreferences
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return SkeletonizerIndicator();
+              }
+              if (snapshot.hasError) {
+                return ErrorMessageWidget(text: 'error ;oading data.      ');
+              }
+              if (snapshot.hasData && snapshot.data!.exists) {
+                var userDoc = snapshot.data!.data() as Map<String, dynamic>;
+                name = userDoc['username'] ?? 'Name not available';
+                _image = userDoc['imageUrl'] ?? 'image not available';
+                _userEmail = userDoc['email'] ?? 'Email not available';
+                _userPhone = userDoc['phone'] ?? 'Phone not available';
+              } else {
+                return ErrorMessageWidget(text: 'User not found.      ');
+              }
 
-                return Scaffold(
-                  key: scaffoldKey,
-                  appBar: AppBar(
-                    backgroundColor: TColor.kPrimaryColor,
-                    title: Text('Your account details'),
-                    elevation: 0,
-                    centerTitle: true,
-                  ),
-                  body: Column(
-                    children: [
-                      Container(
-                        width: double.infinity,
-                        height: 200,
-                        decoration: BoxDecoration(
-                          color: TColor.kPrimaryColor,
-                          image: DecorationImage(
-                            image: CachedNetworkImageProvider(
-                              'https://i.shgcdn.com/d61f124a-5eb2-41c7-abd1-ace0dd6f7d97/-/format/auto/-/preview/3000x3000/-/quality/lighter/',
-                            ),
-                            fit: BoxFit.cover,
+              return Scaffold(
+                key: scaffoldKey,
+                appBar: AppBar(
+                  backgroundColor: TColor.kPrimaryColor,
+                  title: Text('Your account details'),
+                  elevation: 0,
+                  centerTitle: true,
+                ),
+                body: Column(
+                  children: [
+                    Container(
+                      width: double.infinity,
+                      height: 200,
+                      decoration: BoxDecoration(
+                        color: TColor.kPrimaryColor,
+                        image: DecorationImage(
+                          image: CachedNetworkImageProvider(
+                            'https://i.shgcdn.com/d61f124a-5eb2-41c7-abd1-ace0dd6f7d97/-/format/auto/-/preview/3000x3000/-/quality/lighter/',
                           ),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                              right: 16, left: 16, top: 70),
-                          child: SingleChildScrollView(
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Container(
-                                  height: 84,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    border: Border.all(
-                                      color: Colors.white,
-                                      width: 2,
-                                    ),
-                                  ),
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return Dialog(
-                                            backgroundColor: Colors.transparent,
-                                            insetPadding: EdgeInsets.all(10),
-                                            child: Container(
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.9,
-                                              height: MediaQuery.of(context)
-                                                      .size
-                                                      .height *
-                                                  0.6,
-                                              decoration: BoxDecoration(
-                                                border: Border.all(
-                                                  color: Colors.white,
-                                                  width: 2,
-                                                ),
-                                                borderRadius:
-                                                    BorderRadius.circular(22),
-                                              ),
-                                              child: ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(20),
-                                                child: CachedNetworkImage(
-                                                  imageUrl: _image!,
-                                                  fit: BoxFit.cover,
-                                                  width: double.infinity,
-                                                  height: double.infinity,
-                                                ),
-                                              ),
-                                            ),
-                                          );
-                                        },
-                                      );
-                                    },
-                                    child: ClipOval(
-                                      child: CachedNetworkImage(
-                                        imageUrl: _image!,
-                                        height: 80,
-                                        width: 80,
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(width: 16),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Text(
-                                        name ?? 'Loading...',
-                                        style: TextStyle(
-                                          fontSize: 17,
-                                          color: TColor.white,
-                                          fontWeight: FontWeight.w700,
-                                        ),
-                                      ),
-                                      SizedBox(height: 8),
-                                      Text(
-                                        _userEmail ?? 'Loading...',
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          color: TColor.white,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                SizedBox(height: 24),
-                              ],
-                            ),
-                          ),
+                          fit: BoxFit.cover,
                         ),
                       ),
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Column(
+                      child: Padding(
+                        padding:
+                            const EdgeInsets.only(right: 16, left: 16, top: 70),
+                        child: SingleChildScrollView(
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
                             children: [
-                              _buildProfileOption(
-                                context,
-                                title: S.of(context).editprofile,
-                                icon: Icons.person,
-                                onTap: () async {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => EditProfile(
-                                        name: name!,
-                                        phoneNumber: _userPhone!,
-                                        profileImage: _image!,
-                                      ),
-                                    ),
-                                  );
-                                },
-                              ),
-                              SizedBox(height: 10),
-                              _buildProfileOption(
-                                context,
-                                title: S.of(context).contactus,
-                                icon: Icons.contact_support,
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => ContactUsPage()),
-                                  );
-                                },
-                              ),
-                              SizedBox(height: 10),
-                              _buildProfileOption(
-                                context,
-                                title: S.of(context).privacy,
-                                icon: Icons.privacy_tip_outlined,
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            PrivacyPolicyPage()),
-                                  );
-                                },
-                              ),
-                              SizedBox(height: 16),
-                              Divider(
-                                  thickness: 0.5,
-                                  color: Colors.grey,
-                                  indent: 16,
-                                  endIndent: 16),
-                              SizedBox(height: 64),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Expanded(
-                                    child: ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                        foregroundColor: Colors.white,
-                                        backgroundColor: TColor.kPrimaryColor,
-                                        padding: EdgeInsets.symmetric(
-                                            vertical: 15, horizontal: 16),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(30),
-                                        ),
-                                        elevation: 5,
-                                        textStyle: TextStyle(fontSize: 18),
-                                      ),
-                                      onPressed: () {
-                                        showLogoutConfirmationDialog(context);
+                              Container(
+                                height: 84,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                    color: Colors.white,
+                                    width: 2,
+                                  ),
+                                ),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return Dialog(
+                                          backgroundColor: Colors.transparent,
+                                          insetPadding: EdgeInsets.all(10),
+                                          child: Container(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.9,
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .height *
+                                                0.6,
+                                            decoration: BoxDecoration(
+                                              border: Border.all(
+                                                color: Colors.white,
+                                                width: 2,
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(22),
+                                            ),
+                                            child: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(20),
+                                              child: CachedNetworkImage(
+                                                imageUrl: _image!,
+                                                fit: BoxFit.cover,
+                                                width: double.infinity,
+                                                height: double.infinity,
+                                              ),
+                                            ),
+                                          ),
+                                        );
                                       },
-                                      child: Text(S.of(context).logout),
+                                    );
+                                  },
+                                  child: ClipOval(
+                                    child: CachedNetworkImage(
+                                      imageUrl: _image!,
+                                      height: 80,
+                                      width: 80,
+                                      fit: BoxFit.cover,
                                     ),
                                   ),
-                                  SizedBox(width: 32),
-                                  Expanded(
-                                    child: ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                        foregroundColor: Colors.white,
-                                        backgroundColor: TColor.kPrimaryColor,
-                                        padding: EdgeInsets.symmetric(
-                                            vertical: 15, horizontal: 16),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(30),
-                                        ),
-                                        elevation: 5,
-                                        textStyle: TextStyle(fontSize: 16),
-                                      ),
-                                      onPressed: () async {
-                                        showDeleteAccountConfirmationDialog(
-                                            context);
-                                      },
-                                      child: Text("Delete!"),
-                                    ),
-                                  ),
-                                ],
+                                ),
                               ),
+                              const SizedBox(width: 16),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text(
+                                      name ?? 'Loading...',
+                                      style: TextStyle(
+                                        fontSize: 17,
+                                        color: TColor.white,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
+                                    SizedBox(height: 8),
+                                    Text(
+                                      _userEmail ?? 'Loading...',
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: TColor.white,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(height: 24),
                             ],
                           ),
                         ),
                       ),
-                    ],
-                  ),
-                );
-              },
-            );
-          });
-    });
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Column(
+                          children: [
+                            _buildProfileOption(
+                              context,
+                              title: S.of(context).editprofile,
+                              icon: Icons.person,
+                              onTap: () async {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => EditProfile(
+                                      name: name!,
+                                      phoneNumber: _userPhone!,
+                                      profileImage: _image!,
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                            SizedBox(height: 10),
+                            _buildProfileOption(
+                              context,
+                              title: S.of(context).contactus,
+                              icon: Icons.contact_support,
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => ContactUsPage()),
+                                );
+                              },
+                            ),
+                            SizedBox(height: 10),
+                            _buildProfileOption(
+                              context,
+                              title: S.of(context).privacy,
+                              icon: Icons.privacy_tip_outlined,
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          PrivacyPolicyPage()),
+                                );
+                              },
+                            ),
+                            SizedBox(height: 16),
+                            Divider(
+                                thickness: 0.5,
+                                color: Colors.grey,
+                                indent: 16,
+                                endIndent: 16),
+                            SizedBox(height: 64),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Expanded(
+                                  child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      foregroundColor: Colors.white,
+                                      backgroundColor: TColor.kPrimaryColor,
+                                      padding: EdgeInsets.symmetric(
+                                          vertical: 15, horizontal: 16),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(30),
+                                      ),
+                                      elevation: 5,
+                                      textStyle: TextStyle(fontSize: 18),
+                                    ),
+                                    onPressed: () {
+                                      showLogoutConfirmationDialog(context);
+                                    },
+                                    child: Text(S.of(context).logout),
+                                  ),
+                                ),
+                                SizedBox(width: 32),
+                                Expanded(
+                                  child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      foregroundColor: Colors.white,
+                                      backgroundColor: TColor.kPrimaryColor,
+                                      padding: EdgeInsets.symmetric(
+                                          vertical: 15, horizontal: 16),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(30),
+                                      ),
+                                      elevation: 5,
+                                      textStyle: TextStyle(fontSize: 16),
+                                    ),
+                                    onPressed: () async {
+                                      showDeleteAccountConfirmationDialog(
+                                          context);
+                                    },
+                                    child: Text("Delete!"),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
+          );
+        });
   }
 
   Widget _buildProfileOption(
