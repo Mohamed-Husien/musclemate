@@ -17,7 +17,7 @@ class RunningLengthView extends StatefulWidget {
 class _RunningLengthViewState extends State<RunningLengthView> {
   final ValueNotifier<double> metersValueNotifier = ValueNotifier<double>(0.0);
   final ValueNotifier<double> progressNotifier = ValueNotifier<double>(0.0);
-  late StreamSubscription<int> _stepCountSubscription;
+  late StreamSubscription<StepCount> _stepCountSubscription;
   int steps = 0;
   double stepLengthInMeters = 0.8;
   final int maxMeters = 10000;
@@ -37,7 +37,10 @@ class _RunningLengthViewState extends State<RunningLengthView> {
   }
 
   void _startStepTracking() {
-    Pedometer.stepCountStream.listen(_onStepCount).onError(_onStepCountError);
+    _stepCountSubscription = Pedometer.stepCountStream.listen(
+      _onStepCount,
+      onError: _onStepCountError,
+    );
   }
 
   void _onStepCount(StepCount event) {

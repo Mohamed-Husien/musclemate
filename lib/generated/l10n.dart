@@ -173,8 +173,8 @@ class S {
   /// `Settings`
   String get bsetting {
     return Intl.message(
-      'Settings',
-      name: 'bsetting',
+      'Profile',
+      name: 'bprofile',
       desc: '',
       args: [],
     );

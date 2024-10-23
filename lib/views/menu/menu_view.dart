@@ -12,7 +12,6 @@ import 'package:musclemate/models/menu_cells_model.dart';
 import 'package:musclemate/views/chatbot/chat_screen.dart';
 import 'package:musclemate/views/home_view.dart';
 import 'package:musclemate/views/profile/profileview.dart';
-import 'package:musclemate/views/settings/setting_view.dart';
 import 'package:musclemate/views/weight/weight_view.dart';
 import 'package:musclemate/widgets/custom_menu_cell.dart';
 import 'package:musclemate/widgets/when_error_widget.dart';
@@ -56,7 +55,7 @@ class _MenuViewState extends State<MenuView> {
       case 3:
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const SettingsView()),
+          MaterialPageRoute(builder: (context) => const ProfileView()),
         );
         break;
     }
@@ -106,9 +105,10 @@ class _MenuViewState extends State<MenuView> {
 
           String? uid = snapshot.data;
 
-          return FutureBuilder<DocumentSnapshot>(
-            future:
-                users.doc(uid).get(), // Use UID to fetch the user's document
+          return StreamBuilder<DocumentSnapshot>(
+            stream: users
+                .doc(uid)
+                .snapshots(), // Use UID to fetch the user's document
             builder: (context, userSnapshot) {
               if (userSnapshot.connectionState == ConnectionState.waiting) {
                 return SkeletonizerIndicator();
@@ -135,41 +135,7 @@ class _MenuViewState extends State<MenuView> {
                     headerSliverBuilder: (context, innerBoxIsScrolled) {
                       return [
                         SliverAppBar(
-                          leading: Padding(
-                            padding: const EdgeInsets.only(top: 16, right: 16),
-                            child: IconButton(
-                              onPressed: () async {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => ProfileView(),
-                                  ),
-                                );
-                              },
-                              icon: Icon(
-                                Icons.person,
-                                size: 33,
-                              ),
-                            ),
-                          ),
-                          actions: [
-                            Padding(
-                              padding:
-                                  const EdgeInsets.only(top: 16, right: 16),
-                              child: IconButton(
-                                onPressed: () async {
-                                  try {
-                                    showLogoutConfirmationDialog(context);
-                                  } catch (e) {
-                                    print("Error signing out: $e");
-                                  }
-                                },
-                                icon: Icon(
-                                  Icons.logout,
-                                ),
-                              ),
-                            )
-                          ],
+                          automaticallyImplyLeading: false,
                           expandedHeight: media.width * 1,
                           collapsedHeight: kToolbarHeight + 20,
                           flexibleSpace: Stack(
@@ -181,7 +147,8 @@ class _MenuViewState extends State<MenuView> {
                                 decoration: const BoxDecoration(
                                   color: Colors.white,
                                   image: DecorationImage(
-                                    image: AssetImage("assets/img/new/15.jpg"),
+                                    image: AssetImage(
+                                        "assets/img/new/images (4).jpeg.jpg"),
                                     fit: BoxFit.cover,
                                   ),
                                 ),
@@ -212,7 +179,7 @@ class _MenuViewState extends State<MenuView> {
                                 },
                                 child: Padding(
                                   padding: const EdgeInsets.symmetric(
-                                      horizontal: 25, vertical: 30),
+                                      horizontal: 16, vertical: 40),
                                   child: SingleChildScrollView(
                                     child: Row(
                                       mainAxisSize: MainAxisSize.min,
@@ -254,7 +221,7 @@ class _MenuViewState extends State<MenuView> {
                                                 ),
                                               ),
                                               SizedBox(
-                                                height: 6,
+                                                height: 8,
                                               ),
                                               Text(
                                                 _userEmail!,
@@ -268,7 +235,7 @@ class _MenuViewState extends State<MenuView> {
                                           ),
                                         ),
                                         SizedBox(
-                                          height: 24,
+                                          height: 30,
                                         ),
                                       ],
                                     ),
@@ -324,7 +291,7 @@ class _MenuViewState extends State<MenuView> {
                         label: S.of(context).bweight,
                       ),
                       BottomNavigationBarItem(
-                        icon: Icon(Icons.settings),
+                        icon: Icon(Icons.person),
                         label: S.of(context).bsetting,
                       ),
                     ],

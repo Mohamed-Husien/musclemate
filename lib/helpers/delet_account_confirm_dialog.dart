@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:musclemate/helpers/delet_account_fun.dart';
-import 'package:musclemate/views/onboard/splash.dart';
 
 Future showDeleteAccountConfirmationDialog(BuildContext context) async {
   showDialog(

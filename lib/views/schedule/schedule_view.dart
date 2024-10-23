@@ -35,16 +35,6 @@ class _ScheduleViewState extends State<ScheduleView> {
         backgroundColor: TColor.kPrimaryColor,
         centerTitle: true,
         elevation: 0.1,
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: Image.asset(
-            "assets/img/black_white.png",
-            width: 25,
-            height: 25,
-          ),
-        ),
         title: Text(
           "Schedule",
           style: TextStyle(
@@ -271,6 +261,7 @@ class _ScheduleViewState extends State<ScheduleView> {
         ),
       ),
       bottomNavigationBar: BottomAppBar(
+        color: TColor.kPrimaryColor,
         elevation: 1,
         child: Padding(
           padding: const EdgeInsets.only(top: 15, bottom: 20),
@@ -286,8 +277,12 @@ class _ScheduleViewState extends State<ScheduleView> {
                     ),
                   );
                 },
-                child: Image.asset("assets/img/menu_running.png",
-                    width: 25, height: 25),
+                child: Image.asset(
+                  "assets/img/menu_running.png",
+                  width: 25,
+                  height: 25,
+                  color: Colors.white,
+                ),
               ),
               InkWell(
                 onTap: () {
@@ -298,8 +293,12 @@ class _ScheduleViewState extends State<ScheduleView> {
                     ),
                   );
                 },
-                child: Image.asset("assets/img/menu_meal_plan.png",
-                    width: 25, height: 25),
+                child: Image.asset(
+                  "assets/img/menu_meal_plan.png",
+                  width: 25,
+                  height: 25,
+                  color: Colors.white,
+                ),
               ),
               InkWell(
                 onTap: () {
@@ -310,8 +309,12 @@ class _ScheduleViewState extends State<ScheduleView> {
                     ),
                   );
                 },
-                child: Image.asset("assets/img/menu_home.png",
-                    width: 25, height: 25),
+                child: Image.asset(
+                  "assets/img/menu_home.png",
+                  width: 25,
+                  height: 25,
+                  color: Colors.white,
+                ),
               ),
               InkWell(
                 onTap: () {
@@ -322,8 +325,12 @@ class _ScheduleViewState extends State<ScheduleView> {
                     ),
                   );
                 },
-                child: Image.asset("assets/img/menu_weight.png",
-                    width: 25, height: 25),
+                child: Image.asset(
+                  "assets/img/menu_weight.png",
+                  width: 25,
+                  height: 25,
+                  color: Colors.white,
+                ),
               ),
             ],
           ),

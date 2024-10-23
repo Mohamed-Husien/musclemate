@@ -22,21 +22,6 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   Widget build(BuildContext context) {
-    List dataArr = [
-      {
-        "name": S.of(context).running,
-        "image": "assets/img/2.png",
-      },
-      {
-        "name": S.of(context).push,
-        "image": "assets/img/3.png",
-      },
-      {
-        "name": S.of(context).leg,
-        "image": "assets/img/5.png",
-      }
-    ];
-
     List trainingDayArr = [
       {
         "name": S.of(context).day1,
@@ -54,15 +39,6 @@ class _HomeViewState extends State<HomeView> {
         backgroundColor: TColor.kPrimaryColor,
         centerTitle: true,
         elevation: 0.1,
-        leading: IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: Image.asset(
-              "assets/img/black_white.png",
-              width: 25,
-              height: 25,
-            )),
         title: Text(
           S.of(context).fitness,
           style: TextStyle(
@@ -72,86 +48,6 @@ class _HomeViewState extends State<HomeView> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 15),
-              child: SizedBox(
-                width: media.width,
-                height: media.width * 0.4,
-                child: CarouselSlider.builder(
-                  options: CarouselOptions(
-                      autoPlay: false,
-                      aspectRatio: 0.5,
-                      enlargeCenterPage: true,
-                      enableInfiniteScroll: false,
-                      viewportFraction: 0.65,
-                      enlargeFactor: 0.4,
-                      enlargeStrategy: CenterPageEnlargeStrategy.zoom),
-                  itemCount: dataArr.length,
-                  itemBuilder:
-                      (BuildContext context, int itemIndex, int index) {
-                    var dObj = dataArr[index] as Map? ?? {};
-                    return GestureDetector(
-                      onTap: () {
-                        if (dObj["name"] == "Running") {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => RunningView()),
-                          );
-                        } else if (dObj["image"] == "assets/img/3.png") {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => WorkoutView2()),
-                          );
-                        } else if (dObj["image"] == "assets/img/5.png") {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => WorkoutView2()),
-                          );
-                        }
-                      },
-                      child: Container(
-                        margin: const EdgeInsets.symmetric(
-                            vertical: 10, horizontal: 10),
-                        decoration: BoxDecoration(
-                            color: TColor.white,
-                            borderRadius: BorderRadius.circular(10),
-                            boxShadow: const [
-                              BoxShadow(
-                                  color: Colors.black12,
-                                  blurRadius: 4,
-                                  offset: Offset(0, 2)),
-                            ]),
-                        child: Stack(
-                          alignment: Alignment.bottomLeft,
-                          children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(10),
-                              child: Image.asset(dObj["image"].toString(),
-                                  width: double.maxFinite,
-                                  height: double.maxFinite,
-                                  fit: BoxFit.cover),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(15.0),
-                              child: Text(
-                                dObj["name"].toString(),
-                                style: TextStyle(
-                                    color: TColor.white,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w700),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              ),
-            ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 8),
               child: SizedBox(
@@ -278,6 +174,7 @@ class _HomeViewState extends State<HomeView> {
         ),
       ),
       bottomNavigationBar: BottomAppBar(
+        color: TColor.kPrimaryColor,
         elevation: 1,
         child: Padding(
           padding: const EdgeInsets.only(top: 15, bottom: 20),
@@ -293,8 +190,12 @@ class _HomeViewState extends State<HomeView> {
                     ),
                   );
                 },
-                child: Image.asset("assets/img/menu_running.png",
-                    width: 25, height: 25),
+                child: Image.asset(
+                  "assets/img/menu_running.png",
+                  width: 25,
+                  height: 25,
+                  color: Colors.white,
+                ),
               ),
               InkWell(
                 onTap: () {
@@ -305,8 +206,12 @@ class _HomeViewState extends State<HomeView> {
                     ),
                   );
                 },
-                child: Image.asset("assets/img/menu_meal_plan.png",
-                    width: 25, height: 25),
+                child: Image.asset(
+                  "assets/img/menu_meal_plan.png",
+                  width: 25,
+                  height: 25,
+                  color: Colors.white,
+                ),
               ),
               InkWell(
                 onTap: () {
@@ -317,8 +222,12 @@ class _HomeViewState extends State<HomeView> {
                     ),
                   );
                 },
-                child: Image.asset("assets/img/menu_home.png",
-                    width: 25, height: 25),
+                child: Image.asset(
+                  "assets/img/menu_home.png",
+                  width: 25,
+                  height: 25,
+                  color: Colors.white,
+                ),
               ),
               InkWell(
                 onTap: () {
@@ -329,8 +238,12 @@ class _HomeViewState extends State<HomeView> {
                     ),
                   );
                 },
-                child: Image.asset("assets/img/menu_weight.png",
-                    width: 25, height: 25),
+                child: Image.asset(
+                  "assets/img/menu_weight.png",
+                  width: 25,
+                  height: 25,
+                  color: Colors.white,
+                ),
               ),
             ],
           ),
