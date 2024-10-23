@@ -22,6 +22,7 @@ Future showDeleteAccountConfirmationDialog(BuildContext context) async {
               await deleteAccountAndFirestoreDocument(context);
 
               //call the fun that i made for delet account and user data
+              Navigator.pushReplacementNamed(context, SplashScreen.id);
             },
             child: Text(
               "Delete",

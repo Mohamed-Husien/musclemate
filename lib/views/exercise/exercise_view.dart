@@ -55,6 +55,7 @@ class _ExersizeViewState extends State<ExersizeView> {
         ],
       ),
       bottomNavigationBar: BottomAppBar(
+        color: TColor.kPrimaryColor,
         elevation: 1,
         child: Padding(
           padding: const EdgeInsets.only(top: 15, bottom: 20),
@@ -70,8 +71,12 @@ class _ExersizeViewState extends State<ExersizeView> {
                     ),
                   );
                 },
-                child: Image.asset("assets/img/menu_running.png",
-                    width: 25, height: 25),
+                child: Image.asset(
+                  "assets/img/menu_running.png",
+                  width: 25,
+                  height: 25,
+                  color: Colors.white,
+                ),
               ),
               InkWell(
                 onTap: () {
@@ -82,8 +87,12 @@ class _ExersizeViewState extends State<ExersizeView> {
                     ),
                   );
                 },
-                child: Image.asset("assets/img/menu_meal_plan.png",
-                    width: 25, height: 25),
+                child: Image.asset(
+                  "assets/img/menu_meal_plan.png",
+                  width: 25,
+                  height: 25,
+                  color: Colors.white,
+                ),
               ),
               InkWell(
                 onTap: () {
@@ -94,8 +103,12 @@ class _ExersizeViewState extends State<ExersizeView> {
                     ),
                   );
                 },
-                child: Image.asset("assets/img/menu_home.png",
-                    width: 25, height: 25),
+                child: Image.asset(
+                  "assets/img/menu_home.png",
+                  width: 25,
+                  height: 25,
+                  color: Colors.white,
+                ),
               ),
               InkWell(
                 onTap: () {
@@ -106,8 +119,12 @@ class _ExersizeViewState extends State<ExersizeView> {
                     ),
                   );
                 },
-                child: Image.asset("assets/img/menu_weight.png",
-                    width: 25, height: 25),
+                child: Image.asset(
+                  "assets/img/menu_weight.png",
+                  width: 25,
+                  height: 25,
+                  color: Colors.white,
+                ),
               ),
             ],
           ),

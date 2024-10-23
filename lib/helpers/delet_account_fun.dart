@@ -33,7 +33,6 @@ Future<void> deleteAccountAndFirestoreDocument(BuildContext context) async {
         await prefs.remove('userUID');
 //----------------------------------------------
         // Navigate to the SplashScreen after deletion
-        Navigator.pushReplacementNamed(context, SplashScreen.id);
       } else {
         showSnachBarFun(context, 'User data not found ');
       }

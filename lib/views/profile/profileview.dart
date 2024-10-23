@@ -27,6 +27,7 @@ class _ProfileViewState extends State<ProfileView> {
   String? _userEmail;
   String? _userPhone;
   String? _image;
+
   late CollectionReference users =
       FirebaseFirestore.instance.collection('users');
 
@@ -181,6 +182,15 @@ class _ProfileViewState extends State<ProfileView> {
                                         fontSize: 12,
                                         color: TColor.white,
                                         fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                    SizedBox(height: 8),
+                                    Text(
+                                      _userPhone ?? 'Loading...',
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: TColor.white,
+                                        fontWeight: FontWeight.w700,
                                       ),
                                     ),
                                   ],
