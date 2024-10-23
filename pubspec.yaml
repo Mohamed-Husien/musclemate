@@ -71,6 +71,7 @@ dependencies:
     sdk: flutter
   convert: ^3.1.2
   auto_scroll_text: ^0.0.7
+  flutter_dotenv:
 
 dev_dependencies:
   ? flutter_launcher_icons
