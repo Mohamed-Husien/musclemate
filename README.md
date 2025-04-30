@@ -83,11 +83,11 @@ Hi, I am thrilled to share my graduation project from **Digital Egypt Pioneers I
 
 ## 👨‍💻 Team
 
-- [Mahmoud Sherif](https://github.com/mahmoudsherif)
-- [Ahmed Elshennawy](https://github.com/ahmedelshennawy)
-- [Mohamed Salah](https://github.com/mohamedsalah)
+- [Mahmoud Sherif](https://github.com/MahmoudSherif28)
+- [Ahmed Elshennawy](https://github.com/Ahmed-Elshennawy)
+- [Mohamed Salah](https://github.com/abosalah999)
 
-🙏 **Special thanks** to our instructor [Eng. Marwa Talaat](https://www.linkedin.com/in/marwa-talaat/) for her continuous support and valuable guidance.
+🙏 **Special thanks** to our instructor [Eng. Marwa Talaat](https://github.com/eng-marwa) for her continuous support and valuable guidance.
 
 ---
 
