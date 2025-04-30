@@ -1,9 +1,11 @@
+
+
+# 💪 MuscleMate: Your Ultimate Fitness Partner!
+
 <p align="center">
  
   <img src="assets/MuscleMateApp.png" alt=" MuscleMate Cover" width="900"/>
 </p>
-
-# 💪 MuscleMate: Your Ultimate Fitness Partner!
 
 Hi, I am thrilled to share my graduation project from **Digital Egypt Pioneers Initiative - DEPI**  
 **MuscleMate** is the all-in-one app designed to transform your fitness journey! Whether you're working out at home or hitting the gym, MuscleMate is here to guide you every step of the way.🏋️‍♂️
